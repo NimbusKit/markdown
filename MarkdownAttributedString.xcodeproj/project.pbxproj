@@ -44,7 +44,7 @@
 /* Begin PBXFileReference section */
 		66AB04A11596EA9600806DC4 /* libMarkdownAttributedString.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMarkdownAttributedString.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		66AB04A41596EA9600806DC4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		66AB04A81596EA9600806DC4 /* MarkdownAttributedString-Prefix.pch */ = {isa = PBXFileReference; name = "MarkdownAttributedString-Prefix.pch"; path = "MarkdownAttributedString/MarkdownAttributedString-Prefix.pch"; sourceTree = "<group>"; };
+		66AB04A81596EA9600806DC4 /* MarkdownAttributedString-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MarkdownAttributedString-Prefix.pch"; path = "MarkdownAttributedString/MarkdownAttributedString-Prefix.pch"; sourceTree = "<group>"; };
 		66AB04A91596EA9600806DC4 /* MarkdownAttributedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarkdownAttributedString.h; sourceTree = "<group>"; };
 		66AB04AB1596EA9600806DC4 /* MarkdownAttributedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarkdownAttributedString.m; sourceTree = "<group>"; };
 		66AB04B21596EA9600806DC4 /* MarkdownAttributedStringTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarkdownAttributedStringTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,7 +52,6 @@
 		66AB04B51596EA9600806DC4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		66AB04BD1596EA9600806DC4 /* MarkdownAttributedStringTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MarkdownAttributedStringTests-Info.plist"; sourceTree = "<group>"; };
 		66AB04BF1596EA9600806DC4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		66AB04C11596EA9600806DC4 /* MarkdownAttributedStringTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarkdownAttributedStringTests.h; sourceTree = "<group>"; };
 		66AB04C21596EA9600806DC4 /* MarkdownAttributedStringTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarkdownAttributedStringTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,20 +120,11 @@
 		66AB04BB1596EA9600806DC4 /* MarkdownAttributedStringTests */ = {
 			isa = PBXGroup;
 			children = (
-				66AB04C11596EA9600806DC4 /* MarkdownAttributedStringTests.h */,
 				66AB04C21596EA9600806DC4 /* MarkdownAttributedStringTests.m */,
-				66AB04BC1596EA9600806DC4 /* Supporting Files */,
-			);
-			path = MarkdownAttributedStringTests;
-			sourceTree = "<group>";
-		};
-		66AB04BC1596EA9600806DC4 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
 				66AB04BD1596EA9600806DC4 /* MarkdownAttributedStringTests-Info.plist */,
 				66AB04BE1596EA9600806DC4 /* InfoPlist.strings */,
 			);
-			name = "Supporting Files";
+			path = MarkdownAttributedStringTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
