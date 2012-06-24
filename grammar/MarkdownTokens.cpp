@@ -20,5 +20,6 @@ const char* markdownnames[] = {
   "STRONGEM",
   "HEADER",
   "URL",
+  "HREF",
   "UNKNOWN"
 };

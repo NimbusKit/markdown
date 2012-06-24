@@ -116,6 +116,11 @@ int markdownConsume(char* text, int token) {
       [self.links addObject:[NSValue valueWithRange:NSMakeRange(self.accum.length, textAsString.length)]];
       break;
     }
+    case MARKDOWNHREF: {
+      NSRange rangeOfRightBracket = [textAsString rangeOfString:@"]"];
+      textAsString = [textAsString substringWithRange:NSMakeRange(1, rangeOfRightBracket.location - 1)];
+      [self.links addObject:[NSValue valueWithRange:NSMakeRange(self.accum.length, textAsString.length)]];
+    }
     default: {
       break;
     }

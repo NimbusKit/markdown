@@ -18,6 +18,7 @@ subdomain {nmchar}\.
 urlpath   [\/]|{nmchar}+
 protourl     {protocol}[^ ]+
 optprotourl  {protocol}?{subdomain}*{nmchar}+\.{nmchar}+{urlpath}*?
+href      \[.+\]\(.+\)
 
 em        {em1}|{em2}
 strong    {strong1}|{strong2}
@@ -35,6 +36,7 @@ nl        \n|\r\n|\r|\f
 {strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM);}
 {header}                        {markdownConsume(yytext, MARKDOWNHEADER);}
 {url}                           {markdownConsume(yytext, MARKDOWNURL);}
+{href}                          {markdownConsume(yytext, MARKDOWNHREF);}
 
 [ \t\r\n\f]+                    {markdownConsume(yytext, MARKDOWNUNKNOWN);}
 .                               {markdownConsume(yytext, MARKDOWNUNKNOWN);}
