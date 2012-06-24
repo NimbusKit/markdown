@@ -113,6 +113,22 @@ int markdownConsume(char* text, int token) {
       }
       break;
     }
+    case MARKDOWNMULTILINEHEADER: {
+      NSArray* components = [textAsString componentsSeparatedByString:@"\n"];
+      textAsString = [components objectAtIndex:0];
+      UIFont* font = nil;
+      if ([[components objectAtIndex:1] rangeOfString:@"="].length > 0) {
+        font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:16];
+      } else if ([[components objectAtIndex:1] rangeOfString:@"-"].length > 0) {
+        font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:15];
+      }
+      
+      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
+      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+
+      textAsString = [textAsString stringByAppendingString:@"\n"];
+      break;
+    }
     case MARKDOWNPARAGRAPH: {
       textAsString = @"\n";
       break;
