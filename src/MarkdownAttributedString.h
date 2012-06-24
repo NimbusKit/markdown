@@ -18,6 +18,6 @@
 
 @interface MarkdownAttributedString : NSObject
 
-- (NSAttributedString *)parseString:(NSString *)string;
+- (NSAttributedString *)parseString:(NSString *)string links:(NSMutableArray *)links;
 
 @end

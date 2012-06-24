@@ -13,9 +13,17 @@ strong2    __[^_]*__
 strongem2  ___[^_]*___
 header     #{1,6}.*
 
+protocol  (http|ftp)s?\:\/\/
+subdomain {nmchar}\.
+urlpath   [\/]|{nmchar}+
+protourl     {protocol}[^ ]+
+optprotourl  {protocol}?{subdomain}*{nmchar}+\.{nmchar}+{urlpath}*?
+
 em        {em1}|{em2}
 strong    {strong1}|{strong2}
 strongem  {strongem1}|{strongem2}
+
+url       {protourl}|{optprotourl}
 
 w         [ \t\r\n\f]*
 nl        \n|\r\n|\r|\f
@@ -26,6 +34,7 @@ nl        \n|\r\n|\r|\f
 {strong}                        {markdownConsume(yytext, MARKDOWNSTRONG);}
 {strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM);}
 {header}                        {markdownConsume(yytext, MARKDOWNHEADER);}
+{url}                           {markdownConsume(yytext, MARKDOWNURL);}
 
 [ \t\r\n\f]+                    {markdownConsume(yytext, MARKDOWNUNKNOWN);}
 .                               {markdownConsume(yytext, MARKDOWNUNKNOWN);}

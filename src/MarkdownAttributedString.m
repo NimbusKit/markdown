@@ -28,6 +28,7 @@ int markdownConsume(char* text, int token);
 
 @interface MarkdownAttributedString()
 - (void)consumeToken:(int)token text:(char*)text;
+@property (nonatomic, readwrite, retain) NSMutableArray* links;
 @property (nonatomic, readwrite, retain) NSMutableAttributedString* accum;
 @end
 
@@ -38,7 +39,8 @@ int markdownConsume(char* text, int token) {
 
 @implementation MarkdownAttributedString
 
-- (NSAttributedString *)parseString:(NSString *)string {
+- (NSAttributedString *)parseString:(NSString *)string links:(NSMutableArray *)links {
+  self.links = links;
   self.accum = [[NSMutableAttributedString alloc] init];
 
   // flex is not thread-safe so we force it to be by creating a single-access lock here.
@@ -108,6 +110,11 @@ int markdownConsume(char* text, int token) {
         CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
         [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
       }
+      break;
+    }
+    case MARKDOWNURL: {
+      [self.links addObject:[NSValue valueWithRange:NSMakeRange(self.accum.length, textAsString.length)]];
+      break;
     }
     default: {
       break;
