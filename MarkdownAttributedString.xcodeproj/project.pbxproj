@@ -53,6 +53,9 @@
 		66AB04BD1596EA9600806DC4 /* MarkdownAttributedStringTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MarkdownAttributedStringTests-Info.plist"; sourceTree = "<group>"; };
 		66AB04BF1596EA9600806DC4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		66AB04C21596EA9600806DC4 /* MarkdownAttributedStringTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarkdownAttributedStringTests.m; sourceTree = "<group>"; };
+		66AB04CC1596EB9700806DC4 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		66AB04CD1596EB9700806DC4 /* NOTICE */ = {isa = PBXFileReference; lastKnownFileType = text; path = NOTICE; sourceTree = "<group>"; };
+		66AB04CE1596EBBB00806DC4 /* README.mdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.mdown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,9 @@
 		66AB04961596EA9600806DC4 = {
 			isa = PBXGroup;
 			children = (
+				66AB04CE1596EBBB00806DC4 /* README.mdown */,
+				66AB04CC1596EB9700806DC4 /* LICENSE */,
+				66AB04CD1596EB9700806DC4 /* NOTICE */,
 				66AB04A81596EA9600806DC4 /* MarkdownAttributedString-Prefix.pch */,
 				66AB04A61596EA9600806DC4 /* MarkdownAttributedString */,
 				66AB04BB1596EA9600806DC4 /* MarkdownAttributedStringTests */,
