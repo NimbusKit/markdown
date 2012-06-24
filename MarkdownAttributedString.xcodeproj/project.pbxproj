@@ -13,7 +13,6 @@
 		66AB04B71596EA9600806DC4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66AB04A41596EA9600806DC4 /* Foundation.framework */; };
 		66AB04BA1596EA9600806DC4 /* libMarkdownAttributedString.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66AB04A11596EA9600806DC4 /* libMarkdownAttributedString.a */; };
 		66AB04F81596ECB000806DC4 /* MarkdownAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AB04F71596ECAF00806DC4 /* MarkdownAttributedString.m */; };
-		66AB04FB1596ECBD00806DC4 /* MarkdownAttributedStringTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66AB04F91596ECBD00806DC4 /* MarkdownAttributedStringTests-Info.plist */; };
 		66AB04FC1596ECBD00806DC4 /* MarkdownAttributedStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AB04FA1596ECBD00806DC4 /* MarkdownAttributedStringTests.m */; };
 		66AB05001596ECC300806DC4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66AB04FE1596ECC300806DC4 /* InfoPlist.strings */; };
 		66AB05091596EDA200806DC4 /* MarkdownTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AB05061596EDA200806DC4 /* MarkdownTokenizer.m */; };
@@ -127,8 +126,8 @@
 		66AB04BB1596EA9600806DC4 /* unittests */ = {
 			isa = PBXGroup;
 			children = (
-				66AB04F91596ECBD00806DC4 /* MarkdownAttributedStringTests-Info.plist */,
 				66AB04FA1596ECBD00806DC4 /* MarkdownAttributedStringTests.m */,
+				66AB04F91596ECBD00806DC4 /* MarkdownAttributedStringTests-Info.plist */,
 				66AB04FD1596ECC300806DC4 /* en.lproj */,
 			);
 			name = unittests;
@@ -265,7 +264,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66AB04FB1596ECBD00806DC4 /* MarkdownAttributedStringTests-Info.plist in Resources */,
 				66AB05001596ECC300806DC4 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,6 +338,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = src/Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -362,6 +361,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREFIX_HEADER = src/Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -376,7 +376,6 @@
 			buildSettings = {
 				DSTROOT = /tmp/MarkdownAttributedString.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MarkdownAttributedString/MarkdownAttributedString-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -388,7 +387,6 @@
 			buildSettings = {
 				DSTROOT = /tmp/MarkdownAttributedString.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MarkdownAttributedString/MarkdownAttributedString-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -403,8 +401,7 @@
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MarkdownAttributedString/MarkdownAttributedString-Prefix.pch";
-				INFOPLIST_FILE = "MarkdownAttributedStringTests/MarkdownAttributedStringTests-Info.plist";
+				INFOPLIST_FILE = "unittests/MarkdownAttributedStringTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -418,8 +415,7 @@
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MarkdownAttributedString/MarkdownAttributedString-Prefix.pch";
-				INFOPLIST_FILE = "MarkdownAttributedStringTests/MarkdownAttributedStringTests-Info.plist";
+				INFOPLIST_FILE = "unittests/MarkdownAttributedStringTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};

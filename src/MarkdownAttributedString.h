@@ -17,4 +17,7 @@
 #import <Foundation/Foundation.h>
 
 @interface MarkdownAttributedString : NSObject
+
+- (void)parseString:(NSString *)string;
+
 @end

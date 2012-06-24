@@ -45,7 +45,7 @@ extern const char* markdownnames[];
 typedef void* yyscan_t;
 #endif
 
-extern FILE *cssin;
+extern FILE *markdownin;
 
 int markdownlex(void);
 int markdownConsume(char* text, int token);

@@ -16,13 +16,16 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
+#import "MarkdownAttributedString.h"
+
 @interface MarkdownAttributedStringTests : SenTestCase
 @end
 
 @implementation MarkdownAttributedStringTests
 
 - (void)testInstantiation {
-  
+  MarkdownAttributedString* string = [[MarkdownAttributedString alloc] init];
+  [string parseString:@"test {\n  ok:blue;\n}"];
 }
 
 @end
