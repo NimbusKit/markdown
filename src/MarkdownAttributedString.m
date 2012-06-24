@@ -99,6 +99,16 @@ int markdownConsume(char* text, int token) {
       [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
       break;
     }
+    case MARKDOWNHEADER: {
+      NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
+      if (rangeOfNonHash.length > 0) {
+        textAsString = [[textAsString substringFromIndex:rangeOfNonHash.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        UIFont* font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:6 - rangeOfNonHash.location + 16];
+        CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
+        [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+      }
+    }
     default: {
       break;
     }

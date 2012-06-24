@@ -11,6 +11,7 @@ strongem1  \*\*\*[^\*]*\*\*\*
 em2        _[^_]*_
 strong2    __[^_]*__
 strongem2  ___[^_]*___
+header     #{1,6}.*
 
 em        {em1}|{em2}
 strong    {strong1}|{strong2}
@@ -24,6 +25,7 @@ nl        \n|\r\n|\r|\f
 {em}                            {markdownConsume(yytext, MARKDOWNEM);}
 {strong}                        {markdownConsume(yytext, MARKDOWNSTRONG);}
 {strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM);}
+{header}                        {markdownConsume(yytext, MARKDOWNHEADER);}
 
 [ \t\r\n\f]+                    {markdownConsume(yytext, MARKDOWNUNKNOWN);}
 .                               {markdownConsume(yytext, MARKDOWNUNKNOWN);}

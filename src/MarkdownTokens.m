@@ -18,5 +18,6 @@ const char* markdownnames[] = {
   "EM",
   "STRONG",
   "STRONGEM",
+  "HEADER",
   "UNKNOWN"
 };
