@@ -17,6 +17,7 @@
 		66AB05001596ECC300806DC4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66AB04FE1596ECC300806DC4 /* InfoPlist.strings */; };
 		66AB05091596EDA200806DC4 /* MarkdownTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AB05061596EDA200806DC4 /* MarkdownTokenizer.m */; };
 		66AB050A1596EDA200806DC4 /* MarkdownTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AB05081596EDA200806DC4 /* MarkdownTokens.m */; };
+		66AB052B1596FCC900806DC4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66AB052A1596FCC900806DC4 /* CoreText.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +27,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 66AB04A01596EA9600806DC4;
 			remoteInfo = MarkdownAttributedString;
+		};
+		66AB05281596FAF900806DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66AB04981596EA9600806DC4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AB04F11596EC4A00806DC4;
+			remoteInfo = "Markdown Grammar";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -64,6 +72,7 @@
 		66AB05061596EDA200806DC4 /* MarkdownTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarkdownTokenizer.m; path = src/MarkdownTokenizer.m; sourceTree = "<group>"; };
 		66AB05071596EDA200806DC4 /* MarkdownTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarkdownTokens.h; path = src/MarkdownTokens.h; sourceTree = "<group>"; };
 		66AB05081596EDA200806DC4 /* MarkdownTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarkdownTokens.m; path = src/MarkdownTokens.m; sourceTree = "<group>"; };
+		66AB052A1596FCC900806DC4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66AB052B1596FCC900806DC4 /* CoreText.framework in Frameworks */,
 				66AB04B41596EA9600806DC4 /* SenTestingKit.framework in Frameworks */,
 				66AB04B61596EA9600806DC4 /* UIKit.framework in Frameworks */,
 				66AB04B71596EA9600806DC4 /* Foundation.framework in Frameworks */,
@@ -116,6 +126,7 @@
 		66AB04A31596EA9600806DC4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				66AB052A1596FCC900806DC4 /* CoreText.framework */,
 				66AB04A41596EA9600806DC4 /* Foundation.framework */,
 				66AB04B31596EA9600806DC4 /* SenTestingKit.framework */,
 				66AB04B51596EA9600806DC4 /* UIKit.framework */,
@@ -224,6 +235,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				66AB05291596FAF900806DC4 /* PBXTargetDependency */,
 				66AB04B91596EA9600806DC4 /* PBXTargetDependency */,
 			);
 			name = MarkdownAttributedStringTests;
@@ -312,6 +324,11 @@
 			isa = PBXTargetDependency;
 			target = 66AB04A01596EA9600806DC4 /* MarkdownAttributedString */;
 			targetProxy = 66AB04B81596EA9600806DC4 /* PBXContainerItemProxy */;
+		};
+		66AB05291596FAF900806DC4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AB04F11596EC4A00806DC4 /* Markdown Grammar */;
+			targetProxy = 66AB05281596FAF900806DC4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -18,6 +18,6 @@
 
 @interface MarkdownAttributedString : NSObject
 
-- (void)parseString:(NSString *)string;
+- (NSAttributedString *)parseString:(NSString *)string;
 
 @end

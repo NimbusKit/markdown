@@ -15,21 +15,8 @@
 //
 
 const char* markdownnames[] = {
-  "STRING",
-  "IDENT",
-  "HASH",
-  "EMS",
-  "EXS",
-  "LENGTH",
-  "ANGLE",
-  "TIME",
-  "FREQ",
-  "DIMEN",
-  "PERCENTAGE",
-  "NUMBER",
-  "URI",
-  "FUNCTION",
-  "UNICODERANGE",
-  "CSSIMPORT",
-  "UNKNOWN",
+  "EM",
+  "STRONG",
+  "STRONGEM",
+  "UNKNOWN"
 };

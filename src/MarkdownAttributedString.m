@@ -18,6 +18,8 @@
 
 #import "MarkdownTokens.h"
 #import <pthread.h>
+#import <CoreText/CoreText.h>
+#import <UIKit/UIKit.h>
 
 static pthread_mutex_t gMutex = PTHREAD_MUTEX_INITIALIZER;
 MarkdownAttributedString* gActiveString = nil;
@@ -26,6 +28,7 @@ int markdownConsume(char* text, int token);
 
 @interface MarkdownAttributedString()
 - (void)consumeToken:(int)token text:(char*)text;
+@property (nonatomic, readwrite, retain) NSMutableAttributedString* accum;
 @end
 
 int markdownConsume(char* text, int token) {
@@ -35,7 +38,9 @@ int markdownConsume(char* text, int token) {
 
 @implementation MarkdownAttributedString
 
-- (void)parseString:(NSString *)string {
+- (NSAttributedString *)parseString:(NSString *)string {
+  self.accum = [[NSMutableAttributedString alloc] init];
+
   // flex is not thread-safe so we force it to be by creating a single-access lock here.
   pthread_mutex_lock(&gMutex); {
     NSString *tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tempstr.XXXXXX"];
@@ -56,18 +61,52 @@ int markdownConsume(char* text, int token) {
     markdownlex();
     fclose(markdownin);
     
-    NSLog(@"%s", tempFileNameCString);
     free(tempFileNameCString);
     tempFileNameCString = 0;
   }
   pthread_mutex_unlock(&gMutex);
+
+  return [self.accum copy];
 }
 
 - (void)consumeToken:(int)token text:(char*)text {
   NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
-  NSLog(@"text: %@", textAsString);
 
+  NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
+  NSLog(@"--%@ %s--", textAsString, markdownnames[token - MARKDOWNFIRST_TOKEN]);
   switch (token) {
+    case MARKDOWNEM: {
+      textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
+
+      UIFont* font = [UIFont fontWithName:@"Helvetica-Oblique" size:[UIFont systemFontSize]];
+      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
+      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+      break;
+    }
+    case MARKDOWNSTRONG: {
+      textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
+      
+      UIFont* font = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
+      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
+      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+      break;
+    }
+    case MARKDOWNSTRONGEM: {
+      textAsString = [textAsString substringWithRange:NSMakeRange(3, textAsString.length - 6)];
+      
+      UIFont* font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:[UIFont systemFontSize]];
+      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
+      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  if (textAsString.length > 0) {
+    NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:textAsString attributes:attributes];
+    [self.accum appendAttributedString:attributedString];
   }
 }
 

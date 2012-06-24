@@ -25,7 +25,7 @@
 
 - (void)testInstantiation {
   MarkdownAttributedString* string = [[MarkdownAttributedString alloc] init];
-  [string parseString:@"test {\n  ok:blue;\n}"];
+  [string parseString:@"Text with *emphasis* ok?"];
 }
 
 @end
