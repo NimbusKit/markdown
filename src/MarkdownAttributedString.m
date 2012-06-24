@@ -109,7 +109,16 @@ int markdownConsume(char* text, int token) {
         UIFont* font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:6 - rangeOfNonHash.location + 16];
         CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
         [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+        textAsString = [textAsString stringByAppendingString:@"\n"];
       }
+      break;
+    }
+    case MARKDOWNPARAGRAPH: {
+      textAsString = @"\n";
+      break;
+    }
+    case MARKDOWNNEWLINE: {
+      textAsString = nil;
       break;
     }
     case MARKDOWNURL: {
@@ -120,6 +129,7 @@ int markdownConsume(char* text, int token) {
       NSRange rangeOfRightBracket = [textAsString rangeOfString:@"]"];
       textAsString = [textAsString substringWithRange:NSMakeRange(1, rangeOfRightBracket.location - 1)];
       [self.links addObject:[NSValue valueWithRange:NSMakeRange(self.accum.length, textAsString.length)]];
+      break;
     }
     default: {
       break;

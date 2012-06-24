@@ -21,5 +21,7 @@ const char* markdownnames[] = {
   "HEADER",
   "URL",
   "HREF",
+  "PARAGRAPH",
+  "NEWLINE",
   "UNKNOWN"
 };
