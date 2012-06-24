@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Build a Markdown grammar using flex.
+# http://flex.sourceforge.net/
+#
+# Written by Jeff Verkoeyen.
+
+flex --prefix=markdown --nounput markdown.grammar
+
+cat MarkdownTokenizerPrefix > MarkdownTokenizer.cpp
+cat lex.markdown.c >> MarkdownTokenizer.cpp
+
+rm lex.markdown.c
+
+mv MarkdownTokenizer.cpp ../src/MarkdownTokenizer.m
+cp MarkdownTokens.cpp ../src/MarkdownTokens.m
+cp MarkdownTokens.h ../src/MarkdownTokens.h

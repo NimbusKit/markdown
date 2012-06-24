@@ -1,0 +1,78 @@
+%option case-insensitive
+
+h         [0-9a-f]
+nonascii  [\200-\377]
+unicode   \\{h}{1,6}[ \t\r\n\f]?
+escape    {unicode}|\\[ -~\200-\377]
+nmstart   [a-z]|{nonascii}|{escape}
+nmchar    [a-z0-9-]|{nonascii}|{escape}
+string1   \"([\t !#$%&(-~]|\\{nl}|\'|{nonascii}|{escape})*\"
+string2   \'([\t !#$%&(-~]|\\{nl}|\"|{nonascii}|{escape})*\'
+
+ident     [-]?{nmstart}{nmchar}*
+name      {nmchar}+
+num       [-]?[0-9]+|[-]?[0-9]*"."[0-9]+
+string    {string1}|{string2}
+url       ([!#$%&*-~]|{nonascii}|{escape})*
+w         [ \t\r\n\f]*
+nl        \n|\r\n|\r|\f
+range     \?{1,6}|{h}(\?{0,5}|{h}(\?{0,4}|{h}(\?{0,3}|{h}(\?{0,2}|{h}(\??|{h})))))
+
+%%
+
+[ \t\r\n\f]+                    
+
+\/\*[^*]*\*+([^/][^*]*\*+)*\/   /* ignore comments */
+
+"<!--"                          
+"-->"                           
+"~="                            
+"|="                            
+                              
+{string}                              {markdownConsume(yytext, CSSSTRING);}
+                              
+(\.|#)?{ident}(\.{ident})*(:{ident})? {markdownConsume(yytext, CSSIDENT);}
+                              
+"#"{name}                             {markdownConsume(yytext, CSSHASH);}
+                              
+"@import"                       {markdownConsume(yytext, CSSIMPORT);}
+"@page"                         
+"@media"                        
+"@font-face"                    
+"@charset"                      
+"@namespace"                    
+
+"!{w}important"                 
+
+{num}em                         {markdownConsume(yytext, CSSEMS);}
+{num}ex                         {markdownConsume(yytext, CSSEXS);}
+{num}px                         {markdownConsume(yytext, CSSLENGTH);}
+{num}cm                         {markdownConsume(yytext, CSSLENGTH);}
+{num}mm                         {markdownConsume(yytext, CSSLENGTH);}
+{num}in                         {markdownConsume(yytext, CSSLENGTH);}
+{num}pt                         {markdownConsume(yytext, CSSLENGTH);}
+{num}pc                         {markdownConsume(yytext, CSSLENGTH);}
+{num}deg                        {markdownConsume(yytext, CSSANGLE);}
+{num}rad                        {markdownConsume(yytext, CSSANGLE);}
+{num}grad                       {markdownConsume(yytext, CSSANGLE);}
+{num}ms                         {markdownConsume(yytext, CSSTIME);}
+{num}s                          {markdownConsume(yytext, CSSTIME);}
+{num}Hz                         {markdownConsume(yytext, CSSFREQ);}
+{num}kHz                        {markdownConsume(yytext, CSSFREQ);}
+{num}{ident}                    {markdownConsume(yytext, CSSDIMEN);}
+{num}%                          {markdownConsume(yytext, CSSPERCENTAGE);}
+{num}                           {markdownConsume(yytext, CSSNUMBER);}
+
+"url("{w}{string}{w}")"         {markdownConsume(yytext, CSSURI);}
+"url("{w}{url}{w}")"            {markdownConsume(yytext, CSSURI);}
+{ident}"("                      {markdownConsume(yytext, CSSFUNCTION);}
+
+U\+{range}                      {markdownConsume(yytext, CSSUNICODERANGE);}
+U\+{h}{1,6}-{h}{1,6}            {markdownConsume(yytext, CSSUNICODERANGE);}
+
+.                               {markdownConsume(yytext, CSSUNKNOWN);}
+
+%%
+
+int markdownwrap(void){return 1;}
+
