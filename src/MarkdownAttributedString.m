@@ -75,7 +75,6 @@ int markdownConsume(char* text, int token) {
   NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
 
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-  NSLog(@"--%@ %s--", textAsString, markdownnames[token - MARKDOWNFIRST_TOKEN]);
   switch (token) {
     case MARKDOWNEM: {
       textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
@@ -130,11 +129,11 @@ int markdownConsume(char* text, int token) {
       break;
     }
     case MARKDOWNPARAGRAPH: {
-      textAsString = @"\n";
+      textAsString = @"\n\n";
       break;
     }
     case MARKDOWNNEWLINE: {
-      textAsString = nil;
+      textAsString = @"";
       break;
     }
     case MARKDOWNURL: {

@@ -12,7 +12,7 @@ em2           _[^_]*_
 strong2       __[^_]*__
 strongem2     ___[^_]*___
 header1       ^#{1,6}.*
-header2       .+\n[=-]+
+header2       .+\n[=-]+\n
 
 protocol     (http|ftp)s?\:\/\/
 subdomain    {nmchar}\.
@@ -40,10 +40,9 @@ nl           \n|\r\n|\r|\f
 {url}                           {markdownConsume(yytext, MARKDOWNURL);}
 {href}                          {markdownConsume(yytext, MARKDOWNHREF);}
 
-[ ]{2,}                         {markdownConsume(yytext, MARKDOWNPARAGRAPH);}
+[ ]{2,}$                        {markdownConsume(yytext, MARKDOWNNEWLINE);}
 [\n]{2,}                        {markdownConsume(yytext, MARKDOWNPARAGRAPH);}
-[\n]                            {markdownConsume(yytext, MARKDOWNNEWLINE);}
-[ \t\f]                         {markdownConsume(yytext, MARKDOWNUNKNOWN);}
+[ \n\t\f]                       {markdownConsume(yytext, MARKDOWNUNKNOWN);}
 .                               {markdownConsume(yytext, MARKDOWNUNKNOWN);}
 
 %%
