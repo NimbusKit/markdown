@@ -14,11 +14,12 @@ strongem2    ___[^_]*___
 header1      ^#{1,6}.*
 header2      .+\n[=-]+\n
 bulletstart  ^[-]+[ ]
+codeline     [ ]
 
 protocol     (http|ftp)s?\:\/\/
 subdomain    {nmchar}\.
 urlpath      [\/]|{nmchar}+
-protourl     {protocol}[^ ]+
+protourl     {protocol}[^ \n]+
 optprotourl  {protocol}?{subdomain}*{nmchar}+\.{nmchar}+{urlpath}*?
 href         \[.+\]\(.+\)
 
