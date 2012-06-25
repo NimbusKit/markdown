@@ -24,5 +24,6 @@ const char* markdownnames[] = {
   "HREF",
   "PARAGRAPH",
   "NEWLINE",
+  "BULLETSTART",
   "UNKNOWN"
 };

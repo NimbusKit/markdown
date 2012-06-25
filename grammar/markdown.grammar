@@ -1,18 +1,19 @@
 %option case-insensitive
 
-h             [0-9a-f]
-nonascii      [\200-\377]
-unicode       \\{h}{1,6}[ \t\r\n\f]?
-escape        {unicode}|\\[ -~\200-\377]
-nmchar        [a-z0-9-]|{nonascii}|{escape}
-em1           \*[^\*]*\*
-strong1       \*\*[^\*]*\*\*
-strongem1     \*\*\*[^\*]*\*\*\*
-em2           _[^_]*_
-strong2       __[^_]*__
-strongem2     ___[^_]*___
-header1       ^#{1,6}.*
-header2       .+\n[=-]+\n
+h            [0-9a-f]
+nonascii     [\200-\377]
+unicode      \\{h}{1,6}[ \t\r\n\f]?
+escape       {unicode}|\\[ -~\200-\377]
+nmchar       [a-z0-9-]|{nonascii}|{escape}
+em1          \*[^\*]*\*
+strong1      \*\*[^\*]*\*\*
+strongem1    \*\*\*[^\*]*\*\*\*
+em2          _[^_]*_
+strong2      __[^_]*__
+strongem2    ___[^_]*___
+header1      ^#{1,6}.*
+header2      .+\n[=-]+\n
+bulletstart  ^[-]+[ ]
 
 protocol     (http|ftp)s?\:\/\/
 subdomain    {nmchar}\.
@@ -39,6 +40,7 @@ nl           \n|\r\n|\r|\f
 {header2}                       {markdownConsume(yytext, MARKDOWNMULTILINEHEADER);}
 {url}                           {markdownConsume(yytext, MARKDOWNURL);}
 {href}                          {markdownConsume(yytext, MARKDOWNHREF);}
+{bulletstart}                   {markdownConsume(yytext, MARKDOWNBULLETSTART);}
 
 [ ]{2,}$                        {markdownConsume(yytext, MARKDOWNNEWLINE);}
 [\n]{2,}                        {markdownConsume(yytext, MARKDOWNPARAGRAPH);}
