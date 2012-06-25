@@ -20,6 +20,7 @@
 #import <pthread.h>
 #import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
+#import "fmemopen.h"
 
 static pthread_mutex_t gMutex = PTHREAD_MUTEX_INITIALIZER;
 MarkdownAttributedString* gActiveString = nil;
@@ -45,26 +46,13 @@ int markdownConsume(char* text, int token) {
 
   // flex is not thread-safe so we force it to be by creating a single-access lock here.
   pthread_mutex_lock(&gMutex); {
-    NSString *tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tempstr.XXXXXX"];
-    const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
-    char *tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
-    strcpy(tempFileNameCString, tempFileTemplateCString);
-    int fileDescriptor = mkstemp(tempFileNameCString);
-    
-    if (fileDescriptor == -1) {
-    }
-    
-    NSFileHandle* handle = [[NSFileHandle alloc] initWithFileDescriptor:fileDescriptor closeOnDealloc:YES];
-    [handle writeData:[NSData dataWithBytes:[string UTF8String] length:string.length]];
-    handle = nil;
+    const char* cstr = [string UTF8String];
 
-    markdownin = fopen(tempFileNameCString, "r");
+    markdownin = fmemopen((void *)cstr, sizeof(char) * (string.length + 1), "r");
+
     gActiveString = self;
     markdownlex();
     fclose(markdownin);
-    
-    free(tempFileNameCString);
-    tempFileNameCString = 0;
   }
   pthread_mutex_unlock(&gMutex);
 

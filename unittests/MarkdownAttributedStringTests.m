@@ -25,7 +25,7 @@
 
 - (void)testInstantiation {
   MarkdownAttributedString* string = [[MarkdownAttributedString alloc] init];
-  [string parseString:@"Text with *emphasis* ok?"];
+  [string parseString:@"Text with *emphasis* ok?" links:nil];
 }
 
 @end
