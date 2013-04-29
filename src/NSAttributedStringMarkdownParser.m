@@ -17,10 +17,11 @@
 #import "NSAttributedStringMarkdownParser.h"
 
 #import "MarkdownTokens.h"
-#import <pthread.h>
+#import "fmemopen.h"
+
 #import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
-#import "fmemopen.h"
+#import <pthread.h>
 
 int markdownConsume(char* text, int token, yyscan_t scanner);
 
@@ -30,7 +31,8 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   NSMutableAttributedString* _accum;
 }
 
-- (NSAttributedString *)parseString:(NSString *)string links:(NSMutableArray *)links {
+- (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string
+                                                     links:(NSMutableArray *)links {
   _links = links;
   _bulletStarts = [NSMutableArray array];
   _accum = [[NSMutableAttributedString alloc] init];

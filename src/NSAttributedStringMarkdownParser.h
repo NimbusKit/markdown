@@ -18,6 +18,6 @@
 
 @interface NSAttributedStringMarkdownParser : NSObject
 
-- (NSAttributedString *)parseString:(NSString *)string links:(NSMutableArray *)links;
+- (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string links:(NSMutableArray *)links;
 
 @end
