@@ -1,4 +1,4 @@
-%option case-insensitive
+%option case-insensitive reentrant 
 
 h            [0-9a-f]
 nonascii     [\200-\377]
