@@ -28,6 +28,8 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 @implementation NSAttributedStringMarkdownParser {
   NSMutableArray* _bulletStarts;
   NSMutableArray* _links;
+  NSMutableArray* _fontStack;
+
   NSMutableAttributedString* _accum;
 }
 
@@ -35,7 +37,17 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
                                                      links:(NSMutableArray *)links {
   _links = links;
   _bulletStarts = [NSMutableArray array];
+  _fontStack = [NSMutableArray array];
   _accum = [[NSMutableAttributedString alloc] init];
+
+  if ([_stylesheet respondsToSelector:@selector(paragraphFontForParser:)]) {
+    UIFont* font = [_stylesheet paragraphFontForParser:self];
+    if (nil != font) {
+      [_fontStack addObject:font];
+    }
+  } else {
+    [_fontStack addObject:[UIFont systemFontOfSize:12]];
+  }
 
   const char* cstr = [string UTF8String];
   FILE* markdownin = fmemopen((void *)cstr, sizeof(char) * (string.length + 1), "r");
@@ -62,6 +74,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   }
 
   return [_accum copy];
+}
+
+- (UIFont *)topFont {
+  return _fontStack.lastObject;
 }
 
 - (NSDictionary *)paragraphStyle {
@@ -102,10 +118,28 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)style,(NSString*) kCTParagraphStyleAttributeName, nil];
 }
 
+- (NSDictionary *)attributesForFontWithSelector:(SEL)selector {
+  if ([_stylesheet respondsToSelector:selector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    NSString* fontName = [_stylesheet performSelector:selector withObject:self];
+#pragma clang diagnostic pop
+    CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)fontName, self.topFont.pointSize, nil);
+    return @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
+  }
+  return nil;
+}
+
 - (void)consumeToken:(int)token text:(char*)text {
   NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
 
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
+  {
+    CTFontRef topFontRef = CTFontCreateWithName((__bridge CFStringRef)self.topFont.fontName, self.topFont.pointSize, nil);
+    [attributes setObject:(__bridge id)topFontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+    CFRelease(topFontRef);
+  }
+
   switch (token) {
     case MARKDOWNEM: {
       textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
@@ -113,14 +147,13 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       UIFont* font = [UIFont fontWithName:@"Helvetica-Oblique" size:[UIFont systemFontSize]];
       CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
       [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+      CFRelease(fontRef);
       break;
     }
     case MARKDOWNSTRONG: {
       textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
-      
-      UIFont* font = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
-      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
-      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+
+      [attributes addEntriesFromDictionary:[self attributesForFontWithSelector:@selector(boldFontNameForParser:)]];
       break;
     }
     case MARKDOWNSTRONGEM: {
@@ -129,6 +162,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       UIFont* font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:[UIFont systemFontSize]];
       CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
       [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
+      CFRelease(fontRef);
       break;
     }
     case MARKDOWNHEADER: {
@@ -140,6 +174,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
         CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
         [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
         textAsString = [textAsString stringByAppendingString:@"\n"];
+        CFRelease(fontRef);
       }
       break;
     }
@@ -157,6 +192,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
 
       textAsString = [textAsString stringByAppendingString:@"\n"];
+      CFRelease(fontRef);
       break;
     }
     case MARKDOWNPARAGRAPH: {

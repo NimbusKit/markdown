@@ -15,9 +15,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@protocol NSAttributedStringMarkdownStylesheet;
 
 @interface NSAttributedStringMarkdownParser : NSObject
 
 - (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string links:(NSMutableArray *)links;
+
+@property (nonatomic, weak) id<NSAttributedStringMarkdownStylesheet> stylesheet;
+
+@end
+
+@protocol NSAttributedStringMarkdownStylesheet <NSObject>
+@optional
+- (UIFont *)paragraphFontForParser:(NSAttributedStringMarkdownParser *)parser;
+- (NSString *)boldFontNameForParser:(NSAttributedStringMarkdownParser *)parser;
 
 @end

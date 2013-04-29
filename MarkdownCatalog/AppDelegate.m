@@ -19,6 +19,9 @@
 #import "NimbusAttributedLabel.h"
 #import "NSAttributedStringMarkdownParser.h"
 
+@interface AppDelegate() <NSAttributedStringMarkdownStylesheet>
+@end
+
 @implementation AppDelegate {
   UIWindow* _window;
 }
@@ -28,6 +31,7 @@
   _window.backgroundColor = [UIColor whiteColor];
 
   NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
+  parser.stylesheet = self;
   NSAttributedString* string = [parser attributedStringFromMarkdownString:@"This is a **bold** word" links:nil];
 
   NIAttributedLabel* label = [[NIAttributedLabel alloc] init];
@@ -38,6 +42,16 @@
 
   [_window makeKeyAndVisible];
   return YES;
+}
+
+#pragma mark - NSAttributedStringMarkdownStylesheet
+
+- (UIFont *)paragraphFontForParser:(NSAttributedStringMarkdownParser *)parser {
+  return [UIFont systemFontOfSize:16];
+}
+
+- (NSString *)boldFontNameForParser:(NSAttributedStringMarkdownParser *)parser {
+  return [UIFont boldSystemFontOfSize:12].fontName;
 }
 
 @end
