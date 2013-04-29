@@ -17,19 +17,28 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+typedef enum {
+  NSAttributedStringMarkdownParserHeader1,
+  NSAttributedStringMarkdownParserHeader2,
+  NSAttributedStringMarkdownParserHeader3,
+  NSAttributedStringMarkdownParserHeader4,
+  NSAttributedStringMarkdownParserHeader5,
+  NSAttributedStringMarkdownParserHeader6,
+
+} NSAttributedStringMarkdownParserHeader;
+
 @protocol NSAttributedStringMarkdownStylesheet;
 
 @interface NSAttributedStringMarkdownParser : NSObject
 
 - (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string links:(NSMutableArray *)links;
 
-@property (nonatomic, weak) id<NSAttributedStringMarkdownStylesheet> stylesheet;
+@property (nonatomic, strong) UIFont* paragraphFont; // Default: systemFontOfSize:12
+@property (nonatomic, strong) NSString* boldFontName; // Default: boldSystemFont
+@property (nonatomic, strong) NSString* italicFontName; // Default: Helvetica-Oblique
+@property (nonatomic, strong) NSString* boldItalicFontName; // Default: Helvetica-BoldOblique
 
-@end
-
-@protocol NSAttributedStringMarkdownStylesheet <NSObject>
-@optional
-- (UIFont *)paragraphFontForParser:(NSAttributedStringMarkdownParser *)parser;
-- (NSString *)boldFontNameForParser:(NSAttributedStringMarkdownParser *)parser;
+- (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
+- (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;
 
 @end

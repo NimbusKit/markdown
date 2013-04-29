@@ -29,8 +29,38 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   NSMutableArray* _bulletStarts;
   NSMutableArray* _links;
   NSMutableArray* _fontStack;
+  NSMutableDictionary* _headerFonts;
 
   NSMutableAttributedString* _accum;
+}
+
+- (id)init {
+  if ((self = [super init])) {
+    _headerFonts = [NSMutableDictionary dictionary];
+
+    self.paragraphFont = [UIFont systemFontOfSize:12];
+    self.boldFontName = [UIFont boldSystemFontOfSize:12].fontName;
+    self.italicFontName = @"Helvetica-Oblique";
+    self.boldItalicFontName = @"Helvetica-BoldOblique";
+
+    NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1;
+    for (CGFloat headerFontSize = 24; headerFontSize >= 14; headerFontSize -= 2, header++) {
+      [self setFont:[UIFont systemFontOfSize:headerFontSize] forHeader:header];
+    }
+  }
+  return self;
+}
+
+- (id)keyForHeader:(NSAttributedStringMarkdownParserHeader)header {
+  return @(header);
+}
+
+- (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header {
+  _headerFonts[[self keyForHeader:header]] = font;
+}
+
+- (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header {
+  return _headerFonts[[self keyForHeader:header]];
 }
 
 - (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string
@@ -40,13 +70,8 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   _fontStack = [NSMutableArray array];
   _accum = [[NSMutableAttributedString alloc] init];
 
-  if ([_stylesheet respondsToSelector:@selector(paragraphFontForParser:)]) {
-    UIFont* font = [_stylesheet paragraphFontForParser:self];
-    if (nil != font) {
-      [_fontStack addObject:font];
-    }
-  } else {
-    [_fontStack addObject:[UIFont systemFontOfSize:12]];
+  if (nil != self.paragraphFont) {
+    [_fontStack addObject:self.paragraphFont];
   }
 
   const char* cstr = [string UTF8String];
@@ -118,16 +143,18 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)style,(NSString*) kCTParagraphStyleAttributeName, nil];
 }
 
-- (NSDictionary *)attributesForFontWithSelector:(SEL)selector {
-  if ([_stylesheet respondsToSelector:selector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    NSString* fontName = [_stylesheet performSelector:selector withObject:self];
-#pragma clang diagnostic pop
-    CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)fontName, self.topFont.pointSize, nil);
-    return @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
-  }
-  return nil;
+- (NSDictionary *)attributesForFontWithName:(NSString *)fontName {
+  CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)fontName, self.topFont.pointSize, nil);
+  NSDictionary* attributes = @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
+  CFRelease(fontRef);
+  return attributes;
+}
+
+- (NSDictionary *)attributesForFont:(UIFont *)font {
+  CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.familyName, font.pointSize, nil);
+  NSDictionary* attributes = @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
+  CFRelease(fontRef);
+  return attributes;
 }
 
 - (void)consumeToken:(int)token text:(char*)text {
@@ -141,40 +168,28 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   }
 
   switch (token) {
-    case MARKDOWNEM: {
+    case MARKDOWNEM: { // * *
       textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
-
-      UIFont* font = [UIFont fontWithName:@"Helvetica-Oblique" size:[UIFont systemFontSize]];
-      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
-      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
-      CFRelease(fontRef);
+      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.italicFontName]];
       break;
     }
-    case MARKDOWNSTRONG: {
+    case MARKDOWNSTRONG: { // ** **
       textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
-
-      [attributes addEntriesFromDictionary:[self attributesForFontWithSelector:@selector(boldFontNameForParser:)]];
+      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldFontName]];
       break;
     }
-    case MARKDOWNSTRONGEM: {
+    case MARKDOWNSTRONGEM: { // *** ***
       textAsString = [textAsString substringWithRange:NSMakeRange(3, textAsString.length - 6)];
-      
-      UIFont* font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:[UIFont systemFontSize]];
-      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
-      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
-      CFRelease(fontRef);
+      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldItalicFontName]];
       break;
     }
     case MARKDOWNHEADER: {
       NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
       if (rangeOfNonHash.length > 0) {
         textAsString = [[textAsString substringFromIndex:rangeOfNonHash.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        
-        UIFont* font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:6 - rangeOfNonHash.location + 16];
-        CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
-        [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
-        textAsString = [textAsString stringByAppendingString:@"\n"];
-        CFRelease(fontRef);
+
+        NSAttributedStringMarkdownParserHeader header = rangeOfNonHash.location - 1;
+        [attributes addEntriesFromDictionary:[self attributesForFont:[self fontForHeader:header]]];
       }
       break;
     }
