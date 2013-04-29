@@ -41,6 +41,12 @@ typedef void* yyscan_t;
 
 extern FILE *markdownin;
 
-int markdownlex(void);
-int markdownConsume(char* text, int token);
-int markdownget_lineno(void);
+int markdownlex_init(yyscan_t* yyscanner);
+int markdownlex_destroy(yyscan_t yyscanner);
+
+int markdownlex(yyscan_t yyscanner);
+int markdownConsume(char* text, int token, yyscan_t yyscanner);
+int markdownget_lineno(yyscan_t scanner);
+
+void* markdowngetextravar(yyscan_t yyscanner);
+void markdownsetextravar(yyscan_t yyscanner, void* value);

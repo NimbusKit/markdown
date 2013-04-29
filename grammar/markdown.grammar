@@ -34,21 +34,36 @@ nl           \n|\r\n|\r|\f
 
 %%
 
-{em}                            {markdownConsume(yytext, MARKDOWNEM);}
-{strong}                        {markdownConsume(yytext, MARKDOWNSTRONG);}
-{strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM);}
-{header1}                       {markdownConsume(yytext, MARKDOWNHEADER);}
-{header2}                       {markdownConsume(yytext, MARKDOWNMULTILINEHEADER);}
-{url}                           {markdownConsume(yytext, MARKDOWNURL);}
-{href}                          {markdownConsume(yytext, MARKDOWNHREF);}
-{bulletstart}                   {markdownConsume(yytext, MARKDOWNBULLETSTART);}
+{em}                            {markdownConsume(yytext, MARKDOWNEM, yyscanner);}
+{strong}                        {markdownConsume(yytext, MARKDOWNSTRONG, yyscanner);}
+{strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM, yyscanner);}
+{header1}                       {markdownConsume(yytext, MARKDOWNHEADER, yyscanner);}
+{header2}                       {markdownConsume(yytext, MARKDOWNMULTILINEHEADER, yyscanner);}
+{url}                           {markdownConsume(yytext, MARKDOWNURL, yyscanner);}
+{href}                          {markdownConsume(yytext, MARKDOWNHREF, yyscanner);}
+{bulletstart}                   {markdownConsume(yytext, MARKDOWNBULLETSTART, yyscanner);}
 
-[ ]{2,}$                        {markdownConsume(yytext, MARKDOWNNEWLINE);}
-[\n]{2,}                        {markdownConsume(yytext, MARKDOWNPARAGRAPH);}
-[ \n\t\f]                       {markdownConsume(yytext, MARKDOWNUNKNOWN);}
-.                               {markdownConsume(yytext, MARKDOWNUNKNOWN);}
+[ ]{2,}$                        {markdownConsume(yytext, MARKDOWNNEWLINE, yyscanner);}
+[\n]{2,}                        {markdownConsume(yytext, MARKDOWNPARAGRAPH, yyscanner);}
+[ \n\t\f]                       {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
+.                               {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
 
 %%
 
-int markdownwrap(void){return 1;}
+int markdownwrap(yyscan_t yyscanner){return 1;}
+
+void* markdowngetextravar(yyscan_t yyscanner) {
+  if (yyscanner) {
+    struct yyguts_t* guts = (struct yyguts_t *)yyscanner;
+    return guts->yyextra_r;
+  }
+  return NULL;
+}
+
+void markdownsetextravar(yyscan_t yyscanner, void* value) {
+  if (yyscanner) {
+    struct yyguts_t* guts = (struct yyguts_t *)yyscanner;
+    guts->yyextra_r = value;
+  }
+}
 

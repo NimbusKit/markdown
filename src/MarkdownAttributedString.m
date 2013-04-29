@@ -22,10 +22,7 @@
 #import <UIKit/UIKit.h>
 #import "fmemopen.h"
 
-static pthread_mutex_t gMutex = PTHREAD_MUTEX_INITIALIZER;
-MarkdownAttributedString* gActiveString = nil;
-
-int markdownConsume(char* text, int token);
+int markdownConsume(char* text, int token, yyscan_t scanner);
 
 @interface MarkdownAttributedString()
 - (void)consumeToken:(int)token text:(char*)text;
@@ -34,8 +31,9 @@ int markdownConsume(char* text, int token);
 @property (nonatomic, readwrite, retain) NSMutableAttributedString* accum;
 @end
 
-int markdownConsume(char* text, int token) {
-  [gActiveString consumeToken:token text:text];
+int markdownConsume(char* text, int token, yyscan_t scanner) {
+  MarkdownAttributedString* string = CFBridgingRelease(markdowngetextravar(scanner));
+  [string consumeToken:token text:text];
   return 0;
 }
 
@@ -47,27 +45,29 @@ int markdownConsume(char* text, int token) {
   self.accum = [[NSMutableAttributedString alloc] init];
 
   // flex is not thread-safe so we force it to be by creating a single-access lock here.
-  pthread_mutex_lock(&gMutex); {
-    const char* cstr = [string UTF8String];
+  const char* cstr = [string UTF8String];
 
-    markdownin = fmemopen((void *)cstr, sizeof(char) * (string.length + 1), "r");
+  FILE* markdownin = fmemopen((void *)cstr, sizeof(char) * (string.length + 1), "r");
 
-    gActiveString = self;
-    markdownlex();
-    fclose(markdownin);
+  yyscan_t scanner;
 
-    if (self.bulletStarts.count > 0) {
-      // Treat nested bullet points as flat ones...
+  markdownlex_init(&scanner);
+  markdownsetextravar(scanner, (void *)CFBridgingRetain(self));
+  markdownlex(scanner);
+  markdownlex_destroy(scanner);
 
-      // Finish off the previous dash and start a new one.
-      NSInteger lastBulletStart = [[self.bulletStarts lastObject] intValue];
-      [self.bulletStarts removeLastObject];
-      
-      [self.accum addAttributes:[self paragraphStyle]
-                          range:NSMakeRange(lastBulletStart, self.accum.length - lastBulletStart)];
-    }
+  fclose(markdownin);
+
+  if (self.bulletStarts.count > 0) {
+    // Treat nested bullet points as flat ones...
+
+    // Finish off the previous dash and start a new one.
+    NSInteger lastBulletStart = [[self.bulletStarts lastObject] intValue];
+    [self.bulletStarts removeLastObject];
+    
+    [self.accum addAttributes:[self paragraphStyle]
+                        range:NSMakeRange(lastBulletStart, self.accum.length - lastBulletStart)];
   }
-  pthread_mutex_unlock(&gMutex);
 
   return [self.accum copy];
 }
