@@ -43,7 +43,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   yyscan_t scanner;
 
   markdownlex_init(&scanner);
-  markdownset_extra((void *)CFBridgingRetain(self), scanner);
+  markdownset_extra((__bridge void *)(self), scanner);
   markdownset_in(markdownin, scanner);
   markdownlex(scanner);
   markdownlex_destroy(scanner);
@@ -219,7 +219,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 @end
 
 int markdownConsume(char* text, int token, yyscan_t scanner) {
-  NSAttributedStringMarkdownParser* string = CFBridgingRelease(markdownget_extra(scanner));
+  NSAttributedStringMarkdownParser* string = (__bridge NSAttributedStringMarkdownParser *)(markdownget_extra(scanner));
   [string consumeToken:token text:text];
   return 0;
 }
