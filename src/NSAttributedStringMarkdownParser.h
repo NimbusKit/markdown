@@ -1,5 +1,5 @@
 //
-// Copyright 2012 Jeff Verkoeyen
+// Copyright 2012-2013 Jeff Verkoeyen
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,19 +14,10 @@
 // limitations under the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <Foundation/Foundation.h>
 
-#import "MarkdownAttributedString.h"
+@interface NSAttributedStringMarkdownParser : NSObject
 
-@interface MarkdownAttributedStringTests : SenTestCase
-@end
-
-@implementation MarkdownAttributedStringTests
-
-- (void)testInstantiation {
-  MarkdownAttributedString* string = [[MarkdownAttributedString alloc] init];
-  NSAttributedString* attributedString = [string parseString:@"Text with *emphasis* ok?" links:nil];
-  NSLog(@"%@", attributedString);
-}
+- (NSAttributedString *)parseString:(NSString *)string links:(NSMutableArray *)links;
 
 @end

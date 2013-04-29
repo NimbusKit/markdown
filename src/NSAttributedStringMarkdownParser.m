@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-#import "MarkdownAttributedString.h"
+#import "NSAttributedStringMarkdownParser.h"
 
 #import "MarkdownTokens.h"
 #import <pthread.h>
@@ -24,29 +24,18 @@
 
 int markdownConsume(char* text, int token, yyscan_t scanner);
 
-@interface MarkdownAttributedString()
-- (void)consumeToken:(int)token text:(char*)text;
-@property (nonatomic, readwrite, retain) NSMutableArray* bulletStarts;
-@property (nonatomic, readwrite, retain) NSMutableArray* links;
-@property (nonatomic, readwrite, retain) NSMutableAttributedString* accum;
-@end
-
-int markdownConsume(char* text, int token, yyscan_t scanner) {
-  MarkdownAttributedString* string = CFBridgingRelease(markdownget_extra(scanner));
-  [string consumeToken:token text:text];
-  return 0;
+@implementation NSAttributedStringMarkdownParser {
+  NSMutableArray* _bulletStarts;
+  NSMutableArray* _links;
+  NSMutableAttributedString* _accum;
 }
 
-@implementation MarkdownAttributedString
-
 - (NSAttributedString *)parseString:(NSString *)string links:(NSMutableArray *)links {
-  self.links = links;
-  self.bulletStarts = [NSMutableArray array];
-  self.accum = [[NSMutableAttributedString alloc] init];
+  _links = links;
+  _bulletStarts = [NSMutableArray array];
+  _accum = [[NSMutableAttributedString alloc] init];
 
-  // flex is not thread-safe so we force it to be by creating a single-access lock here.
   const char* cstr = [string UTF8String];
-
   FILE* markdownin = fmemopen((void *)cstr, sizeof(char) * (string.length + 1), "r");
 
   yyscan_t scanner;
@@ -59,18 +48,18 @@ int markdownConsume(char* text, int token, yyscan_t scanner) {
 
   fclose(markdownin);
 
-  if (self.bulletStarts.count > 0) {
+  if (_bulletStarts.count > 0) {
     // Treat nested bullet points as flat ones...
 
     // Finish off the previous dash and start a new one.
-    NSInteger lastBulletStart = [[self.bulletStarts lastObject] intValue];
-    [self.bulletStarts removeLastObject];
+    NSInteger lastBulletStart = [[_bulletStarts lastObject] intValue];
+    [_bulletStarts removeLastObject];
     
-    [self.accum addAttributes:[self paragraphStyle]
-                        range:NSMakeRange(lastBulletStart, self.accum.length - lastBulletStart)];
+    [_accum addAttributes:[self paragraphStyle]
+                        range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
   }
 
-  return [self.accum copy];
+  return [_accum copy];
 }
 
 - (NSDictionary *)paragraphStyle {
@@ -171,32 +160,32 @@ int markdownConsume(char* text, int token, yyscan_t scanner) {
     case MARKDOWNPARAGRAPH: {
       textAsString = @"\n\n";
       
-      if (self.bulletStarts.count > 0) {
+      if (_bulletStarts.count > 0) {
         // Treat nested bullet points as flat ones...
         
         // Finish off the previous dash and start a new one.
-        NSInteger lastBulletStart = [[self.bulletStarts lastObject] intValue];
-        [self.bulletStarts removeLastObject];
+        NSInteger lastBulletStart = [[_bulletStarts lastObject] intValue];
+        [_bulletStarts removeLastObject];
         
-        [self.accum addAttributes:[self paragraphStyle]
-                            range:NSMakeRange(lastBulletStart, self.accum.length - lastBulletStart)];
+        [_accum addAttributes:[self paragraphStyle]
+                            range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
       }
       break;
     }
     case MARKDOWNBULLETSTART: {
       NSInteger numberOfDashes = [textAsString rangeOfString:@" "].location;
-      if (self.bulletStarts.count > 0 && self.bulletStarts.count <= numberOfDashes) {
+      if (_bulletStarts.count > 0 && _bulletStarts.count <= numberOfDashes) {
         // Treat nested bullet points as flat ones...
 
         // Finish off the previous dash and start a new one.
-        NSInteger lastBulletStart = [[self.bulletStarts lastObject] intValue];
-        [self.bulletStarts removeLastObject];
+        NSInteger lastBulletStart = [[_bulletStarts lastObject] intValue];
+        [_bulletStarts removeLastObject];
 
-        [self.accum addAttributes:[self paragraphStyle]
-                            range:NSMakeRange(lastBulletStart, self.accum.length - lastBulletStart)];
+        [_accum addAttributes:[self paragraphStyle]
+                            range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
       }
 
-      [self.bulletStarts addObject:[NSNumber numberWithInt:self.accum.length]];
+      [_bulletStarts addObject:[NSNumber numberWithInt:_accum.length]];
       textAsString = @"•\t";
       break;
     }
@@ -205,13 +194,13 @@ int markdownConsume(char* text, int token, yyscan_t scanner) {
       break;
     }
     case MARKDOWNURL: {
-      [self.links addObject:[NSValue valueWithRange:NSMakeRange(self.accum.length, textAsString.length)]];
+      [_links addObject:[NSValue valueWithRange:NSMakeRange(_accum.length, textAsString.length)]];
       break;
     }
     case MARKDOWNHREF: {
       NSRange rangeOfRightBracket = [textAsString rangeOfString:@"]"];
       textAsString = [textAsString substringWithRange:NSMakeRange(1, rangeOfRightBracket.location - 1)];
-      [self.links addObject:[NSValue valueWithRange:NSMakeRange(self.accum.length, textAsString.length)]];
+      [_links addObject:[NSValue valueWithRange:NSMakeRange(_accum.length, textAsString.length)]];
       break;
     }
     default: {
@@ -221,8 +210,14 @@ int markdownConsume(char* text, int token, yyscan_t scanner) {
 
   if (textAsString.length > 0) {
     NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:textAsString attributes:attributes];
-    [self.accum appendAttributedString:attributedString];
+    [_accum appendAttributedString:attributedString];
   }
 }
 
 @end
+
+int markdownConsume(char* text, int token, yyscan_t scanner) {
+  NSAttributedStringMarkdownParser* string = CFBridgingRelease(markdownget_extra(scanner));
+  [string consumeToken:token text:text];
+  return 0;
+}
