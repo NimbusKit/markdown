@@ -43,10 +43,12 @@ extern FILE *markdownin;
 
 int markdownlex_init(yyscan_t* yyscanner);
 int markdownlex_destroy(yyscan_t yyscanner);
+void markdownset_in (FILE *  in_str , yyscan_t yyscanner);
 
 int markdownlex(yyscan_t yyscanner);
 int markdownConsume(char* text, int token, yyscan_t yyscanner);
 int markdownget_lineno(yyscan_t scanner);
 
-void* markdowngetextravar(yyscan_t yyscanner);
-void markdownsetextravar(yyscan_t yyscanner, void* value);
+#define MARKDOWN_EXTRA_TYPE  void*
+MARKDOWN_EXTRA_TYPE markdownget_extra(yyscan_t scanner);
+void markdownset_extra(MARKDOWN_EXTRA_TYPE arbitrary_data , yyscan_t scanner);

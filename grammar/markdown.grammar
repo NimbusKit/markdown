@@ -1,4 +1,5 @@
-%option case-insensitive reentrant 
+%option case-insensitive
+%option reentrant
 
 h            [0-9a-f]
 nonascii     [\200-\377]
@@ -51,19 +52,3 @@ nl           \n|\r\n|\r|\f
 %%
 
 int markdownwrap(yyscan_t yyscanner){return 1;}
-
-void* markdowngetextravar(yyscan_t yyscanner) {
-  if (yyscanner) {
-    struct yyguts_t* guts = (struct yyguts_t *)yyscanner;
-    return guts->yyextra_r;
-  }
-  return NULL;
-}
-
-void markdownsetextravar(yyscan_t yyscanner, void* value) {
-  if (yyscanner) {
-    struct yyguts_t* guts = (struct yyguts_t *)yyscanner;
-    guts->yyextra_r = value;
-  }
-}
-

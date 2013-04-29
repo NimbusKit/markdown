@@ -1126,7 +1126,7 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 35 "markdown.grammar"
+#line 36 "markdown.grammar"
 
 
 #line 1114 "lex.markdown.c"
@@ -1216,46 +1216,46 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 37 "markdown.grammar"
+#line 38 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNEM, yyscanner);}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 38 "markdown.grammar"
+#line 39 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNSTRONG, yyscanner);}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 39 "markdown.grammar"
+#line 40 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNSTRONGEM, yyscanner);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 40 "markdown.grammar"
+#line 41 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNHEADER, yyscanner);}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 41 "markdown.grammar"
+#line 42 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNMULTILINEHEADER, yyscanner);}
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 42 "markdown.grammar"
+#line 43 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNURL, yyscanner);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 43 "markdown.grammar"
+#line 44 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNHREF, yyscanner);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 44 "markdown.grammar"
+#line 45 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNBULLETSTART, yyscanner);}
 	YY_BREAK
 case 9:
@@ -1263,29 +1263,29 @@ case 9:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 46 "markdown.grammar"
+#line 47 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNNEWLINE, yyscanner);}
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 47 "markdown.grammar"
+#line 48 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNPARAGRAPH, yyscanner);}
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 48 "markdown.grammar"
+#line 49 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 49 "markdown.grammar"
+#line 50 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 51 "markdown.grammar"
+#line 52 "markdown.grammar"
 ECHO;
 	YY_BREAK
 #line 1273 "lex.markdown.c"
@@ -2407,25 +2407,9 @@ void markdownfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 51 "markdown.grammar"
+#line 52 "markdown.grammar"
 
 
 
 int markdownwrap(yyscan_t yyscanner){return 1;}
-
-void* markdowngetextravar(yyscan_t yyscanner) {
-  if (yyscanner) {
-    struct yyguts_t* guts = (struct yyguts_t *)yyscanner;
-    return guts->yyextra_r;
-  }
-  return NULL;
-}
-
-void markdownsetextravar(yyscan_t yyscanner, void* value) {
-  if (yyscanner) {
-    struct yyguts_t* guts = (struct yyguts_t *)yyscanner;
-    guts->yyextra_r = value;
-  }
-}
-
 

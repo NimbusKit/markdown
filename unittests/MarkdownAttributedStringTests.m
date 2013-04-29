@@ -24,7 +24,6 @@
 @implementation MarkdownAttributedStringTests
 
 - (void)testInstantiation {
-  STAssertTrue(NO, @"Fail");
   MarkdownAttributedString* string = [[MarkdownAttributedString alloc] init];
   NSAttributedString* attributedString = [string parseString:@"Text with *emphasis* ok?" links:nil];
   NSLog(@"%@", attributedString);
