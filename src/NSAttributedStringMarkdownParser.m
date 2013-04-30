@@ -25,13 +25,23 @@
 
 int markdownConsume(char* text, int token, yyscan_t scanner);
 
+@interface NSAttributedStringMarkdownLink()
+@property (nonatomic, strong) NSURL* url;
+@property (nonatomic, assign) NSRange range;
+@end
+
+@implementation NSAttributedStringMarkdownLink
+@end
+
 @implementation NSAttributedStringMarkdownParser {
-  NSMutableArray* _bulletStarts;
-  NSMutableArray* _links;
-  NSMutableArray* _fontStack;
   NSMutableDictionary* _headerFonts;
 
+  NSMutableArray* _bulletStarts;
+
   NSMutableAttributedString* _accum;
+  NSMutableArray* _links;
+
+  UIFont* _topFont;
 }
 
 - (id)init {
@@ -51,6 +61,18 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+  NSAttributedStringMarkdownParser* parser = [[self.class allocWithZone:zone] init];
+  parser.paragraphFont = self.paragraphFont;
+  parser.boldFontName = self.boldFontName;
+  parser.italicFontName = self.italicFontName;
+  parser.boldItalicFontName = self.boldItalicFontName;
+  for (NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1; header <= NSAttributedStringMarkdownParserHeader6; ++header) {
+    [parser setFont:[self fontForHeader:header] forHeader:header];
+  }
+  return parser;
+}
+
 - (id)keyForHeader:(NSAttributedStringMarkdownParserHeader)header {
   return @(header);
 }
@@ -63,16 +85,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return _headerFonts[[self keyForHeader:header]];
 }
 
-- (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string
-                                                     links:(NSMutableArray *)links {
-  _links = links;
+- (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string {
+  _links = [NSMutableArray array];
   _bulletStarts = [NSMutableArray array];
-  _fontStack = [NSMutableArray array];
   _accum = [[NSMutableAttributedString alloc] init];
-
-  if (nil != self.paragraphFont) {
-    [_fontStack addObject:self.paragraphFont];
-  }
 
   const char* cstr = [string UTF8String];
   FILE* markdownin = fmemopen((void *)cstr, sizeof(char) * (string.length + 1), "r");
@@ -101,8 +117,8 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return [_accum copy];
 }
 
-- (UIFont *)topFont {
-  return _fontStack.lastObject;
+- (NSArray *)links {
+  return [_links copy];
 }
 
 - (NSDictionary *)paragraphStyle {
@@ -143,6 +159,14 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)style,(NSString*) kCTParagraphStyleAttributeName, nil];
 }
 
+- (UIFont *)topFont {
+  if (nil == _topFont) {
+    return self.paragraphFont;
+  } else {
+    return _topFont;
+  }
+}
+
 - (NSDictionary *)attributesForFontWithName:(NSString *)fontName {
   CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)fontName, self.topFont.pointSize, nil);
   NSDictionary* attributes = @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
@@ -157,15 +181,24 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return attributes;
 }
 
+- (void)recurseOnString:(NSString *)string withFont:(UIFont *)font {
+  NSAttributedStringMarkdownParser* recursiveParser = [self copy];
+  recursiveParser->_topFont = font;
+  [_accum appendAttributedString:[recursiveParser attributedStringFromMarkdownString:string]];
+
+  // Adjust the recursive parser's links so that they are offset correctly.
+  for (NSValue* rangeValue in recursiveParser.links) {
+    NSRange range = [rangeValue rangeValue];
+    range.location += _accum.length;
+    [_links addObject:[NSValue valueWithRange:range]];
+  }
+}
+
 - (void)consumeToken:(int)token text:(char*)text {
   NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
 
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-  {
-    CTFontRef topFontRef = CTFontCreateWithName((__bridge CFStringRef)self.topFont.fontName, self.topFont.pointSize, nil);
-    [attributes setObject:(__bridge id)topFontRef forKey:(__bridge NSString* )kCTFontAttributeName];
-    CFRelease(topFontRef);
-  }
+  [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
 
   switch (token) {
     case MARKDOWNEM: { // * *
@@ -183,13 +216,16 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldItalicFontName]];
       break;
     }
-    case MARKDOWNHEADER: {
+    case MARKDOWNHEADER: { // ####
       NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
       if (rangeOfNonHash.length > 0) {
         textAsString = [[textAsString substringFromIndex:rangeOfNonHash.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
         NSAttributedStringMarkdownParserHeader header = rangeOfNonHash.location - 1;
-        [attributes addEntriesFromDictionary:[self attributesForFont:[self fontForHeader:header]]];
+        [self recurseOnString:textAsString withFont:[self fontForHeader:header]];
+
+        // We already appended the recursive parser's results in recurseOnString.
+        textAsString = nil;
       }
       break;
     }
@@ -198,16 +234,15 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       textAsString = [components objectAtIndex:0];
       UIFont* font = nil;
       if ([[components objectAtIndex:1] rangeOfString:@"="].length > 0) {
-        font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:16];
+        font = [self fontForHeader:NSAttributedStringMarkdownParserHeader1];
       } else if ([[components objectAtIndex:1] rangeOfString:@"-"].length > 0) {
-        font = [UIFont fontWithName:@"Helvetica-BoldOblique" size:15];
+        font = [self fontForHeader:NSAttributedStringMarkdownParserHeader2];
       }
-      
-      CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, nil);
-      [attributes setObject:(__bridge id)fontRef forKey:(__bridge NSString* )kCTFontAttributeName];
 
-      textAsString = [textAsString stringByAppendingString:@"\n"];
-      CFRelease(fontRef);
+      [self recurseOnString:textAsString withFont:font];
+
+      // We already appended the recursive parser's results in recurseOnString.
+      textAsString = nil;
       break;
     }
     case MARKDOWNPARAGRAPH: {
@@ -247,7 +282,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       break;
     }
     case MARKDOWNURL: {
-      [_links addObject:[NSValue valueWithRange:NSMakeRange(_accum.length, textAsString.length)]];
+      NSAttributedStringMarkdownLink* link = [[NSAttributedStringMarkdownLink alloc] init];
+      link.url = [NSURL URLWithString:textAsString];
+      link.range = NSMakeRange(_accum.length, textAsString.length);
+      [_links addObject:link];
       break;
     }
     case MARKDOWNHREF: {

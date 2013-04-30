@@ -57,6 +57,9 @@
 		66268521172F276500283577 /* NIRadioGroupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66268515172F276500283577 /* NIRadioGroupController.m */; };
 		66268522172F276500283577 /* NITableViewActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 66268517172F276500283577 /* NITableViewActions.m */; };
 		66268523172F276500283577 /* NITableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 66268519172F276500283577 /* NITableViewModel.m */; };
+		66FE975E172F48DE006602B4 /* CatalogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE975D172F48DE006602B4 /* CatalogViewController.m */; };
+		66FE9762172F49EA006602B4 /* EmphasisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9761172F49EA006602B4 /* EmphasisViewController.m */; };
+		66FE9765172F4CED006602B4 /* HeadersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9764172F4CED006602B4 /* HeadersViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +202,12 @@
 		66AB05071596EDA200806DC4 /* MarkdownTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarkdownTokens.h; path = src/MarkdownTokens.h; sourceTree = "<group>"; };
 		66AB05081596EDA200806DC4 /* MarkdownTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarkdownTokens.m; path = src/MarkdownTokens.m; sourceTree = "<group>"; };
 		66AB052A1596FCC900806DC4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		66FE975C172F48DE006602B4 /* CatalogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogViewController.h; sourceTree = "<group>"; };
+		66FE975D172F48DE006602B4 /* CatalogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogViewController.m; sourceTree = "<group>"; };
+		66FE9760172F49EA006602B4 /* EmphasisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmphasisViewController.h; sourceTree = "<group>"; };
+		66FE9761172F49EA006602B4 /* EmphasisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmphasisViewController.m; sourceTree = "<group>"; };
+		66FE9763172F4CED006602B4 /* HeadersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadersViewController.h; sourceTree = "<group>"; };
+		66FE9764172F4CED006602B4 /* HeadersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadersViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +239,9 @@
 			children = (
 				662684A1172F25C400283577 /* AppDelegate.h */,
 				662684A2172F25C400283577 /* AppDelegate.m */,
+				66FE975C172F48DE006602B4 /* CatalogViewController.h */,
+				66FE975D172F48DE006602B4 /* CatalogViewController.m */,
+				66FE975F172F49D9006602B4 /* Catalog */,
 				662684B0172F26FD00283577 /* Nimbus */,
 				66268499172F25C400283577 /* Supporting Files */,
 			);
@@ -441,6 +453,17 @@
 			name = fmemopen;
 			sourceTree = "<group>";
 		};
+		66FE975F172F49D9006602B4 /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				66FE9760172F49EA006602B4 /* EmphasisViewController.h */,
+				66FE9761172F49EA006602B4 /* EmphasisViewController.m */,
+				66FE9763172F4CED006602B4 /* HeadersViewController.h */,
+				66FE9764172F4CED006602B4 /* HeadersViewController.m */,
+			);
+			name = Catalog;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
@@ -591,6 +614,9 @@
 				66268521172F276500283577 /* NIRadioGroupController.m in Sources */,
 				66268522172F276500283577 /* NITableViewActions.m in Sources */,
 				66268523172F276500283577 /* NITableViewModel.m in Sources */,
+				66FE975E172F48DE006602B4 /* CatalogViewController.m in Sources */,
+				66FE9762172F49EA006602B4 /* EmphasisViewController.m in Sources */,
+				66FE9765172F4CED006602B4 /* HeadersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -800,6 +826,7 @@
 				662684AC172F25C500283577 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		66AB049B1596EA9600806DC4 /* Build configuration list for PBXProject "MarkdownAttributedString" */ = {
 			isa = XCConfigurationList;
