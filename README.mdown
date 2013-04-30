@@ -24,6 +24,7 @@ Supported Features
     *italics*
     **bold**
     ***bold italic***
+    ~~strikethrough~~
     
     # Header 1
     ## Header 2
@@ -39,6 +40,7 @@ Supported Features
     --------
     
     http://google.com urls
+    [Text] (http://google.com "alt text") urls
 
 Example
 -------
