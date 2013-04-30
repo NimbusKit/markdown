@@ -99,7 +99,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return _headerFonts[[self keyForHeader:header]];
 }
 
-- (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string {
+- (NSMutableAttributedString *)attributedStringFromMarkdownString:(NSString *)string {
   _links = [NSMutableArray array];
   _bulletStarts = [NSMutableArray array];
   _accum = [[NSMutableAttributedString alloc] init];
@@ -128,7 +128,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
                         range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
   }
 
-  return [_accum copy];
+  return [_accum mutableCopy];
 }
 
 - (NSArray *)links {

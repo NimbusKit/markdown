@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, NSAttributedStringMarkdownParserHeader) {
 
 @interface NSAttributedStringMarkdownParser : NSObject <NSCopying>
 
-- (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string;
+- (NSMutableAttributedString *)attributedStringFromMarkdownString:(NSString *)string;
 
 @property (nonatomic, strong) UIFont* paragraphFont; // Default: systemFontOfSize:12
 @property (nonatomic, copy) NSString* boldFontName; // Default: boldSystemFont
