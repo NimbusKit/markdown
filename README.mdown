@@ -1,7 +1,8 @@
 A Markdown NSAttributedString Parser
 ====================================
 
-
+This is a Markdown => NSAttributedString parser built on top of a flex parser. It takes an NSString
+and returns an NSAttributedString with markdown tags replaced by CoreText formatting attributes.
 
 Supported Features
 ------------------
