@@ -1,4 +1,34 @@
 A Markdown NSAttributedString Parser
 ====================================
 
-Created by Jeff Verkoeyen.
+
+
+Supported Features
+------------------
+
+    *italics*
+    **bold**
+    ***bold italic***
+    
+    # Header 1
+    ## Header 2
+    ### Header 3
+    #### Header 4
+    ##### Header 5
+    ###### Header 6
+    
+    Header 1
+    ========
+
+    Header 2
+    --------
+    
+    http://google.com urls
+
+Example
+-------
+
+    NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
+    NSAttributedString* string = [parser attributedStringFromMarkdownString:
+                                  @"This is __rad__.""];
+

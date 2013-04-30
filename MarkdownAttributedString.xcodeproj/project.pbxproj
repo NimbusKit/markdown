@@ -196,7 +196,6 @@
 		66AB04EE1596EC1D00806DC4 /* MarkdownTokens.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MarkdownTokens.cpp; path = grammar/MarkdownTokens.cpp; sourceTree = "<group>"; };
 		66AB04EF1596EC1D00806DC4 /* MarkdownTokens.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MarkdownTokens.h; path = grammar/MarkdownTokens.h; sourceTree = "<group>"; };
 		66AB04F01596EC1D00806DC4 /* generate */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = generate; path = grammar/generate; sourceTree = "<group>"; };
-		66AB04F51596ECAF00806DC4 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = src/Prefix.pch; sourceTree = "<group>"; };
 		66AB04F61596ECAF00806DC4 /* NSAttributedStringMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSAttributedStringMarkdownParser.h; path = src/NSAttributedStringMarkdownParser.h; sourceTree = "<group>"; };
 		66AB04F71596ECAF00806DC4 /* NSAttributedStringMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSAttributedStringMarkdownParser.m; path = src/NSAttributedStringMarkdownParser.m; sourceTree = "<group>"; };
 		66AB05061596EDA200806DC4 /* MarkdownTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarkdownTokenizer.m; path = src/MarkdownTokenizer.m; sourceTree = "<group>"; };
@@ -211,6 +210,7 @@
 		66FE9764172F4CED006602B4 /* HeadersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadersViewController.m; sourceTree = "<group>"; };
 		66FE9766172F4DEA006602B4 /* LinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksViewController.h; sourceTree = "<group>"; };
 		66FE9767172F4DEA006602B4 /* LinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksViewController.m; sourceTree = "<group>"; };
+		66FE9769172F5350006602B4 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -383,7 +383,7 @@
 				66AB04CE1596EBBB00806DC4 /* README.mdown */,
 				66AB04CC1596EB9700806DC4 /* LICENSE */,
 				66AB04CD1596EB9700806DC4 /* NOTICE */,
-				66AB04F51596ECAF00806DC4 /* Prefix.pch */,
+				66FE9769172F5350006602B4 /* Prefix.pch */,
 				66AB05011596ECCA00806DC4 /* Parser */,
 				66268498172F25C400283577 /* MarkdownCatalog */,
 				66AB04A31596EA9600806DC4 /* Frameworks */,
@@ -745,7 +745,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = src/Prefix.pch;
+				GCC_PREFIX_HEADER = Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -768,7 +768,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREFIX_HEADER = src/Prefix.pch;
+				GCC_PREFIX_HEADER = Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
