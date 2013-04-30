@@ -20,6 +20,7 @@
 #import "EmphasisViewController.h"
 #import "HeadersViewController.h"
 #import "LinksViewController.h"
+#import "ParagraphsViewController.h"
 
 #import "NimbusModels.h"
 
@@ -41,6 +42,8 @@
              navigationBlock:NIPushControllerAction([HeadersViewController class])],
     [_actions attachToObject:[NITitleCellObject objectWithTitle:@"Links"]
              navigationBlock:NIPushControllerAction([LinksViewController class])],
+    [_actions attachToObject:[NITitleCellObject objectWithTitle:@"Paragraphs"]
+             navigationBlock:NIPushControllerAction([ParagraphsViewController class])]
     ];
     _model = [[NITableViewModel alloc] initWithSectionedArray:contents
                                                      delegate:(id)[NICellFactory class]];

@@ -6,7 +6,7 @@ nonascii       [\200-\377]
 unicode        \\{h}{1,6}[ \t\r\n\f]?
 escape         {unicode}|\\[ -~\200-\377]
 nmchar         [a-z0-9-]|{nonascii}|{escape}
-em1            \*[^\*]*\*
+em1            \*[^(\n|\*)]+\*
 strong1        \*\*[^\*]*\*\*
 strongem1      \*\*\*[^\*]*\*\*\*
 em2            _[^_]*_
@@ -14,7 +14,7 @@ strong2        __[^_]*__
 strongem2      ___[^_]*___
 header1        ^#{1,6}.*
 header2        .+\n[=-]+\n
-bulletstart    ^[-]+[ ]
+bulletstart    ^[-\+*]+[ ]
 codeline       [ ]
 
 protocol       (http|ftp)s?\:\/\/
