@@ -1,43 +1,45 @@
 %option case-insensitive
 %option reentrant
 
-h            [0-9a-f]
-nonascii     [\200-\377]
-unicode      \\{h}{1,6}[ \t\r\n\f]?
-escape       {unicode}|\\[ -~\200-\377]
-nmchar       [a-z0-9-]|{nonascii}|{escape}
-em1          \*[^\*]*\*
-strong1      \*\*[^\*]*\*\*
-strongem1    \*\*\*[^\*]*\*\*\*
-em2          _[^_]*_
-strong2      __[^_]*__
-strongem2    ___[^_]*___
-header1      ^#{1,6}.*
-header2      .+\n[=-]+\n
-bulletstart  ^[-]+[ ]
-codeline     [ ]
+h              [0-9a-f]
+nonascii       [\200-\377]
+unicode        \\{h}{1,6}[ \t\r\n\f]?
+escape         {unicode}|\\[ -~\200-\377]
+nmchar         [a-z0-9-]|{nonascii}|{escape}
+em1            \*[^\*]*\*
+strong1        \*\*[^\*]*\*\*
+strongem1      \*\*\*[^\*]*\*\*\*
+em2            _[^_]*_
+strong2        __[^_]*__
+strongem2      ___[^_]*___
+header1        ^#{1,6}.*
+header2        .+\n[=-]+\n
+bulletstart    ^[-]+[ ]
+codeline       [ ]
 
-protocol     (http|ftp)s?\:\/\/
-subdomain    {nmchar}\.
-urlpath      [\/]|{nmchar}+
-protourl     {protocol}[^ \n]+
-optprotourl  {protocol}?{subdomain}*{nmchar}+\.{nmchar}+{urlpath}*?
-href         \[.+\]\(.+\)
+protocol       (http|ftp)s?\:\/\/
+subdomain      {nmchar}\.
+urlpath        [\/]|{nmchar}+
+protourl       {protocol}[^ \n]+
+optprotourl    {protocol}?{subdomain}*{nmchar}+\.{nmchar}+{urlpath}*?
+href           \[.+\]\(.+\)
 
-em           {em1}|{em2}
-strong       {strong1}|{strong2}
-strongem     {strongem1}|{strongem2}
+em             {em1}|{em2}
+strong         {strong1}|{strong2}
+strongem       {strongem1}|{strongem2}
+strikethrough  ~~.*?~~
 
-url          {protourl}|{optprotourl}
+url            {protourl}|{optprotourl}
 
-w            [ \t\r\n\f]*
-nl           \n|\r\n|\r|\f
+w              [ \t\r\n\f]*
+nl             \n|\r\n|\r|\f
 
 %%
 
 {em}                            {markdownConsume(yytext, MARKDOWNEM, yyscanner);}
 {strong}                        {markdownConsume(yytext, MARKDOWNSTRONG, yyscanner);}
 {strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM, yyscanner);}
+{strikethrough}                 {markdownConsume(yytext, MARKDOWNSTRIKETHROUGH, yyscanner);}
 {header1}                       {markdownConsume(yytext, MARKDOWNHEADER, yyscanner);}
 {header2}                       {markdownConsume(yytext, MARKDOWNMULTILINEHEADER, yyscanner);}
 {url}                           {markdownConsume(yytext, MARKDOWNURL, yyscanner);}

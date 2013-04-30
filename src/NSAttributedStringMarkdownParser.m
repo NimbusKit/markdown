@@ -245,6 +245,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldItalicFontName]];
       break;
     }
+    case MARKDOWNSTRIKETHROUGH: { // ~~ ~~
+      textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
+      [attributes addEntriesFromDictionary:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
+      break;
+    }
     case MARKDOWNHEADER: { // ####
       NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
       if (rangeOfNonHash.length > 0) {
