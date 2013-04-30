@@ -27,7 +27,9 @@
   NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
   NSAttributedString* string = [parser attributedStringFromMarkdownString:
                                 @"Here's a link to nimbus: http://www.nimbuskit.info\n"
-                                @"And a link to github: http://www.github.com"];
+                                @"And a link to github: http://www.github.com\n"
+                                @"[A link to MTDirectionsKit](http://mtdirectionsk.it)\n"
+                                @"[And another link](http://twitter.com/myell0w 'myell0w on twitter')"];
 
   NIAttributedLabel* label = [[NIAttributedLabel alloc] init];
   label.attributedString = string;
