@@ -14,6 +14,13 @@
 // limitations under the License.
 //
 
+
+#define kNIFirstLineHeadIndent      15.f
+#define kNIHeadIndent               30.f
+
+#define kNILocationKey              @"kNILocationKey"
+#define kNIIndentationLevelKey      @"kNIIndentationLevelKey"
+
 #import "NSAttributedStringMarkdownParser.h"
 
 #import "MarkdownTokens.h"
@@ -44,12 +51,22 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 @end
 
 @implementation NSAttributedStringMarkdownLink
+
++ (instancetype)linkWithRange:(NSRange)range URL:(NSURL *)URL tooltip:(NSString *)tooltip {
+  NSAttributedStringMarkdownLink *link = [[self alloc] init];
+  link.range = range;
+  link.url = URL;
+  link.tooltip = tooltip;
+  return link;
+}
+
 @end
 
 @implementation NSAttributedStringMarkdownParser {
   NSMutableDictionary* _headerFonts;
 
   NSMutableArray* _bulletStarts;
+  NSMutableArray* _quoteStarts;
 
   NSMutableAttributedString* _accum;
   NSMutableArray* _links;
@@ -57,6 +74,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   UIFont* _topFont;
   NSMutableDictionary* _fontCache;
 }
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Lifecycle
+////////////////////////////////////////////////////////////////////////
 
 - (id)init {
   if ((self = [super init])) {
@@ -66,6 +87,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
     self.boldFontName = [UIFont boldSystemFontOfSize:12].fontName;
     self.italicFontName = @"Helvetica-Oblique";
     self.boldItalicFontName = @"Helvetica-BoldOblique";
+    self.blockQuotesAttributes = @{
+                                   NSFontAttributeName : (__bridge id)[self fontRefForFontWithName:self.italicFontName pointSize:self.paragraphFont.pointSize],
+                                   NSForegroundColorAttributeName : [UIColor darkGrayColor]
+                                   };
 
     NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1;
     for (CGFloat headerFontSize = 24; headerFontSize >= 14; headerFontSize -= 2, header++) {
@@ -74,6 +99,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   }
   return self;
 }
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - NSCopying
+////////////////////////////////////////////////////////////////////////
 
 - (id)copyWithZone:(NSZone *)zone {
   NSAttributedStringMarkdownParser* parser = [[self.class allocWithZone:zone] init];
@@ -87,21 +116,14 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return parser;
 }
 
-- (id)keyForHeader:(NSAttributedStringMarkdownParserHeader)header {
-  return @(header);
-}
-
-- (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header {
-  _headerFonts[[self keyForHeader:header]] = font;
-}
-
-- (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header {
-  return _headerFonts[[self keyForHeader:header]];
-}
+////////////////////////////////////////////////////////////////////////
+#pragma mark - NSAttributedStringMarkdownParser
+////////////////////////////////////////////////////////////////////////
 
 - (NSMutableAttributedString *)attributedStringFromMarkdownString:(NSString *)string {
   _links = [NSMutableArray array];
   _bulletStarts = [NSMutableArray array];
+  _quoteStarts = [NSMutableArray array];
   _accum = [[NSMutableAttributedString alloc] init];
 
   const char* cstr = [string UTF8String];
@@ -117,60 +139,157 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
   fclose(markdownin);
 
-  if (_bulletStarts.count > 0) {
-    // Treat nested bullet points as flat ones...
-
-    // Finish off the previous dash and start a new one.
-    NSInteger lastBulletStart = [[_bulletStarts lastObject] intValue];
-    [_bulletStarts removeLastObject];
-    
-    [_accum addAttributes:[self paragraphStyle]
-                        range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
-  }
+  [self applyParagraphStyleWithArray:_bulletStarts firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIHeadIndent];
+  [self applyParagraphStyleWithArray:_quoteStarts additionalAttributes:self.blockQuotesAttributes firstLineHeadIndent:kNIHeadIndent headIndent:kNIHeadIndent];
 
   return [_accum mutableCopy];
+}
+
+- (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header {
+  _headerFonts[[self keyForHeader:header]] = font;
+}
+
+- (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header {
+  return _headerFonts[[self keyForHeader:header]];
 }
 
 - (NSArray *)links {
   return [_links copy];
 }
 
-- (NSDictionary *)paragraphStyle {
-  CTTextAlignment alignment = kCTLeftTextAlignment;
-  CGFloat paragraphSpacing = 0.0;
-  CGFloat paragraphSpacingBefore = 0.0;
-  CGFloat firstLineHeadIndent = 15.0;
-  CGFloat headIndent = 30.0;
-  
-  CGFloat firstTabStop = 35.0; // width of your indent
-  CGFloat lineSpacing = 0.45;
-  
-  CTTextTabRef tabArray[] = { CTTextTabCreate(0, firstTabStop, NULL) };
-  
-  CFArrayRef tabStops = CFArrayCreate( kCFAllocatorDefault, (const void**) tabArray, 1, &kCFTypeArrayCallBacks );
-  CFRelease(tabArray[0]);
-  
-  CTParagraphStyleSetting altSettings[] = 
-  {
-    { kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &lineSpacing},
-    { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &alignment},
-    { kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(CGFloat), &firstLineHeadIndent},
-    { kCTParagraphStyleSpecifierHeadIndent, sizeof(CGFloat), &headIndent},
-    { kCTParagraphStyleSpecifierTabStops, sizeof(CFArrayRef), &tabStops},
-    { kCTParagraphStyleSpecifierParagraphSpacing, sizeof(CGFloat), &paragraphSpacing},
-    { kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(CGFloat), &paragraphSpacingBefore}
-  }; 
-  
-  CTParagraphStyleRef style;
-  style = CTParagraphStyleCreate( altSettings, sizeof(altSettings) / sizeof(CTParagraphStyleSetting) );
-  
-  if ( style == NULL )
-  {
-    NSLog(@"*** Unable To Create CTParagraphStyle in apply paragraph formatting" );
-    return nil;
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Private
+////////////////////////////////////////////////////////////////////////
+
+- (void)consumeToken:(int)token text:(char*)text {
+  NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
+
+  NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
+  [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
+
+  switch (token) {
+    case MARKDOWNEM: { // * *
+      textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
+      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.italicFontName]];
+      break;
+    }
+    case MARKDOWNSTRONG: { // ** **
+      textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
+      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldFontName]];
+      break;
+    }
+    case MARKDOWNSTRONGEM: { // *** ***
+      textAsString = [textAsString substringWithRange:NSMakeRange(3, textAsString.length - 6)];
+      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldItalicFontName]];
+      break;
+    }
+    case MARKDOWNSTRIKETHROUGH: { // ~~ ~~
+      textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
+      [attributes addEntriesFromDictionary:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
+      break;
+    }
+    case MARKDOWNHEADER: { // ####
+      NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
+      if (rangeOfNonHash.length > 0) {
+        textAsString = [[textAsString substringFromIndex:rangeOfNonHash.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+        NSAttributedStringMarkdownParserHeader header = rangeOfNonHash.location;
+        [self recurseOnString:textAsString withFont:[self fontForHeader:header]];
+
+        // We already appended the recursive parser's results in recurseOnString.
+        textAsString = nil;
+      }
+      break;
+    }
+    case MARKDOWNMULTILINEHEADER: {
+      NSArray* components = [textAsString componentsSeparatedByString:@"\n"];
+      textAsString = [components objectAtIndex:0];
+      UIFont* font = nil;
+      if ([[components objectAtIndex:1] rangeOfString:@"="].length > 0) {
+        font = [self fontForHeader:NSAttributedStringMarkdownParserHeader1];
+      } else if ([[components objectAtIndex:1] rangeOfString:@"-"].length > 0) {
+        font = [self fontForHeader:NSAttributedStringMarkdownParserHeader2];
+      }
+
+      [self recurseOnString:textAsString withFont:font];
+
+      // We already appended the recursive parser's results in recurseOnString.
+      textAsString = nil;
+      break;
+    }
+    case MARKDOWNPARAGRAPH: {
+      textAsString = @"\n\n";
+
+      [self applyParagraphStyleWithArray:_bulletStarts firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIHeadIndent];
+      [self applyParagraphStyleWithArray:_quoteStarts additionalAttributes:self.blockQuotesAttributes firstLineHeadIndent:kNIHeadIndent headIndent:kNIHeadIndent];
+
+      break;
+    }
+    case MARKDOWNBULLETSTART: {
+      NSInteger numberOfDashes = [textAsString rangeOfString:@" "].location;
+      if (_bulletStarts.count > 0 && _bulletStarts.count <= numberOfDashes) {
+        [self applyParagraphStyleWithArray:_bulletStarts firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIHeadIndent];
+      }
+
+      [_bulletStarts addObject:@{kNILocationKey : @(_accum.length), kNIIndentationLevelKey : @1}];
+      textAsString = @"•\t";
+      break;
+    }
+    case MARKDOWNBLOCKQUOTE: {
+      [self applyParagraphStyleWithArray:_quoteStarts
+                    additionalAttributes:self.blockQuotesAttributes
+                     firstLineHeadIndent:kNIHeadIndent headIndent:kNIHeadIndent];
+
+      [_quoteStarts addObject:@{kNILocationKey : @(_accum.length), kNIIndentationLevelKey : @(textAsString.length)}];
+      textAsString = @"";
+      break;
+    }
+    case MARKDOWNNEWLINE: {
+      textAsString = @"";
+      break;
+    }
+    case MARKDOWNURL: {
+      NSAttributedStringMarkdownLink* link = [[NSAttributedStringMarkdownLink alloc] init];
+      link.url = [NSURL URLWithString:textAsString];
+      link.range = NSMakeRange(_accum.length, textAsString.length);
+      [_links addObject:link];
+      break;
+    }
+    case MARKDOWNHREF: { // [Title] (url "tooltip")
+      NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
+
+      NSRange linkTitleRange = [result rangeAtIndex:1];
+      NSRange linkURLRange = [result rangeAtIndex:2];
+      NSRange tooltipRange = [result rangeAtIndex:5];
+
+      if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
+        NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
+
+        link.url = [NSURL URLWithString:[textAsString substringWithRange:linkURLRange]];
+        link.range = NSMakeRange(_accum.length, linkTitleRange.length);
+
+        if (tooltipRange.location != NSNotFound) {
+          link.tooltip = [textAsString substringWithRange:tooltipRange];
+        }
+
+        [_links addObject:link];
+        textAsString = [textAsString substringWithRange:linkTitleRange];
+      }
+      break;
+    }
+    default: {
+      break;
+    }
   }
-  
-  return [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)style,(NSString*) kCTParagraphStyleAttributeName, nil];
+
+  if (textAsString.length > 0) {
+    NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:textAsString attributes:attributes];
+    [_accum appendAttributedString:attributedString];
+  }
+}
+
+- (id)keyForHeader:(NSAttributedStringMarkdownParserHeader)header {
+  return @(header);
 }
 
 - (UIFont *)topFont {
@@ -216,146 +335,75 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   [_accum appendAttributedString:[recursiveParser attributedStringFromMarkdownString:string]];
 
   // Adjust the recursive parser's links so that they are offset correctly.
-  for (NSValue* rangeValue in recursiveParser.links) {
-    NSRange range = [rangeValue rangeValue];
+  for (NSAttributedStringMarkdownLink *link in recursiveParser.links) {
+    NSRange range = link.range;
     range.location += _accum.length;
-    [_links addObject:[NSValue valueWithRange:range]];
+
+    [_links addObject:[NSAttributedStringMarkdownLink linkWithRange:range URL:link.url tooltip:link.tooltip]];
   }
 }
 
-- (void)consumeToken:(int)token text:(char*)text {
-  NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
+- (NSDictionary *)paragraphStyleWithFirstLineHeadIndent:(CGFloat)headIndent headIndent:(CGFloat)indent {
+  CTTextAlignment alignment = kCTLeftTextAlignment;
+  CGFloat paragraphSpacing = 0.0;
+  CGFloat paragraphSpacingBefore = 0.0;
 
-  NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-  [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
+  CGFloat firstTabStop = kNIHeadIndent;
+  CGFloat lineSpacing = 0.45;
 
-  switch (token) {
-    case MARKDOWNEM: { // * *
-      textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
-      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.italicFontName]];
-      break;
-    }
-    case MARKDOWNSTRONG: { // ** **
-      textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
-      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldFontName]];
-      break;
-    }
-    case MARKDOWNSTRONGEM: { // *** ***
-      textAsString = [textAsString substringWithRange:NSMakeRange(3, textAsString.length - 6)];
-      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldItalicFontName]];
-      break;
-    }
-    case MARKDOWNSTRIKETHROUGH: { // ~~ ~~
-      textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
-      [attributes addEntriesFromDictionary:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
-      break;
-    }
-    case MARKDOWNHEADER: { // ####
-      NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
-      if (rangeOfNonHash.length > 0) {
-        textAsString = [[textAsString substringFromIndex:rangeOfNonHash.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+  CTTextTabRef tabArray[] = {CTTextTabCreate(0, firstTabStop, NULL)};
 
-        NSAttributedStringMarkdownParserHeader header = rangeOfNonHash.location - 1;
-        [self recurseOnString:textAsString withFont:[self fontForHeader:header]];
+  CFArrayRef tabStops = CFArrayCreate(kCFAllocatorDefault, (const void **) tabArray, 1, &kCFTypeArrayCallBacks);
+  CFRelease(tabArray[0]);
 
-        // We already appended the recursive parser's results in recurseOnString.
-        textAsString = nil;
-      }
-      break;
-    }
-    case MARKDOWNMULTILINEHEADER: {
-      NSArray* components = [textAsString componentsSeparatedByString:@"\n"];
-      textAsString = [components objectAtIndex:0];
-      UIFont* font = nil;
-      if ([[components objectAtIndex:1] rangeOfString:@"="].length > 0) {
-        font = [self fontForHeader:NSAttributedStringMarkdownParserHeader1];
-      } else if ([[components objectAtIndex:1] rangeOfString:@"-"].length > 0) {
-        font = [self fontForHeader:NSAttributedStringMarkdownParserHeader2];
-      }
+  CTParagraphStyleSetting altSettings[] = {
+    { kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &lineSpacing},
+    { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &alignment},
+    { kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(CGFloat), &headIndent},
+    { kCTParagraphStyleSpecifierHeadIndent, sizeof(CGFloat), &indent},
+    { kCTParagraphStyleSpecifierTabStops, sizeof(CFArrayRef), &tabStops},
+    { kCTParagraphStyleSpecifierParagraphSpacing, sizeof(CGFloat), &paragraphSpacing},
+    { kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(CGFloat), &paragraphSpacingBefore}
+  };
 
-      [self recurseOnString:textAsString withFont:font];
+  CTParagraphStyleRef style;
+  style = CTParagraphStyleCreate( altSettings, sizeof(altSettings) / sizeof(CTParagraphStyleSetting) );
 
-      // We already appended the recursive parser's results in recurseOnString.
-      textAsString = nil;
-      break;
-    }
-    case MARKDOWNPARAGRAPH: {
-      textAsString = @"\n\n";
-      
-      if (_bulletStarts.count > 0) {
-        // Treat nested bullet points as flat ones...
-        
-        // Finish off the previous dash and start a new one.
-        NSInteger lastBulletStart = [[_bulletStarts lastObject] intValue];
-        [_bulletStarts removeLastObject];
-        
-        [_accum addAttributes:[self paragraphStyle]
-                            range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
-      }
-      break;
-    }
-    case MARKDOWNBULLETSTART: {
-      NSInteger numberOfDashes = [textAsString rangeOfString:@" "].location;
-      if (_bulletStarts.count > 0 && _bulletStarts.count <= numberOfDashes) {
-        // Treat nested bullet points as flat ones...
-
-        // Finish off the previous dash and start a new one.
-        NSInteger lastBulletStart = [[_bulletStarts lastObject] intValue];
-        [_bulletStarts removeLastObject];
-
-        [_accum addAttributes:[self paragraphStyle]
-                            range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
-      }
-
-      [_bulletStarts addObject:[NSNumber numberWithInt:_accum.length]];
-      textAsString = @"•\t";
-      break;
-    }
-    case MARKDOWNNEWLINE: {
-      textAsString = @"";
-      break;
-    }
-    case MARKDOWNURL: {
-      NSAttributedStringMarkdownLink* link = [[NSAttributedStringMarkdownLink alloc] init];
-      link.url = [NSURL URLWithString:textAsString];
-      link.range = NSMakeRange(_accum.length, textAsString.length);
-      [_links addObject:link];
-      break;
-    }
-      case MARKDOWNHREF: { // [Title] (url "tooltip")
-          NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
-
-          NSRange linkTitleRange = [result rangeAtIndex:1];
-          NSRange linkURLRange = [result rangeAtIndex:2];
-          NSRange tooltipRange = [result rangeAtIndex:5];
-
-          if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
-              NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
-
-              link.url = [NSURL URLWithString:[textAsString substringWithRange:linkURLRange]];
-              link.range = NSMakeRange(_accum.length, linkTitleRange.length);
-
-              if (tooltipRange.location != NSNotFound) {
-                  link.tooltip = [textAsString substringWithRange:tooltipRange];
-              }
-
-              [_links addObject:link];
-              textAsString = [textAsString substringWithRange:linkTitleRange];
-          }
-          break;
-      }
-    default: {
-      break;
-    }
+  if (style == NULL) {
+    NSLog(@"*** Unable To Create CTParagraphStyle in apply paragraph formatting" );
+    return nil;
   }
 
-  if (textAsString.length > 0) {
-    NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:textAsString attributes:attributes];
-    [_accum appendAttributedString:attributedString];
+  return @{(NSString *)kCTParagraphStyleAttributeName : (__bridge id)style};
+}
+
+- (void)applyParagraphStyleWithArray:(NSMutableArray *)array firstLineHeadIndent:(CGFloat)firstLineHeadIndent headIndent:(CGFloat)headIndent {
+  [self applyParagraphStyleWithArray:array additionalAttributes:nil firstLineHeadIndent:firstLineHeadIndent headIndent:headIndent];
+}
+
+- (void)applyParagraphStyleWithArray:(NSMutableArray *)array additionalAttributes:(NSDictionary *)additionalAttributes firstLineHeadIndent:(CGFloat)firstLineHeadIndent headIndent:(CGFloat)headIndent {
+  if (array.count > 0) {
+    // Finish off the previous dash and start a new one.
+    NSDictionary *last = [array lastObject];
+    [array removeLastObject];
+
+    NSInteger lastStart = [last[kNILocationKey] intValue];
+    NSInteger indentation = [last[kNIIndentationLevelKey] intValue];
+    NSRange range = NSMakeRange(lastStart, _accum.length - lastStart);
+
+    [_accum addAttributes:[self paragraphStyleWithFirstLineHeadIndent:firstLineHeadIndent*indentation headIndent:headIndent*indentation]
+                    range:range];
+    if (additionalAttributes != nil) {
+      [_accum addAttributes:additionalAttributes range:range];
+    }
   }
 }
 
 @end
+
+////////////////////////////////////////////////////////////////////////
+#pragma mark - Flex
+////////////////////////////////////////////////////////////////////////
 
 int markdownConsume(char* text, int token, yyscan_t scanner) {
   NSAttributedStringMarkdownParser* string = (__bridge NSAttributedStringMarkdownParser *)(markdownget_extra(scanner));

@@ -392,7 +392,9 @@
 				66AB04A31596EA9600806DC4 /* Frameworks */,
 				66AB04A21596EA9600806DC4 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		66AB04A21596EA9600806DC4 /* Products */ = {
 			isa = PBXGroup;

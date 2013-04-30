@@ -26,12 +26,19 @@
 
     NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
     NSAttributedString* string = [parser attributedStringFromMarkdownString:
+                                  @"Standard paragraph\n\n"
                                   @"- List item 1\n"
                                   @"- List item 2\n"
-                                  @"+ List item 3\n"
+                                  @"+ List item 3 with some Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.\n"
                                   @"+ List item 4\n"
                                   @"* List item 5\n"
-                                  @"* List item 6\n"];
+                                  @"* List item 6\n\n"
+                                  @"Standard paragraph\n\n"
+                                  @">Quoted 1 Level\n"
+                                  @">>Quoted 2 Levels\n"
+                                  @">>Very long quoted text on level 2 with some Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.\n\n"
+                                  @"Standard paragraph"];
+
 
     NIAttributedLabel* label = [[NIAttributedLabel alloc] init];
     label.attributedString = string;

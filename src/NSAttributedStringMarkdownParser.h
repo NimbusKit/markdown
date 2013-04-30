@@ -18,7 +18,7 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, NSAttributedStringMarkdownParserHeader) {
-  NSAttributedStringMarkdownParserHeader1 = 1,
+  NSAttributedStringMarkdownParserHeader1 = 1, // value is important, internally used
   NSAttributedStringMarkdownParserHeader2,
   NSAttributedStringMarkdownParserHeader3,
   NSAttributedStringMarkdownParserHeader4,
@@ -42,6 +42,8 @@ typedef NS_ENUM(NSUInteger, NSAttributedStringMarkdownParserHeader) {
 @property (nonatomic, copy) NSString* boldItalicFontName; // Default: Helvetica-BoldOblique
 
 @property (nonatomic, readonly) NSArray* links; // Array of NSAttributedStringMarkdownLink
+
+@property (nonatomic, copy) NSDictionary *blockQuotesAttributes; // attributes to be applied to blockQuotes
 
 - (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
 - (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;
