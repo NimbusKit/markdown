@@ -23,11 +23,24 @@
 #import <UIKit/UIKit.h>
 #import <pthread.h>
 
+static NSRegularExpression *_hrefRegex = nil;
+static inline NSRegularExpression* hrefRegex(void) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _hrefRegex = [NSRegularExpression regularExpressionWithPattern:@"\\[(.*?)\\]\\((\\S+)(\\s+(\"|\')(.*?)(\"|\'))?\\)"
+                                                               options:NSRegularExpressionCaseInsensitive
+                                                                 error:nil];
+    });
+
+    return _hrefRegex;
+}
+
 int markdownConsume(char* text, int token, yyscan_t scanner);
 
 @interface NSAttributedStringMarkdownLink()
 @property (nonatomic, strong) NSURL* url;
 @property (nonatomic, assign) NSRange range;
+@property (nonatomic, copy) NSString *tooltip;
 @end
 
 @implementation NSAttributedStringMarkdownLink
@@ -232,6 +245,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldItalicFontName]];
       break;
     }
+    case MARKDOWNSTRIKETHROUGH: { // ~~ ~~
+      textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
+      [attributes addEntriesFromDictionary:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
+      break;
+    }
     case MARKDOWNHEADER: { // ####
       NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
       if (rangeOfNonHash.length > 0) {
@@ -304,12 +322,28 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       [_links addObject:link];
       break;
     }
-    case MARKDOWNHREF: {
-      NSRange rangeOfRightBracket = [textAsString rangeOfString:@"]"];
-      textAsString = [textAsString substringWithRange:NSMakeRange(1, rangeOfRightBracket.location - 1)];
-      [_links addObject:[NSValue valueWithRange:NSMakeRange(_accum.length, textAsString.length)]];
-      break;
-    }
+      case MARKDOWNHREF: { // [Title] (url "tooltip")
+          NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
+
+          NSRange linkTitleRange = [result rangeAtIndex:1];
+          NSRange linkURLRange = [result rangeAtIndex:2];
+          NSRange tooltipRange = [result rangeAtIndex:5];
+
+          if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
+              NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
+
+              link.url = [NSURL URLWithString:[textAsString substringWithRange:linkURLRange]];
+              link.range = NSMakeRange(_accum.length, linkTitleRange.length);
+
+              if (tooltipRange.location != NSNotFound) {
+                  link.tooltip = [textAsString substringWithRange:tooltipRange];
+              }
+
+              [_links addObject:link];
+              textAsString = [textAsString substringWithRange:linkTitleRange];
+          }
+          break;
+      }
     default: {
       break;
     }

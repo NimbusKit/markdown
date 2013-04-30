@@ -27,7 +27,8 @@
   NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
   NSAttributedString* string = [parser attributedStringFromMarkdownString:
                                 @"This is *italic*, **bold**, and ***bold italic***.\n"
-                                @"This is _italic_, __bold__, and ___bold italic___."];
+                                @"This is _italic_, __bold__, and ___bold italic___.\n"
+                                @"This is ~~struck through~~. "];
 
   NIAttributedLabel* label = [[NIAttributedLabel alloc] init];
   label.attributedString = string;

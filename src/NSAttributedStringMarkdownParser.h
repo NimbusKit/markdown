@@ -32,6 +32,7 @@ typedef enum {
 @interface NSAttributedStringMarkdownLink : NSObject
 @property (nonatomic, readonly, strong) NSURL* url;
 @property (nonatomic, readonly, assign) NSRange range;
+@property (nonatomic, readonly, copy) NSString *tooltip;
 @end
 
 @interface NSAttributedStringMarkdownParser : NSObject <NSCopying>
