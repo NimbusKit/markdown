@@ -4,6 +4,20 @@ A Markdown NSAttributedString Parser
 This is a Markdown => NSAttributedString parser built on top of a flex parser. It takes an NSString
 and returns an NSAttributedString with markdown tags replaced by CoreText formatting attributes.
 
+Adding it to your Project
+-------------------------
+
+1. Drag all of the files from the src/ directory into your project.
+2. Import NSAttributedStringMarkdownParser.h in your project.
+3. Create an instance of the parser object and pass it the string you wish to parse.
+4. Plug the resulting NSAttributedString into your favorite NSAttributedString label implementation.
+
+NSAttributedString Labels
+-------------------------
+
+Nimbus: https://github.com/jverkoey/nimbus
+TTTAttributedLabel: https://github.com/mattt/TTTAttributedLabel
+
 Supported Features
 ------------------
 
@@ -32,4 +46,6 @@ Example
     NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
     NSAttributedString* string = [parser attributedStringFromMarkdownString:
                                   @"This is __rad__.""];
+
+See the Catalog application included with the project for more examples.
 
