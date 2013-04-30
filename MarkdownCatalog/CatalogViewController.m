@@ -16,8 +16,11 @@
 
 #import "CatalogViewController.h"
 
+// Controllers
 #import "EmphasisViewController.h"
 #import "HeadersViewController.h"
+#import "LinksViewController.h"
+
 #import "NimbusModels.h"
 
 @implementation CatalogViewController {
@@ -36,6 +39,8 @@
      navigationBlock:NIPushControllerAction([EmphasisViewController class])],
     [_actions attachToObject:[NITitleCellObject objectWithTitle:@"Headers"]
              navigationBlock:NIPushControllerAction([HeadersViewController class])],
+    [_actions attachToObject:[NITitleCellObject objectWithTitle:@"Links"]
+             navigationBlock:NIPushControllerAction([LinksViewController class])],
     ];
     _model = [[NITableViewModel alloc] initWithSectionedArray:contents
                                                      delegate:(id)[NICellFactory class]];

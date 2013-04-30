@@ -60,6 +60,7 @@
 		66FE975E172F48DE006602B4 /* CatalogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE975D172F48DE006602B4 /* CatalogViewController.m */; };
 		66FE9762172F49EA006602B4 /* EmphasisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9761172F49EA006602B4 /* EmphasisViewController.m */; };
 		66FE9765172F4CED006602B4 /* HeadersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9764172F4CED006602B4 /* HeadersViewController.m */; };
+		66FE9768172F4DEA006602B4 /* LinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9767172F4DEA006602B4 /* LinksViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +209,8 @@
 		66FE9761172F49EA006602B4 /* EmphasisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmphasisViewController.m; sourceTree = "<group>"; };
 		66FE9763172F4CED006602B4 /* HeadersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadersViewController.h; sourceTree = "<group>"; };
 		66FE9764172F4CED006602B4 /* HeadersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadersViewController.m; sourceTree = "<group>"; };
+		66FE9766172F4DEA006602B4 /* LinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksViewController.h; sourceTree = "<group>"; };
+		66FE9767172F4DEA006602B4 /* LinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -460,6 +463,8 @@
 				66FE9761172F49EA006602B4 /* EmphasisViewController.m */,
 				66FE9763172F4CED006602B4 /* HeadersViewController.h */,
 				66FE9764172F4CED006602B4 /* HeadersViewController.m */,
+				66FE9766172F4DEA006602B4 /* LinksViewController.h */,
+				66FE9767172F4DEA006602B4 /* LinksViewController.m */,
 			);
 			name = Catalog;
 			sourceTree = "<group>";
@@ -617,6 +622,7 @@
 				66FE975E172F48DE006602B4 /* CatalogViewController.m in Sources */,
 				66FE9762172F49EA006602B4 /* EmphasisViewController.m in Sources */,
 				66FE9765172F4CED006602B4 /* HeadersViewController.m in Sources */,
+				66FE9768172F4DEA006602B4 /* LinksViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

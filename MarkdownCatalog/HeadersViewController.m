@@ -25,7 +25,6 @@
   [super viewDidLoad];
 
   NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
-  NSMutableArray* links = [NSMutableArray array];
   NSAttributedString* string = [parser attributedStringFromMarkdownString:
                                 @"# Header 1\n"
                                 @"Paragraph text that will likely wrap around the screen a little bit\n"
@@ -45,12 +44,6 @@
   label.numberOfLines = 0;
   label.frame = self.view.bounds;
   [self.view addSubview:label];
-
-  for (NSValue* rangeValue in links) {
-    NSRange range = [rangeValue rangeValue];
-    NSString* linkString = [string.string substringWithRange:range];
-    [label addLink:[NSURL URLWithString:linkString] range:range];
-  }
 }
 
 @end

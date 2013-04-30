@@ -47,7 +47,6 @@ nl           \n|\r\n|\r|\f
 [ ]{2,}$                        {markdownConsume(yytext, MARKDOWNNEWLINE, yyscanner);}
 [\n]{2,}                        {markdownConsume(yytext, MARKDOWNPARAGRAPH, yyscanner);}
 [ \n\t\f]                       {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
-[a-zA-Z0-9: ]+                  {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
 .                               {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
 
 %%

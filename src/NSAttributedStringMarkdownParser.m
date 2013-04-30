@@ -42,6 +42,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   NSMutableArray* _links;
 
   UIFont* _topFont;
+  NSMutableDictionary* _fontCache;
 }
 
 - (id)init {
@@ -167,15 +168,30 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   }
 }
 
+- (id)keyForFontWithName:(NSString *)fontName pointSize:(CGFloat)pointSize {
+  return [fontName stringByAppendingFormat:@"%f", pointSize];
+}
+
+- (CTFontRef)fontRefForFontWithName:(NSString *)fontName pointSize:(CGFloat)pointSize {
+  id key = [self keyForFontWithName:fontName pointSize:pointSize];
+  NSValue* value = _fontCache[key];
+  if (nil == value) {
+    CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)fontName, pointSize, nil);
+    value = [NSValue valueWithPointer:fontRef];
+    _fontCache[key] = value;
+  }
+  return [value pointerValue];
+}
+
 - (NSDictionary *)attributesForFontWithName:(NSString *)fontName {
-  CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)fontName, self.topFont.pointSize, nil);
+  CTFontRef fontRef = [self fontRefForFontWithName:fontName pointSize:self.topFont.pointSize];
   NSDictionary* attributes = @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
   CFRelease(fontRef);
   return attributes;
 }
 
 - (NSDictionary *)attributesForFont:(UIFont *)font {
-  CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.familyName, font.pointSize, nil);
+  CTFontRef fontRef = [self fontRefForFontWithName:font.fontName pointSize:font.pointSize];
   NSDictionary* attributes = @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
   CFRelease(fontRef);
   return attributes;

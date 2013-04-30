@@ -14,26 +14,30 @@
 // limitations under the License.
 //
 
-#import "EmphasisViewController.h"
+#import "LinksViewController.h"
 
 #import "NSAttributedStringMarkdownParser.h"
 #import "NimbusAttributedLabel.h"
 
-@implementation EmphasisViewController
+@implementation LinksViewController
 
 - (void)viewDidLoad {
   [super viewDidLoad];
 
   NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
   NSAttributedString* string = [parser attributedStringFromMarkdownString:
-                                @"This is *italic*, **bold**, and ***bold italic***.\n"
-                                @"This is _italic_, __bold__, and ___bold italic___."];
+                                @"Here's a link to nimbus: http://www.nimbuskit.info\n"
+                                @"And a link to github: http://www.github.com"];
 
   NIAttributedLabel* label = [[NIAttributedLabel alloc] init];
   label.attributedString = string;
   label.numberOfLines = 0;
   label.frame = self.view.bounds;
   [self.view addSubview:label];
+
+  for (NSAttributedStringMarkdownLink* link in parser.links) {
+    [label addLink:link.url range:link.range];
+  }
 }
 
 @end
