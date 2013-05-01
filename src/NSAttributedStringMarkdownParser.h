@@ -43,7 +43,14 @@ typedef NS_ENUM(NSUInteger, NSAttributedStringMarkdownParserHeader) {
 
 @property (nonatomic, readonly) NSArray* links; // Array of NSAttributedStringMarkdownLink
 
-@property (nonatomic, copy) NSDictionary *blockQuotesAttributes; // attributes to be applied to blockQuotes
+/// These CoreText attributes get applied to paragraphs that are recognized as block quotes, e.g.
+///
+/// >This is a block quote
+/// >>This is a block quote on level 2
+///
+/// The whole paragraph is indented to visualize the quoting, you can further style it by specifying
+/// attributes here. Per default the font get's changed to italic and the text color gets set to dark gray.
+@property (nonatomic, copy) NSDictionary *blockQuotesAttributes;
 
 - (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
 - (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;
