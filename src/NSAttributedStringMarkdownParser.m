@@ -14,13 +14,6 @@
 // limitations under the License.
 //
 
-
-#define kNIFirstLineHeadIndent      15.f
-#define kNIHeadIndent               30.f
-
-#define kNILocationKey              @"kNILocationKey"
-#define kNIIndentationLevelKey      @"kNIIndentationLevelKey"
-
 #import "NSAttributedStringMarkdownParser.h"
 
 #import "MarkdownTokens.h"
@@ -29,6 +22,14 @@
 #import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
 #import <pthread.h>
+
+
+static const CGFloat kNIFirstLineHeadIndent = 15.f;
+static const CGFloat kNIHeadIndent = 30.f;
+
+static NSString * const kNILocationKey = @"Location";
+static NSString * const kNIIndentationLevelKey = @"IndentationLevel";
+
 
 static NSRegularExpression *_hrefRegex = nil;
 static inline NSRegularExpression* hrefRegex(void) {
