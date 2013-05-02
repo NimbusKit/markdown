@@ -165,8 +165,6 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 - (void)consumeToken:(int)token text:(char *)text {
   NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
 
-  NSLog(@"%s - %@", text, textAsString);
-
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
   [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
 
