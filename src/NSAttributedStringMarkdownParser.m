@@ -162,8 +162,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 #pragma mark - Private
 ////////////////////////////////////////////////////////////////////////
 
-- (void)consumeToken:(int)token text:(char*)text {
+- (void)consumeToken:(int)token text:(char *)text {
   NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
+
+  NSLog(@"%s - %@", text, textAsString);
 
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
   [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
@@ -407,7 +409,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 ////////////////////////////////////////////////////////////////////////
 
 int markdownConsume(char* text, int token, yyscan_t scanner) {
-  NSAttributedStringMarkdownParser* string = (__bridge NSAttributedStringMarkdownParser *)(markdownget_extra(scanner));
-  [string consumeToken:token text:text];
+  NSAttributedStringMarkdownParser* parser = (__bridge NSAttributedStringMarkdownParser *)(markdownget_extra(scanner));
+  [parser consumeToken:token text:text];
   return 0;
 }
