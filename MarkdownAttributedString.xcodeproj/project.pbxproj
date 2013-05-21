@@ -61,6 +61,7 @@
 		66FE9762172F49EA006602B4 /* EmphasisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9761172F49EA006602B4 /* EmphasisViewController.m */; };
 		66FE9765172F4CED006602B4 /* HeadersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9764172F4CED006602B4 /* HeadersViewController.m */; };
 		66FE9768172F4DEA006602B4 /* LinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FE9767172F4DEA006602B4 /* LinksViewController.m */; };
+		9B376A2E174B699000879427 /* ComplexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B376A2D174B699000879427 /* ComplexViewController.m */; };
 		9B68470D172FDE5E007AB239 /* ParagraphsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B68470C172FDE5E007AB239 /* ParagraphsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -212,6 +213,8 @@
 		66FE9766172F4DEA006602B4 /* LinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksViewController.h; sourceTree = "<group>"; };
 		66FE9767172F4DEA006602B4 /* LinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksViewController.m; sourceTree = "<group>"; };
 		66FE9769172F5350006602B4 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
+		9B376A2C174B699000879427 /* ComplexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexViewController.h; sourceTree = "<group>"; };
+		9B376A2D174B699000879427 /* ComplexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComplexViewController.m; sourceTree = "<group>"; };
 		9B68470B172FDE5D007AB239 /* ParagraphsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParagraphsViewController.h; sourceTree = "<group>"; };
 		9B68470C172FDE5E007AB239 /* ParagraphsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParagraphsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -472,6 +475,8 @@
 				66FE9767172F4DEA006602B4 /* LinksViewController.m */,
 				9B68470B172FDE5D007AB239 /* ParagraphsViewController.h */,
 				9B68470C172FDE5E007AB239 /* ParagraphsViewController.m */,
+				9B376A2C174B699000879427 /* ComplexViewController.h */,
+				9B376A2D174B699000879427 /* ComplexViewController.m */,
 			);
 			name = Catalog;
 			sourceTree = "<group>";
@@ -631,6 +636,7 @@
 				66FE9765172F4CED006602B4 /* HeadersViewController.m in Sources */,
 				66FE9768172F4DEA006602B4 /* LinksViewController.m in Sources */,
 				9B68470D172FDE5E007AB239 /* ParagraphsViewController.m in Sources */,
+				9B376A2E174B699000879427 /* ComplexViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

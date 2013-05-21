@@ -21,6 +21,7 @@
 #import "HeadersViewController.h"
 #import "LinksViewController.h"
 #import "ParagraphsViewController.h"
+#import "ComplexViewController.h"
 
 #import "NimbusModels.h"
 
@@ -43,7 +44,9 @@
     [_actions attachToObject:[NITitleCellObject objectWithTitle:@"Links"]
              navigationBlock:NIPushControllerAction([LinksViewController class])],
     [_actions attachToObject:[NITitleCellObject objectWithTitle:@"Paragraphs"]
-             navigationBlock:NIPushControllerAction([ParagraphsViewController class])]
+             navigationBlock:NIPushControllerAction([ParagraphsViewController class])],
+    [_actions attachToObject:[NITitleCellObject objectWithTitle:@"Complex"]
+             navigationBlock:NIPushControllerAction([ComplexViewController class])]
     ];
     _model = [[NITableViewModel alloc] initWithSectionedArray:contents
                                                      delegate:(id)[NICellFactory class]];
