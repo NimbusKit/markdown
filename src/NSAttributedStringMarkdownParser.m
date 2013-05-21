@@ -24,7 +24,7 @@
 #import <pthread.h>
 
 
-#define MKDNLog(...)       NSLog(__VA_ARGS__)
+#define MKDNLog(...)       ((void)0) // NSLog(__VA_ARGS__)
 
 
 static const CGFloat kNIFirstLineHeadIndent = 15.f;
