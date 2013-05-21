@@ -24,6 +24,9 @@
 #import <pthread.h>
 
 
+#define MKDNLog(...)       NSLog(__VA_ARGS__)
+
+
 static const CGFloat kNIFirstLineHeadIndent = 15.f;
 static const CGFloat kNIHeadIndent = 30.f;
 
@@ -141,7 +144,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   fclose(markdownin);
 
   [self applyParagraphStyleWithArray:_bulletStarts firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIHeadIndent];
-  [self applyParagraphStyleWithArray:_quoteStarts additionalAttributes:self.blockQuotesAttributes firstLineHeadIndent:kNIHeadIndent headIndent:kNIHeadIndent];
+  [self applyParagraphStyleWithArray:_quoteStarts additionalAttributes:self.blockQuotesAttributes firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIFirstLineHeadIndent];
 
   return [_accum mutableCopy];
 }
@@ -170,26 +173,31 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
   switch (token) {
     case MARKDOWNEM: { // * *
+      MKDNLog(@"Matched em: %@", textAsString);
       textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
       [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.italicFontName]];
       break;
     }
     case MARKDOWNSTRONG: { // ** **
+      MKDNLog(@"Matched strong: %@", textAsString);
       textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
       [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldFontName]];
       break;
     }
     case MARKDOWNSTRONGEM: { // *** ***
+      MKDNLog(@"Matched strongem: %@", textAsString);
       textAsString = [textAsString substringWithRange:NSMakeRange(3, textAsString.length - 6)];
       [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.boldItalicFontName]];
       break;
     }
     case MARKDOWNSTRIKETHROUGH: { // ~~ ~~
+      MKDNLog(@"Matched strikethrough: %@", textAsString);
       textAsString = [textAsString substringWithRange:NSMakeRange(2, textAsString.length - 4)];
       [attributes addEntriesFromDictionary:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
       break;
     }
     case MARKDOWNHEADER: { // ####
+      MKDNLog(@"Matched header: %@", textAsString);
       NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
       if (rangeOfNonHash.length > 0) {
         textAsString = [[textAsString substringFromIndex:rangeOfNonHash.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -203,6 +211,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       break;
     }
     case MARKDOWNMULTILINEHEADER: {
+      MKDNLog(@"Matched multiline-header: %@", textAsString);
       NSArray* components = [textAsString componentsSeparatedByString:@"\n"];
       textAsString = [components objectAtIndex:0];
       UIFont* font = nil;
@@ -219,14 +228,16 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       break;
     }
     case MARKDOWNPARAGRAPH: {
+      MKDNLog(@"Matched paragraph: %@", textAsString);
       textAsString = @"\n\n";
 
       [self applyParagraphStyleWithArray:_bulletStarts firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIHeadIndent];
-      [self applyParagraphStyleWithArray:_quoteStarts additionalAttributes:self.blockQuotesAttributes firstLineHeadIndent:kNIHeadIndent headIndent:kNIHeadIndent];
+      [self applyParagraphStyleWithArray:_quoteStarts additionalAttributes:self.blockQuotesAttributes firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIFirstLineHeadIndent];
 
       break;
     }
     case MARKDOWNBULLETSTART: {
+      MKDNLog(@"Matched bullet-start: %@", textAsString);
       NSInteger numberOfDashes = [textAsString rangeOfString:@" "].location;
       if (_bulletStarts.count > 0 && _bulletStarts.count <= numberOfDashes) {
         [self applyParagraphStyleWithArray:_bulletStarts firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIHeadIndent];
@@ -237,24 +248,29 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       break;
     }
     case MARKDOWNBLOCKQUOTE: {
+      MKDNLog(@"Matched block-quote: %@", textAsString);
       [self applyParagraphStyleWithArray:_quoteStarts
                     additionalAttributes:self.blockQuotesAttributes
-                     firstLineHeadIndent:kNIHeadIndent headIndent:kNIHeadIndent];
+                     firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIFirstLineHeadIndent];
 
       [_quoteStarts addObject:@{kNILocationKey : @(_accum.length), kNIIndentationLevelKey : @(textAsString.length)}];
       textAsString = @"";
       break;
     }
     case MARKDOWNHR: {
+      MKDNLog(@"Matched hr: %@", textAsString);
       // TODO: Add custom attribute to retreive later instead of fake horizontal line
       textAsString = @"―――――――――――――――\n";
       break;
     }
     case MARKDOWNNEWLINE: {
-      textAsString = @"";
+      MKDNLog(@"Matched newline: %@", textAsString);
+      [self applyParagraphStyleWithArray:_bulletStarts firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIHeadIndent];
+      [self applyParagraphStyleWithArray:_quoteStarts additionalAttributes:self.blockQuotesAttributes firstLineHeadIndent:kNIFirstLineHeadIndent headIndent:kNIFirstLineHeadIndent];
       break;
     }
     case MARKDOWNURL: {
+      MKDNLog(@"Matched url: %@", textAsString);
       NSAttributedStringMarkdownLink* link = [[NSAttributedStringMarkdownLink alloc] init];
       link.url = [NSURL URLWithString:textAsString];
       link.range = NSMakeRange(_accum.length, textAsString.length);
@@ -262,6 +278,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       break;
     }
     case MARKDOWNHREF: { // [Title] (url "tooltip")
+      MKDNLog(@"Matched href: %@", textAsString);
       NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
 
       NSRange linkTitleRange = [result rangeAtIndex:1];

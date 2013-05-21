@@ -63,7 +63,7 @@ nl             \n|\r\n|\r|\f
 {bulletstart}                   {markdownConsume(yytext, MARKDOWNBULLETSTART, yyscanner);}
 {blockquote}                    {markdownConsume(yytext, MARKDOWNBLOCKQUOTE, yyscanner);}
 
-[ ]{2,}$                        {markdownConsume(yytext, MARKDOWNNEWLINE, yyscanner);}
+[\n]{1}                         {markdownConsume(yytext, MARKDOWNNEWLINE, yyscanner);}
 [\n]{2,}                        {markdownConsume(yytext, MARKDOWNPARAGRAPH, yyscanner);}
 [ \n\t\f]                       {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
 {utf_8}                         {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
