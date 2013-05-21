@@ -19,17 +19,18 @@ nonascii       [\200-\377]
 unicode        \\{h}{1,6}[ \t\r\n\f]?
 escape         {unicode}|\\[ -~\200-\377]
 nmchar         [a-z0-9-]|{nonascii}|{escape}
-em1            \*[^(\n|\*)]+\*
-strong1        \*\*[^\*]*\*\*
-strongem1      \*\*\*[^\*]*\*\*\*
-em2            _[^_]*_
-strong2        __[^_]*__
-strongem2      ___[^_]*___
+em1            \*[^(\*|\n)]+\*
+strong1        \*\*[^(\*|\n)]*\*\*
+strongem1      \*\*\*[^(\*|\n)]*\*\*\*
+em2            _[^(_|\n)]*_
+strong2        __[^(_|\n)]*__
+strongem2      ___[^(_|\n)]*___
 header1        ^#{1,6}.*
 header2        .+\n[=-]+\n
 bulletstart    ^[-\+*]+[ ]
 blockquote     ^>+
 codeline       [ ]
+hr             ((-+[ ]{0,2}){3,}|.(_+[ ]{0,2}){3,}|(\*+[ ]{0,2}){3,})\n[ \t]*  
 
 protocol       (http|ftp)s?\:\/\/
 subdomain      {nmchar}\.
@@ -50,6 +51,7 @@ nl             \n|\r\n|\r|\f
 
 %%
 
+{hr}                            {markdownConsume(yytext, MARKDOWNHR, yyscanner);}
 {em}                            {markdownConsume(yytext, MARKDOWNEM, yyscanner);}
 {strong}                        {markdownConsume(yytext, MARKDOWNSTRONG, yyscanner);}
 {strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM, yyscanner);}

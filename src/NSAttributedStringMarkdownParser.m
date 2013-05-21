@@ -245,6 +245,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       textAsString = @"";
       break;
     }
+    case MARKDOWNHR: {
+      // TODO: Add custom attribute to retreive later instead of fake horizontal line
+      textAsString = @"―――――――――――――――\n";
+      break;
+    }
     case MARKDOWNNEWLINE: {
       textAsString = @"";
       break;
