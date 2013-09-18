@@ -197,17 +197,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 }
 
 - (NSDictionary *)attributesForFontWithName:(NSString *)fontName {
-  CTFontRef fontRef = [self fontRefForFontWithName:fontName pointSize:self.topFont.pointSize];
-  NSDictionary* attributes = @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
-  CFRelease(fontRef);
-  return attributes;
+    return @{NSFontAttributeName: [UIFont fontWithName:fontName size:self.topFont.pointSize]};
 }
 
 - (NSDictionary *)attributesForFont:(UIFont *)font {
-  CTFontRef fontRef = [self fontRefForFontWithName:font.fontName pointSize:font.pointSize];
-  NSDictionary* attributes = @{(__bridge NSString* )kCTFontAttributeName:(__bridge id)fontRef};
-  CFRelease(fontRef);
-  return attributes;
+    return @{NSFontAttributeName: font};
 }
 
 - (void)recurseOnString:(NSString *)string withFont:(UIFont *)font {
