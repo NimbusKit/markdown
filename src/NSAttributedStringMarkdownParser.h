@@ -15,7 +15,14 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 #import <UIKit/UIKit.h>
+#define UINSFont UIFont
+#else
+#import <AppKit/AppKit.h>
+#define UINSFont NSFont
+#endif
 
 typedef enum {
   NSAttributedStringMarkdownParserHeader1,
@@ -40,12 +47,12 @@ typedef enum {
 - (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string;
 - (NSArray *)links; // Array of NSAttributedStringMarkdownLink
 
-@property (nonatomic, strong) UIFont* paragraphFont; // Default: systemFontOfSize:12
+@property (nonatomic, strong) UINSFont* paragraphFont; // Default: systemFontOfSize:12
 @property (nonatomic, copy) NSString* boldFontName; // Default: boldSystemFont
 @property (nonatomic, copy) NSString* italicFontName; // Default: Helvetica-Oblique
 @property (nonatomic, copy) NSString* boldItalicFontName; // Default: Helvetica-BoldOblique
 
-- (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
-- (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;
+- (void)setFont:(UINSFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
+- (UINSFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;
 
 @end

@@ -20,7 +20,6 @@
 #import "fmemopen.h"
 
 #import <CoreText/CoreText.h>
-#import <UIKit/UIKit.h>
 #import <pthread.h>
 
 static NSRegularExpression *_hrefRegex = nil;
@@ -54,7 +53,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   NSMutableAttributedString* _accum;
   NSMutableArray* _links;
 
-  UIFont* _topFont;
+  UINSFont* _topFont;
   NSMutableDictionary* _fontCache;
 }
 
@@ -62,14 +61,14 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   if ((self = [super init])) {
     _headerFonts = [NSMutableDictionary dictionary];
 
-    self.paragraphFont = [UIFont systemFontOfSize:12];
-    self.boldFontName = [UIFont boldSystemFontOfSize:12].fontName;
+    self.paragraphFont = [UINSFont systemFontOfSize:12];
+    self.boldFontName = [UINSFont boldSystemFontOfSize:12].fontName;
     self.italicFontName = @"Helvetica-Oblique";
     self.boldItalicFontName = @"Helvetica-BoldOblique";
 
     NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1;
     for (CGFloat headerFontSize = 24; headerFontSize >= 14; headerFontSize -= 2, header++) {
-      [self setFont:[UIFont systemFontOfSize:headerFontSize] forHeader:header];
+      [self setFont:[UINSFont systemFontOfSize:headerFontSize] forHeader:header];
     }
   }
   return self;
@@ -91,11 +90,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return @(header);
 }
 
-- (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header {
+- (void)setFont:(UINSFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header {
   _headerFonts[[self keyForHeader:header]] = font;
 }
 
-- (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header {
+- (UINSFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header {
   return _headerFonts[[self keyForHeader:header]];
 }
 
@@ -173,7 +172,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)style,(NSString*) kCTParagraphStyleAttributeName, nil];
 }
 
-- (UIFont *)topFont {
+- (UINSFont *)topFont {
   if (nil == _topFont) {
     return self.paragraphFont;
   } else {
@@ -197,14 +196,14 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 }
 
 - (NSDictionary *)attributesForFontWithName:(NSString *)fontName {
-    return @{NSFontAttributeName: [UIFont fontWithName:fontName size:self.topFont.pointSize]};
+    return @{NSFontAttributeName: [UINSFont fontWithName:fontName size:self.topFont.pointSize]};
 }
 
-- (NSDictionary *)attributesForFont:(UIFont *)font {
+- (NSDictionary *)attributesForFont:(UINSFont *)font {
     return @{NSFontAttributeName: font};
 }
 
-- (void)recurseOnString:(NSString *)string withFont:(UIFont *)font {
+- (void)recurseOnString:(NSString *)string withFont:(UINSFont *)font {
   NSAttributedStringMarkdownParser* recursiveParser = [self copy];
   recursiveParser->_topFont = font;
   [_accum appendAttributedString:[recursiveParser attributedStringFromMarkdownString:string]];
@@ -260,7 +259,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
     case MARKDOWNMULTILINEHEADER: {
       NSArray* components = [textAsString componentsSeparatedByString:@"\n"];
       textAsString = [components objectAtIndex:0];
-      UIFont* font = nil;
+      UINSFont* font = nil;
       if ([[components objectAtIndex:1] rangeOfString:@"="].length > 0) {
         font = [self fontForHeader:NSAttributedStringMarkdownParserHeader1];
       } else if ([[components objectAtIndex:1] rangeOfString:@"-"].length > 0) {
