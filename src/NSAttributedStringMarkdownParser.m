@@ -107,7 +107,6 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   const char* cstr = [string UTF8String];
   FILE* markdownin = fmemopen((void *)cstr, [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding], "r");
 
-
   yyscan_t scanner;
 
   markdownlex_init(&scanner);
