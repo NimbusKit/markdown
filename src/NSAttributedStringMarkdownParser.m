@@ -105,7 +105,8 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   _accum = [[NSMutableAttributedString alloc] init];
 
   const char* cstr = [string UTF8String];
-  FILE* markdownin = fmemopen((void *)cstr, sizeof(char) * (string.length + 1), "r");
+  FILE* markdownin = fmemopen((void *)cstr, [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding], "r");
+
 
   yyscan_t scanner;
 
