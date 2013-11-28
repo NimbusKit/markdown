@@ -136,21 +136,36 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 }
 
 - (NSDictionary *)paragraphStyle {
-  CTTextAlignment alignment = kCTLeftTextAlignment;
   CGFloat paragraphSpacing = 0.0;
   CGFloat paragraphSpacingBefore = 0.0;
   CGFloat firstLineHeadIndent = 15.0;
   CGFloat headIndent = 30.0;
-  
+
   CGFloat firstTabStop = 35.0; // width of your indent
   CGFloat lineSpacing = 0.45;
-  
+
+#ifdef TARGET_OS_IPHONE
+  NSTextAlignment alignment = NSTextAlignmentLeft;
+
+  NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+  style.paragraphSpacing = paragraphSpacing;
+  style.paragraphSpacingBefore = paragraphSpacingBefore;
+  style.firstLineHeadIndent = firstLineHeadIndent;
+  style.headIndent = headIndent;
+  style.lineSpacing = lineSpacing;
+  style.alignment = alignment;
+  style.tabStops = @[[[NSTextTab alloc] initWithTextAlignment:alignment location:firstTabStop options:nil]];
+
+  return @{ NSParagraphStyleAttributeName: style };
+#else
+  CTTextAlignment alignment = kCTLeftTextAlignment;
+
   CTTextTabRef tabArray[] = { CTTextTabCreate(0, firstTabStop, NULL) };
-  
+
   CFArrayRef tabStops = CFArrayCreate( kCFAllocatorDefault, (const void**) tabArray, 1, &kCFTypeArrayCallBacks );
   CFRelease(tabArray[0]);
-  
-  CTParagraphStyleSetting altSettings[] = 
+
+  CTParagraphStyleSetting altSettings[] =
   {
     { kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &lineSpacing},
     { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &alignment},
@@ -159,18 +174,19 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
     { kCTParagraphStyleSpecifierTabStops, sizeof(CFArrayRef), &tabStops},
     { kCTParagraphStyleSpecifierParagraphSpacing, sizeof(CGFloat), &paragraphSpacing},
     { kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(CGFloat), &paragraphSpacingBefore}
-  }; 
-  
+  };
+
   CTParagraphStyleRef style;
   style = CTParagraphStyleCreate( altSettings, sizeof(altSettings) / sizeof(CTParagraphStyleSetting) );
-  
+
   if ( style == NULL )
   {
     NSLog(@"*** Unable To Create CTParagraphStyle in apply paragraph formatting" );
     return nil;
   }
-  
+
   return [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)style,(NSString*) kCTParagraphStyleAttributeName, nil];
+#endif
 }
 
 - (UIFont *)topFont {
