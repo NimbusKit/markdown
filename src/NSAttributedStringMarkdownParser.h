@@ -18,13 +18,13 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-  NSAttributedStringMarkdownParserHeader1,
-  NSAttributedStringMarkdownParserHeader2,
-  NSAttributedStringMarkdownParserHeader3,
-  NSAttributedStringMarkdownParserHeader4,
-  NSAttributedStringMarkdownParserHeader5,
-  NSAttributedStringMarkdownParserHeader6,
-
+    NSAttributedStringMarkdownParserHeader1,
+    NSAttributedStringMarkdownParserHeader2,
+    NSAttributedStringMarkdownParserHeader3,
+    NSAttributedStringMarkdownParserHeader4,
+    NSAttributedStringMarkdownParserHeader5,
+    NSAttributedStringMarkdownParserHeader6,
+    
 } NSAttributedStringMarkdownParserHeader;
 
 @protocol NSAttributedStringMarkdownStylesheet;
@@ -44,7 +44,7 @@ typedef enum {
 @property (nonatomic, copy) NSString* boldFontName; // Default: boldSystemFont
 @property (nonatomic, copy) NSString* italicFontName; // Default: Helvetica-Oblique
 @property (nonatomic, copy) NSString* boldItalicFontName; // Default: Helvetica-BoldOblique
-@property (nonatomic) BOOL allowDefaultColor;
+@property (nonatomic, strong) UIColor* foregroundColor; // Default: blackColor
 
 - (void)setFont:(UIFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
 - (UIFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;
