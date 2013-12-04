@@ -1,6 +1,6 @@
 [submodule "fmemopen"]
 	path = fmemopen
-	url = git@github.com:jverkoey/fmemopen.git
+	url = https://github.com/jverkoey/fmemopen.git
 [submodule "nimbus"]
 	path = nimbus
-	url = git://github.com/jverkoey/nimbus.git
+	url = https://github.com/jverkoey/nimbus.git
