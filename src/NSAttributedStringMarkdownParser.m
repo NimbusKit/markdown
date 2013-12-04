@@ -238,6 +238,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
   [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
+  [attributes setValue:[NSNumber numberWithBool:_allowDefaultColor] forKey:(NSString *)kCTForegroundColorFromContextAttributeName];
 
   switch (token) {
     case MARKDOWNEM: { // * *
