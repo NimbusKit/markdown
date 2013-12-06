@@ -338,25 +338,47 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
             break;
         }
         case MARKDOWNHREF: { // [Title] (url "tooltip")
-            NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
             
-            NSRange linkTitleRange = [result rangeAtIndex:1];
-            NSRange linkURLRange = [result rangeAtIndex:2];
-            NSRange tooltipRange = [result rangeAtIndex:5];
+            NSMutableString *mutableString = [NSMutableString new];
             
-            if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
-                NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
+            NSArray *results = [hrefRegex() matchesInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
+            
+            for (int i = 0; i < results.count; i++)
+            {
+                NSTextCheckingResult* result = [results objectAtIndex:i];
+                NSTextCheckingResult* prevResult = (i-1 >= 0) ? [results objectAtIndex:i-1] : nil;
                 
-                link.url = [NSURL URLWithString:[textAsString substringWithRange:linkURLRange]];
-                link.range = NSMakeRange(_accum.length, linkTitleRange.length);
+                NSRange linkTitleRange = [result rangeAtIndex:1];
+                NSRange linkURLRange = [result rangeAtIndex:2];
+                __unused NSRange tooltipRange = [result rangeAtIndex:5];
                 
-                if (tooltipRange.location != NSNotFound) {
-                    link.tooltip = [textAsString substringWithRange:tooltipRange];
+                NSString *linkTitle = [textAsString substringWithRange:linkTitleRange];
+                
+                if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
+                    
+                    if (prevResult != nil) {
+                        __unused NSRange prevTitleRange = [prevResult rangeAtIndex:1];
+                        NSRange prevURLRange = [prevResult rangeAtIndex:2];
+                        
+                        NSUInteger location = prevURLRange.location+prevURLRange.length+1;
+                        NSUInteger lenght = (linkTitleRange.location-1) - location;
+                        
+                        NSString *text = [textAsString substringWithRange:NSMakeRange(location, lenght)];
+                        [mutableString appendString:text];
+                    }
+                    
+                    [mutableString appendString:linkTitle];
+                    
+                    NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
+                    link.url = [NSURL URLWithString:[textAsString substringWithRange:linkURLRange]];
+                    link.range = [mutableString rangeOfString:linkTitle];
+                    
+                    [_links addObject:link];
                 }
-                
-                [_links addObject:link];
-                textAsString = [textAsString substringWithRange:linkTitleRange];
             }
+            
+            textAsString = [NSString stringWithString:mutableString];
+            
             break;
         }
         default: {
