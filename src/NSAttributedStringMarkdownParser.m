@@ -226,10 +226,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   [_accum appendAttributedString:[recursiveParser attributedStringFromMarkdownString:string]];
 
   // Adjust the recursive parser's links so that they are offset correctly.
-  for (NSValue* rangeValue in recursiveParser.links) {
-    NSRange range = [rangeValue rangeValue];
+  for (NSAttributedStringMarkdownLink *currentLink in recursiveParser.links) {
+    NSRange range = [currentLink range];
     range.location += _accum.length;
-    [_links addObject:[NSValue valueWithRange:range]];
+    currentLink.range = range;
+    [_links addObject:currentLink];
   }
 }
 
