@@ -28,6 +28,7 @@ em             {em1}|{em2}
 strong         {strong1}|{strong2}
 strongem       {strongem1}|{strongem2}
 strikethrough  ~~.*?~~
+codespan       `.*?`
 
 url            {protourl}|{optprotourl}
 
@@ -40,6 +41,7 @@ nl             \n|\r\n|\r|\f
 {strong}                        {markdownConsume(yytext, MARKDOWNSTRONG, yyscanner);}
 {strongem}                      {markdownConsume(yytext, MARKDOWNSTRONGEM, yyscanner);}
 {strikethrough}                 {markdownConsume(yytext, MARKDOWNSTRIKETHROUGH, yyscanner);}
+{codespan}                      {markdownConsume(yytext, MARKDOWNCODESPAN, yyscanner);}
 {header1}                       {markdownConsume(yytext, MARKDOWNHEADER, yyscanner);}
 {header2}                       {markdownConsume(yytext, MARKDOWNMULTILINEHEADER, yyscanner);}
 {url}                           {markdownConsume(yytext, MARKDOWNURL, yyscanner);}

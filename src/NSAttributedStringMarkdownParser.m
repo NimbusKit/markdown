@@ -260,6 +260,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       [attributes addEntriesFromDictionary:@{NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)}];
       break;
     }
+    case MARKDOWNCODESPAN: { // ` `
+      textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
+      [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.italicFontName]];
+      break;
+    }
     case MARKDOWNHEADER: { // ####
       NSRange rangeOfNonHash = [textAsString rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"#"] invertedSet]];
       if (rangeOfNonHash.length > 0) {
