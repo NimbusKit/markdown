@@ -37,4 +37,9 @@
   [self.view addSubview:label];
 }
 
+// For iOS 7 layouts causing the views to appear beneath the nav bar.
+- (UIRectEdge)edgesForExtendedLayout {
+  return UIRectEdgeNone;
+}
+
 @end

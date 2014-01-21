@@ -65,6 +65,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
     self.boldFontName = [UINSFont boldSystemFontOfSize:12].fontName;
     self.italicFontName = @"Helvetica-Oblique";
     self.boldItalicFontName = @"Helvetica-BoldOblique";
+    self.codeFontName = @"Courier";
 
     NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1;
     for (CGFloat headerFontSize = 24; headerFontSize >= 14; headerFontSize -= 2, header++) {
@@ -80,6 +81,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   parser.boldFontName = self.boldFontName;
   parser.italicFontName = self.italicFontName;
   parser.boldItalicFontName = self.boldItalicFontName;
+  parser.codeFontName = self.codeFontName;
   for (NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1; header <= NSAttributedStringMarkdownParserHeader6; ++header) {
     [parser setFont:[self fontForHeader:header] forHeader:header];
   }

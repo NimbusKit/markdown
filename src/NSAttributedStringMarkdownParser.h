@@ -51,6 +51,7 @@ typedef enum {
 @property (nonatomic, copy) NSString* boldFontName; // Default: boldSystemFont
 @property (nonatomic, copy) NSString* italicFontName; // Default: Helvetica-Oblique
 @property (nonatomic, copy) NSString* boldItalicFontName; // Default: Helvetica-BoldOblique
+@property (nonatomic, copy) NSString* codeFontName; // Default: Courier
 
 - (void)setFont:(UINSFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
 - (UINSFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;
