@@ -132,6 +132,20 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   return [_accum copy];
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+
+- (NSAttributedString *)attributedStringWithLinksFromMarkdownString:(NSString *)string {
+    NSMutableAttributedString *result = [[self attributedStringFromMarkdownString:string] mutableCopy];
+    
+    for (NSAttributedStringMarkdownLink *link in _links) {
+        [result addAttribute:NSLinkAttributeName value:link.url range:link.range];
+    }
+    
+    return [result copy];
+}
+
+#endif
+
 - (NSArray *)links {
   return [_links copy];
 }
