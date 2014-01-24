@@ -129,7 +129,25 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
                         range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
   }
 
+#if TARGET_OS_MAC
+  const BOOL shouldAddLinks = YES;
+#elif __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+  const BOOL shouldAddLinks = (NSLinkAttributeName != nil);
+#endif
+    
+  if (shouldAddLinks) {
+    [self addLinksToAttributedString];
+  }
+
   return [_accum copy];
+}
+
+- (void)addLinksToAttributedString {
+#if TARGET_OS_MAC || __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+    for (NSAttributedStringMarkdownLink *link in _links) {
+        [_accum addAttribute:NSLinkAttributeName value:link.url range:link.range];
+    }
+#endif
 }
 
 - (NSArray *)links {
