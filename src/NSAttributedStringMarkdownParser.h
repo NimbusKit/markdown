@@ -45,9 +45,6 @@ typedef enum {
 @interface NSAttributedStringMarkdownParser : NSObject <NSCopying>
 
 - (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
-- (NSAttributedString *)attributedStringWithLinksFromMarkdownString:(NSString *)string;
-#endif
 - (NSArray *)links; // Array of NSAttributedStringMarkdownLink
 
 @property (nonatomic, strong) UINSFont* paragraphFont; // Default: systemFontOfSize:12
