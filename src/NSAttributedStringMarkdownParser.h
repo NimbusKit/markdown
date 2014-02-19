@@ -1,5 +1,5 @@
 //
-// Copyright 2012-2013 Jeff Verkoeyen
+// Copyright 2011-2014 NimbusKit
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 #import <Foundation/Foundation.h>
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-#import <UIKit/UIKit.h>
-#define UINSFont UIFont
+  #import <UIKit/UIKit.h>
+  #define UINSFont UIFont
 #else
-#import <AppKit/AppKit.h>
-#define UINSFont NSFont
+  #import <AppKit/AppKit.h>
+  #define UINSFont NSFont
 #endif
 
 typedef enum {
@@ -42,6 +42,12 @@ typedef enum {
 @property (nonatomic, readonly, copy) NSString *tooltip;
 @end
 
+/**
+ * The NSAttributedStringMarkdownParser class parses a given markdown string into an
+ * NSAttributedString.
+ *
+ * @ingroup NimbusMarkdown
+ */
 @interface NSAttributedStringMarkdownParser : NSObject <NSCopying>
 
 - (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string;

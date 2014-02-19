@@ -1,5 +1,5 @@
 //
-// Copyright 2013 Jeff Verkoeyen
+// Copyright 2011-2014 NimbusKit
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,15 @@
 // limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
+#ifdef NIMBUSKIT_FRAMEWORK
+  #import <NimbusKit/NSAttributedStringMarkdownParser.h>
+#else
+  #import "NSAttributedStringMarkdownParser.h"
+#endif
 
-@interface LinksViewController : UIViewController
-@end
+/**
+ * @defgroup NimbusMarkdown Nimbus Markdown
+ *
+ * <div id="github" feature="markdown"></div>
+ *
+ */
