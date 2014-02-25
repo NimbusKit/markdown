@@ -290,7 +290,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       if (rangeOfNonHash.length > 0) {
         textAsString = [[textAsString substringFromIndex:rangeOfNonHash.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-        NSAttributedStringMarkdownParserHeader header = rangeOfNonHash.location - 1;
+        NSAttributedStringMarkdownParserHeader header = (NSAttributedStringMarkdownParserHeader)(rangeOfNonHash.location - 1);
         [self recurseOnString:textAsString withFont:[self fontForHeader:header]];
 
         // We already appended the recursive parser's results in recurseOnString.
@@ -342,7 +342,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
                             range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
       }
 
-      [_bulletStarts addObject:[NSNumber numberWithInt:_accum.length]];
+      [_bulletStarts addObject:@(_accum.length)];
       textAsString = @"•\t";
       break;
     }
