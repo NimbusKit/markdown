@@ -144,9 +144,11 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
 - (void)addLinksToAttributedString {
 #if TARGET_OS_MAC || __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
-    for (NSAttributedStringMarkdownLink *link in _links) {
-        [_accum addAttribute:NSLinkAttributeName value:link.url range:link.range];
+  for (NSAttributedStringMarkdownLink *link in _links) {
+    if (link.url) {
+      [_accum addAttribute:NSLinkAttributeName value:link.url range:link.range];
     }
+  }
 #endif
 }
 
