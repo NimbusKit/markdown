@@ -162,7 +162,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   CGFloat firstLineHeadIndent = 15.0;
   CGFloat headIndent = 30.0;
 
-  CGFloat firstTabStop = 35.0; // width of your indent
+  CGFloat firstTabStop = 30.0; // width of your indent
   CGFloat lineSpacing = 0.45;
 
 #ifdef TARGET_OS_IPHONE
@@ -172,6 +172,8 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   style.paragraphSpacing = paragraphSpacing;
   style.paragraphSpacingBefore = paragraphSpacingBefore;
   style.firstLineHeadIndent = firstLineHeadIndent;
+  style.lineBreakMode = NSLineBreakByWordWrapping;
+
   style.headIndent = headIndent;
   style.lineSpacing = lineSpacing;
   style.alignment = alignment;
@@ -261,6 +263,27 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
   [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
 
+  BOOL static addNewlineAndEatWhitespace = false;
+  BOOL static eatWhitespaceAfter = false;
+  if (addNewlineAndEatWhitespace) {
+    [_accum appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:attributes] ];
+
+    NSRange spacesRange = [textAsString rangeOfString:@"^\\s*" options:NSRegularExpressionSearch];
+
+    textAsString = [textAsString substringFromIndex:spacesRange.length];
+    addNewlineAndEatWhitespace = false;
+    if (token == MARKDOWNWHITESPACE || token == MARKDOWNNEWLINE|| token == MARKDOWNPARAGRAPH)
+      token = MARKDOWNUNKNOWN;
+  }
+  if (eatWhitespaceAfter) {
+    NSRange spacesRange = [textAsString rangeOfString:@"^\\s*" options:NSRegularExpressionSearch];
+
+    textAsString = [textAsString substringFromIndex:spacesRange.length];
+    if (token == MARKDOWNWHITESPACE || token == MARKDOWNNEWLINE || token == MARKDOWNPARAGRAPH)
+      token = MARKDOWNUNKNOWN;
+    eatWhitespaceAfter = false;
+  }
+
   switch (token) {
     case MARKDOWNEM: { // * *
       textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
@@ -297,6 +320,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
         // We already appended the recursive parser's results in recurseOnString.
         textAsString = nil;
+        addNewlineAndEatWhitespace = true;
       }
       break;
     }
@@ -314,20 +338,22 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
       // We already appended the recursive parser's results in recurseOnString.
       textAsString = nil;
+      addNewlineAndEatWhitespace = true;
       break;
     }
     case MARKDOWNPARAGRAPH: {
-      textAsString = @"\n\n";
-      
+      textAsString = nil; //@"\n\n";
+      addNewlineAndEatWhitespace = true;
+
       if (_bulletStarts.count > 0) {
         // Treat nested bullet points as flat ones...
-        
+
         // Finish off the previous dash and start a new one.
         NSInteger lastBulletStart = [[_bulletStarts lastObject] intValue];
         [_bulletStarts removeLastObject];
-        
+
         [_accum addAttributes:[self paragraphStyle]
-                            range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
+                        range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
       }
       break;
     }
@@ -341,11 +367,17 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
         [_bulletStarts removeLastObject];
 
         [_accum addAttributes:[self paragraphStyle]
-                            range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
+                        range:NSMakeRange(lastBulletStart, _accum.length - lastBulletStart)];
       }
 
       [_bulletStarts addObject:@(_accum.length)];
-      textAsString = @"•\t";
+      textAsString = @"\n•\t";
+      addNewlineAndEatWhitespace = false;
+      eatWhitespaceAfter = true;
+      break;
+    }
+    case MARKDOWNWHITESPACE: {
+      textAsString = @" ";
       break;
     }
     case MARKDOWNNEWLINE: {
@@ -359,34 +391,41 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
       [_links addObject:link];
       break;
     }
-      case MARKDOWNHREF: { // [Title] (url "tooltip")
-          NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
+    case MARKDOWNHREF: { // [Title] (url "tooltip")
+      NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
 
-          NSRange linkTitleRange = [result rangeAtIndex:1];
-          NSRange linkURLRange = [result rangeAtIndex:2];
-          NSRange tooltipRange = [result rangeAtIndex:5];
+      NSRange linkTitleRange = [result rangeAtIndex:1];
+      NSRange linkURLRange = [result rangeAtIndex:2];
+      NSRange tooltipRange = [result rangeAtIndex:5];
 
-          if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
-              NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
+      if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
+        NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
 
-              link.url = [NSURL URLWithString:[textAsString substringWithRange:linkURLRange]];
-              link.range = NSMakeRange(_accum.length, linkTitleRange.length);
+        link.url = [NSURL URLWithString:[textAsString substringWithRange:linkURLRange]];
+        link.range = NSMakeRange(_accum.length, linkTitleRange.length);
 
-              if (tooltipRange.location != NSNotFound) {
-                  link.tooltip = [textAsString substringWithRange:tooltipRange];
-              }
+        if (tooltipRange.location != NSNotFound) {
+          link.tooltip = [textAsString substringWithRange:tooltipRange];
+        }
 
-              [_links addObject:link];
-              textAsString = [textAsString substringWithRange:linkTitleRange];
-          }
-          break;
+        [_links addObject:link];
+        textAsString = [textAsString substringWithRange:linkTitleRange];
       }
+      break;
+    }
     default: {
       break;
     }
   }
-
   if (textAsString.length > 0) {
+    if (addNewlineAndEatWhitespace) {
+      [_accum appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:attributes] ];
+      NSRange spacesRange = [textAsString rangeOfString:@"^\\s*" options:NSRegularExpressionSearch];
+
+      textAsString = [textAsString substringFromIndex:spacesRange.length];
+      addNewlineAndEatWhitespace = false;
+    }
+
     NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:textAsString attributes:attributes];
     [_accum appendAttributedString:attributedString];
   }
