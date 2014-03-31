@@ -165,7 +165,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   CGFloat firstTabStop = 30.0; // width of your indent
   CGFloat lineSpacing = 0.45;
 
-#ifdef TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE
   NSTextAlignment alignment = NSTextAlignmentLeft;
 
   NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
