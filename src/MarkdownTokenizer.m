@@ -29,7 +29,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_SUBMINOR_VERSION 37
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -67,7 +67,6 @@ typedef int16_t flex_int16_t;
 typedef uint16_t flex_uint16_t;
 typedef int32_t flex_int32_t;
 typedef uint32_t flex_uint32_t;
-typedef uint64_t flex_uint64_t;
 #else
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
@@ -75,7 +74,6 @@ typedef int flex_int32_t;
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-#endif /* ! C99 */
 
 /* Limits of integral types. */
 #ifndef INT8_MIN
@@ -105,6 +103,8 @@ typedef unsigned int flex_uint32_t;
 #ifndef UINT32_MAX
 #define UINT32_MAX             (4294967295U)
 #endif
+
+#endif /* ! C99 */
 
 #endif /* ! FLEXINT_H */
 
@@ -362,13 +362,13 @@ static void yy_fatal_error (yyconst char msg[] ,yyscan_t yyscanner );
  */
 #define YY_DO_BEFORE_ACTION \
 	yyg->yytext_ptr = yy_bp; \
-	yyleng = (yy_size_t) (yy_cp - yy_bp); \
+	yyleng = (size_t) (yy_cp - yy_bp); \
 	yyg->yy_hold_char = *yy_cp; \
 	*yy_cp = '\0'; \
 	yyg->yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 15
-#define YY_END_OF_BUFFER 16
+#define YY_NUM_RULES 16
+#define YY_END_OF_BUFFER 17
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -378,11 +378,11 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[311] =
     {   0,
-        0,    0,   16,   14,   13,   13,   13,   14,   14,   14,
-       14,   14,   14,   14,   14,   14,    6,   14,    0,    0,
-       12,    0,    0,    0,    1,    0,    0,    0,    0,    0,
+        0,    0,   17,   15,   14,   14,   13,   15,   15,   15,
+       15,   15,   15,   15,   15,   15,    6,   15,    0,    0,
+       12,   13,    0,    0,    1,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    1,    0,    5,    0,    6,
-        6,   10,    0,    0,   12,   11,    0,    1,    0,    1,
+        6,   10,    0,    0,   12,   11,   13,    1,    0,    1,
         0,    0,    0,    0,    0,    8,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    6,    7,    7,    0,    0,    0,    0,    0,    0,
@@ -1005,6 +1005,10 @@ int markdownget_lineno (yyscan_t yyscanner );
 
 void markdownset_lineno (int line_number ,yyscan_t yyscanner );
 
+int markdownget_column  (yyscan_t yyscanner );
+
+void markdownset_column (int column_no ,yyscan_t yyscanner );
+
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
  */
@@ -1045,7 +1049,7 @@ static int input (yyscan_t yyscanner );
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO fwrite( yytext, yyleng, 1, yyout )
+#define ECHO do { if (fwrite( yytext, yyleng, 1, yyout )) {} } while (0)
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -1056,7 +1060,7 @@ static int input (yyscan_t yyscanner );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-		yy_size_t n; \
+		size_t n; \
 		for ( n = 0; n < max_size && \
 			     (c = getc( yyin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
@@ -1142,10 +1146,10 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 38 "markdown.grammar"
+#line 39 "markdown.grammar"
 
 
-#line 1128 "lex.markdown.c"
+#line 1132 "lex.markdown.c"
 
 	if ( !yyg->yy_init )
 		{
@@ -1232,56 +1236,56 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 40 "markdown.grammar"
+#line 41 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNEM, yyscanner);}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 41 "markdown.grammar"
+#line 42 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNSTRONG, yyscanner);}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 42 "markdown.grammar"
+#line 43 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNSTRONGEM, yyscanner);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 43 "markdown.grammar"
+#line 44 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNSTRIKETHROUGH, yyscanner);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 44 "markdown.grammar"
+#line 45 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNCODESPAN, yyscanner);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 45 "markdown.grammar"
+#line 46 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNHEADER, yyscanner);}
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 46 "markdown.grammar"
+#line 47 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNMULTILINEHEADER, yyscanner);}
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 47 "markdown.grammar"
+#line 48 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNURL, yyscanner);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 48 "markdown.grammar"
+#line 49 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNHREF, yyscanner);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 49 "markdown.grammar"
+#line 50 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNBULLETSTART, yyscanner);}
 	YY_BREAK
 case 11:
@@ -1289,32 +1293,37 @@ case 11:
 yyg->yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 51 "markdown.grammar"
+#line 52 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNNEWLINE, yyscanner);}
 	YY_BREAK
 case 12:
 /* rule 12 can match eol */
 YY_RULE_SETUP
-#line 52 "markdown.grammar"
+#line 53 "markdown.grammar"
 {markdownConsume(yytext, MARKDOWNPARAGRAPH, yyscanner);}
 	YY_BREAK
 case 13:
-/* rule 13 can match eol */
-YY_RULE_SETUP
-#line 53 "markdown.grammar"
-{markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
-	YY_BREAK
-case 14:
 YY_RULE_SETUP
 #line 54 "markdown.grammar"
-{markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
+{markdownConsume(yytext, MARKDOWNWHITESPACE, yyscanner);}
+	YY_BREAK
+case 14:
+/* rule 14 can match eol */
+YY_RULE_SETUP
+#line 55 "markdown.grammar"
+{markdownConsume(yytext, MARKDOWNWHITESPACE, yyscanner);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 56 "markdown.grammar"
+#line 57 "markdown.grammar"
+{markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
+	YY_BREAK
+case 16:
+YY_RULE_SETUP
+#line 59 "markdown.grammar"
 ECHO;
 	YY_BREAK
-#line 1297 "lex.markdown.c"
+#line 1306 "lex.markdown.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1508,7 +1517,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 			{ /* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
-			YY_BUFFER_STATE b = YY_CURRENT_BUFFER;
+			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
 
 			int yy_c_buf_p_offset =
 				(int) (yyg->yy_c_buf_p - b->yy_ch_buf);
@@ -1644,6 +1653,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 310);
 
+	(void)yyg;
 	return yy_is_jam ? 0 : yy_current_state;
 }
 
@@ -1696,7 +1706,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 				case EOB_ACT_END_OF_FILE:
 					{
 					if ( markdownwrap(yyscanner ) )
-						return 0;
+						return EOF;
 
 					if ( ! yyg->yy_did_buffer_switch_on_eof )
 						YY_NEW_FILE;
@@ -1838,10 +1848,6 @@ static void markdown_load_buffer_state  (yyscan_t yyscanner)
 	markdownfree((void *) b ,yyscanner );
 }
 
-#ifndef __cplusplus
-extern int isatty (int );
-#endif /* __cplusplus */
-    
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a markdownrestart() or at EOF.
@@ -2051,8 +2057,8 @@ YY_BUFFER_STATE markdown_scan_string (yyconst char * yystr , yyscan_t yyscanner)
 
 /** Setup the input buffer state to scan the given bytes. The next call to markdownlex() will
  * scan from a @e copy of @a bytes.
- * @param bytes the byte buffer to scan
- * @param len the number of bytes in the buffer pointed to by @a bytes.
+ * @param yybytes the byte buffer to scan
+ * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.
  * @param yyscanner The scanner object.
  * @return the newly allocated buffer state object.
  */
@@ -2060,7 +2066,8 @@ YY_BUFFER_STATE markdown_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybyte
 {
 	YY_BUFFER_STATE b;
 	char *buf;
-	yy_size_t n, i;
+	yy_size_t n;
+	int i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
@@ -2206,7 +2213,7 @@ void markdownset_lineno (int  line_number , yyscan_t yyscanner)
 
         /* lineno is only valid if an input buffer exists. */
         if (! YY_CURRENT_BUFFER )
-           yy_fatal_error( "markdownset_lineno called with no buffer" , yyscanner); 
+           YY_FATAL_ERROR( "markdownset_lineno called with no buffer" );
     
     yylineno = line_number;
 }
@@ -2221,7 +2228,7 @@ void markdownset_column (int  column_no , yyscan_t yyscanner)
 
         /* column is only valid if an input buffer exists. */
         if (! YY_CURRENT_BUFFER )
-           yy_fatal_error( "markdownset_column called with no buffer" , yyscanner); 
+           YY_FATAL_ERROR( "markdownset_column called with no buffer" );
     
     yycolumn = column_no;
 }
@@ -2433,7 +2440,7 @@ void markdownfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 56 "markdown.grammar"
+#line 59 "markdown.grammar"
 
 
 

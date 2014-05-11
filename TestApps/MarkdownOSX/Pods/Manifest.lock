@@ -1,0 +1,10 @@
+PODS:
+  - fmemopen (0.0.1)
+
+DEPENDENCIES:
+  - fmemopen (~> 0.0.1)
+
+SPEC CHECKSUMS:
+  fmemopen: 9985c0b5696288ac034514edc2eeaea6e5ae77ca
+
+COCOAPODS: 0.30.0

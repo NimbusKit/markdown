@@ -16,6 +16,7 @@ header1        ^#{1,6}.*
 header2        .+\n[=-]+\n
 bulletstart    ^[-]+[ ]
 codeline       [ ]
+spaces         \s+
 
 protocol       (http|ftp)s?\:\/\/
 subdomain      {nmchar}\.
@@ -50,7 +51,9 @@ nl             \n|\r\n|\r|\f
 
 [ ]{2,}$                        {markdownConsume(yytext, MARKDOWNNEWLINE, yyscanner);}
 [\n]{2,}                        {markdownConsume(yytext, MARKDOWNPARAGRAPH, yyscanner);}
-[ \n\t\f]                       {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
+[ ]{1,}                         {markdownConsume(yytext, MARKDOWNWHITESPACE, yyscanner);}
+[ \n\t\f]                       {markdownConsume(yytext, MARKDOWNWHITESPACE, yyscanner);}
+
 .                               {markdownConsume(yytext, MARKDOWNUNKNOWN, yyscanner);}
 
 %%
