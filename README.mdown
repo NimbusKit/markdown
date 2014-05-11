@@ -47,7 +47,7 @@ Example
 
     NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
     NSAttributedString* string = [parser attributedStringFromMarkdownString:
-                                  @"This is __rad__.""];
+                                  @"This is __rad__."];
 
 See the Catalog application included with the project for more examples.
 
