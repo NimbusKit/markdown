@@ -55,6 +55,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
   UINSFont* _topFont;
   NSMutableDictionary* _fontCache;
+
+  int _currentToken;
+  NSMutableString * _tokenBuffer;
+  NSDictionary * _tokenBufferAttributes;
 }
 
 - (id)init {
@@ -105,6 +109,10 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   _bulletStarts = [NSMutableArray array];
   _accum = [[NSMutableAttributedString alloc] init];
 
+  _currentToken = -1;
+  _tokenBuffer = [[NSMutableString alloc] init];
+  _tokenBufferAttributes = nil;
+
   const char* cstr = [string UTF8String];
   FILE* markdownin = fmemopen((void *)cstr, [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding], "r");
 
@@ -117,6 +125,12 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   markdownlex_destroy(scanner);
 
   fclose(markdownin);
+
+  if(_tokenBuffer.length >0) {
+    NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:_tokenBuffer
+                                                                           attributes:_tokenBufferAttributes];
+    [_accum appendAttributedString:attributedString];
+  }
 
   if (_bulletStarts.count > 0) {
     // Treat nested bullet points as flat ones...
@@ -261,6 +275,17 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
   [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
 
+  if(token == _currentToken) {
+    [_tokenBuffer appendString:textAsString];
+    return;
+  }
+
+  if(_tokenBuffer.length >0) {
+    NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:_tokenBuffer
+                                                                           attributes:_tokenBufferAttributes];
+    [_accum appendAttributedString:attributedString];
+  }
+
   switch (token) {
     case MARKDOWNEM: { // * *
       textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
@@ -387,8 +412,9 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   }
 
   if (textAsString.length > 0) {
-    NSAttributedString* attributedString = [[NSAttributedString alloc] initWithString:textAsString attributes:attributes];
-    [_accum appendAttributedString:attributedString];
+    [_tokenBuffer setString:textAsString];
+    _currentToken = token;
+    _tokenBufferAttributes = attributes;
   }
 }
 
