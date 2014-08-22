@@ -66,6 +66,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
     self.italicFontName = @"Helvetica-Oblique";
     self.boldItalicFontName = @"Helvetica-BoldOblique";
     self.codeFontName = @"Courier";
+    self.linkFontName = self.paragraphFont.fontName;
 
     NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1;
     for (CGFloat headerFontSize = 24; headerFontSize >= 14; headerFontSize -= 2, header++) {
@@ -82,6 +83,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   parser.italicFontName = self.italicFontName;
   parser.boldItalicFontName = self.boldItalicFontName;
   parser.codeFontName = self.codeFontName;
+  parser.linkFontName = self.linkFontName;
   for (NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1; header <= NSAttributedStringMarkdownParserHeader6; ++header) {
     [parser setFont:[self fontForHeader:header] forHeader:header];
   }
@@ -144,9 +146,13 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 
 - (void)addLinksToAttributedString {
 #if TARGET_OS_MAC || __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+  UINSFont * linkFont = [UINSFont fontWithName:self.linkFontName
+                                          size:self.paragraphFont.pointSize];
   for (NSAttributedStringMarkdownLink *link in _links) {
     if (link.url) {
-      [_accum addAttribute:NSLinkAttributeName value:link.url range:link.range];
+      [_accum addAttributes:@{NSLinkAttributeName : link,
+                              NSFontAttributeName : linkFont}
+                      range:link.range];
     }
   }
 #endif
