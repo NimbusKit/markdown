@@ -1,0 +1,14 @@
+workspace '../markdown-parser'
+xcodeproj 'Example.xcodeproj'
+
+target "Example" do
+  pod "XNGMarkdownParser", :path => "../markdown-parser.podspec"
+end
+
+post_install do |installer_representation|
+  installer_representation.project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS'] = 'YES'
+    end
+  end
+end

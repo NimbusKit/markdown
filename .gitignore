@@ -1,5 +1,8 @@
+# OS X
+.DS_Store
+
 # Xcode
-build/*
+build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -8,9 +11,23 @@ build/*
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-*.xcworkspace
-!default.xcworkspace
 xcuserdata
+*.xccheckout
 profile
 *.moved-aside
 DerivedData
+*.hmap
+*.ipa
+
+Pods/
+
+.idea/workspace.xml
+.idea/tasks.xml
+
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+*.ipr
+*.iws
+*.iml
