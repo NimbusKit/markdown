@@ -17,27 +17,26 @@
 #import <Foundation/Foundation.h>
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-  #import <UIKit/UIKit.h>
-  #define UINSFont UIFont
+#import <UIKit/UIKit.h>
+#define UINSFont UIFont
 #else
-  #import <AppKit/AppKit.h>
-  #define UINSFont NSFont
+#import <AppKit/AppKit.h>
+#define UINSFont NSFont
 #endif
 
 typedef enum {
-  NSAttributedStringMarkdownParserHeader1,
-  NSAttributedStringMarkdownParserHeader2,
-  NSAttributedStringMarkdownParserHeader3,
-  NSAttributedStringMarkdownParserHeader4,
-  NSAttributedStringMarkdownParserHeader5,
-  NSAttributedStringMarkdownParserHeader6,
-
+    NSAttributedStringMarkdownParserHeader1,
+    NSAttributedStringMarkdownParserHeader2,
+    NSAttributedStringMarkdownParserHeader3,
+    NSAttributedStringMarkdownParserHeader4,
+    NSAttributedStringMarkdownParserHeader5,
+    NSAttributedStringMarkdownParserHeader6,
 } NSAttributedStringMarkdownParserHeader;
 
 @protocol NSAttributedStringMarkdownStylesheet;
 
 @interface NSAttributedStringMarkdownLink : NSObject
-@property (nonatomic, readonly, strong) NSURL* url;
+@property (nonatomic, readonly, strong) NSString *url;
 @property (nonatomic, readonly, assign) NSRange range;
 @property (nonatomic, readonly, copy) NSString *tooltip;
 @end
@@ -53,15 +52,15 @@ typedef enum {
 - (NSAttributedString *)attributedStringFromMarkdownString:(NSString *)string;
 - (NSArray *)links; // Array of NSAttributedStringMarkdownLink
 
-@property (nonatomic, strong) UINSFont* paragraphFont; // Default: systemFontOfSize:12
-@property (nonatomic, copy) NSString* boldFontName; // Default: boldSystemFont
-@property (nonatomic, copy) NSString* italicFontName; // Default: Helvetica-Oblique
-@property (nonatomic, copy) NSString* boldItalicFontName; // Default: Helvetica-BoldOblique
-@property (nonatomic, copy) NSString* codeFontName; // Default: Courier
-@property (nonatomic, copy) NSString* linkFontName; // Default: paragraphFont
+@property (nonatomic, strong) UINSFont *paragraphFont; // Default: systemFontOfSize:12
+@property (nonatomic, copy) NSString *boldFontName; // Default: boldSystemFont
+@property (nonatomic, copy) NSString *italicFontName; // Default: Helvetica-Oblique
+@property (nonatomic, copy) NSString *boldItalicFontName; // Default: Helvetica-BoldOblique
+@property (nonatomic, copy) NSString *codeFontName; // Default: Courier
+@property (nonatomic, copy) NSString *linkFontName; // Default: paragraphFont
 
 // common attributes that affect the whole string, can be overriden by the upper attributes
-@property (nonatomic, retain) NSDictionary * topAttributes; // default: nil (do nothing)
+@property (nonatomic, retain) NSDictionary *topAttributes;  // default: nil (do nothing)
 
 - (void)setFont:(UINSFont *)font forHeader:(NSAttributedStringMarkdownParserHeader)header;
 - (UINSFont *)fontForHeader:(NSAttributedStringMarkdownParserHeader)header;

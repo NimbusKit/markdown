@@ -9,38 +9,39 @@
 
 @implementation XNGMarkdownTestViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     [self setupTextView];
 
-    NSString * markdown = @"normal text with **bold** and (31231) [link](http://www.xing.com) with some more text\n";
+    NSString *markdown = @"normal text with **bold** and (31231) [link](http://www.xing.com) with some more text\n";
 
     NSUInteger times = 1000;
-    NSMutableString * accum = [[NSMutableString alloc] initWithCapacity:times*markdown.length];
-    for(NSUInteger i=0; i<times; ++i) {
+    NSMutableString *accum = [[NSMutableString alloc] initWithCapacity:times * markdown.length];
+    for (NSUInteger i = 0; i < times; ++i) {
         [accum appendString:markdown];
     }
 
     NSLog(@"BEGIN, parsing string...");
-    NSDate * begin = [NSDate date];
+    NSDate *begin = [NSDate date];
 
-    NSAttributedStringMarkdownParser * parser =[[NSAttributedStringMarkdownParser alloc] init];
+    NSAttributedStringMarkdownParser *parser = [[NSAttributedStringMarkdownParser alloc] init];
 
-    NSMutableParagraphStyle * para = [[NSMutableParagraphStyle alloc] init];
+    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.minimumLineHeight = 50;
 
-    NSAttributedString * attr = [parser attributedStringFromMarkdownString:accum];
+    NSAttributedString *attr = [parser attributedStringFromMarkdownString:accum];
 
-    NSDate * end = [NSDate date];
+    NSDate *end = [NSDate date];
     NSTimeInterval timeDif = end.timeIntervalSince1970 - begin.timeIntervalSince1970;
-    NSLog(@"time to format: %.0f ms", timeDif*1000);
-    
+    NSLog(@"time to format: %.0f ms", timeDif * 1000);
+
     self.textView.attributedText = attr;
 }
 
 - (void)setupTextView {
     self.textView = [[UITextView alloc] initWithFrame:CGRectZero];
+    self.textView.editable = NO;
+    self.textView.selectable = YES;
     [self.view addSubview:self.textView];
 }
 
