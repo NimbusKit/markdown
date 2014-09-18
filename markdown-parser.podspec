@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = "markdown-parser"
+  s.name         = "XNGMarkdownParser"
   s.version      = "0.1"
   s.summary      = "A Markdown NSAttributedString parser."
 
