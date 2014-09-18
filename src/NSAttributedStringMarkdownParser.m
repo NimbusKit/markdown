@@ -71,6 +71,7 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
     self.boldItalicFontName = @"Helvetica-BoldOblique";
     self.codeFontName = @"Courier";
     self.linkFontName = self.paragraphFont.fontName;
+    self.topAttributes = nil;
 
     NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1;
     for (CGFloat headerFontSize = 24; headerFontSize >= 14; headerFontSize -= 2, header++) {
@@ -88,6 +89,8 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
   parser.boldItalicFontName = self.boldItalicFontName;
   parser.codeFontName = self.codeFontName;
   parser.linkFontName = self.linkFontName;
+  parser.topAttributes = self.topAttributes;
+
   for (NSAttributedStringMarkdownParserHeader header = NSAttributedStringMarkdownParserHeader1; header <= NSAttributedStringMarkdownParserHeader6; ++header) {
     [parser setFont:[self fontForHeader:header] forHeader:header];
   }
@@ -278,7 +281,12 @@ int markdownConsume(char* text, int token, yyscan_t scanner);
 - (void)consumeToken:(int)token text:(char*)text {
   NSString* textAsString = [[NSString alloc] initWithCString:text encoding:NSUTF8StringEncoding];
 
-  NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
+  NSMutableDictionary* attributes;
+  if(self.topAttributes != nil) {
+    attributes = [NSMutableDictionary dictionaryWithDictionary:self.topAttributes];
+  } else {
+    attributes = [NSMutableDictionary dictionary];
+  }
   [attributes addEntriesFromDictionary:[self attributesForFont:self.topFont]];
 
   if(token == _currentToken) {
