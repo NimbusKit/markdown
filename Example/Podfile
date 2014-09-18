@@ -1,8 +1,8 @@
-workspace '../markdown-parser'
+workspace '../XNGMarkdownParser'
 xcodeproj 'Example.xcodeproj'
 
 target "Example" do
-  pod "XNGMarkdownParser", :path => "../markdown-parser.podspec"
+  pod "XNGMarkdownParser", :path => "../XNGMarkdownParser.podspec"
 end
 
 post_install do |installer_representation|

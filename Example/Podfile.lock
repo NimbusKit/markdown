@@ -4,14 +4,14 @@ PODS:
     - fmemopen
 
 DEPENDENCIES:
-  - XNGMarkdownParser (from `../markdown-parser.podspec`)
+  - XNGMarkdownParser (from `../XNGMarkdownParser.podspec`)
 
 EXTERNAL SOURCES:
   XNGMarkdownParser:
-    :path: ../markdown-parser.podspec
+    :path: ../XNGMarkdownParser.podspec
 
 SPEC CHECKSUMS:
   fmemopen: ccbcc664b54a0fdbffc3b2727decb0525f9ebda9
-  XNGMarkdownParser: 4312a8c52a6592e86d6c6b587277ac382b6d3628
+  XNGMarkdownParser: 6967f9f80a8d1fd1fda2698d4ad7cd772b0ef5d7
 
 COCOAPODS: 0.33.1
