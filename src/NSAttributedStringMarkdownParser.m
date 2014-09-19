@@ -323,7 +323,7 @@ int markdownConsume(char *text, int token, yyscan_t scanner);
         }
         case MARKDOWNCODESPAN: { // ` `
             textAsString = [textAsString substringWithRange:NSMakeRange(1, textAsString.length - 2)];
-            [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.italicFontName]];
+            [attributes addEntriesFromDictionary:[self attributesForFontWithName:self.codeFontName]];
             break;
         }
         case MARKDOWNHEADER: { // ####
