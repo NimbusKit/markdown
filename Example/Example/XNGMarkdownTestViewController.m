@@ -13,9 +13,9 @@
     [super viewDidLoad];
     [self setupTextView];
 
-    NSString *markdown = @"link -> [company \\[companyName\\](dasda) ](www.google.com)";
+    NSString *markdown = @"normal text with **bold** and (31231) [link](http://www.xing.com) with some more text\n";
 
-    NSUInteger times = 1;
+    NSUInteger times = 1000;
     NSMutableString *accum = [[NSMutableString alloc] initWithCapacity:times * markdown.length];
     for (NSUInteger i = 0; i < times; ++i) {
         [accum appendString:markdown];

@@ -35,7 +35,7 @@ subdomain      {nmchar}\.
 urlpath        [\/]|{nmchar}+
 protourl       {protocol}[^ \n]+
 optprotourl    {protocol}?{subdomain}*{nmchar}+\.{nmchar}+{urlpath}*?
-href           \[(.+)\]\(([^\)]+)\)
+href           \[([^\[]+)\]\(([^\)]+)\)
 
 em             {em1}|{em2}
 strong         {strong1}|{strong2}

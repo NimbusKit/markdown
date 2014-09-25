@@ -22,11 +22,24 @@
 #import <CoreText/CoreText.h>
 #import <pthread.h>
 
+static NSRegularExpression *_hrefRegex = nil;
+static inline NSRegularExpression *hrefRegex(void) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _hrefRegex = [NSRegularExpression regularExpressionWithPattern:@"\\[(.*?)\\]\\((\\S+)(\\s+(\"|\')(.*?)(\"|\'))?\\)"
+                                                               options:NSRegularExpressionCaseInsensitive
+                                                                 error:nil];
+    });
+
+    return _hrefRegex;
+}
+
 int markdownConsume(char *text, int token, yyscan_t scanner);
 
 @interface NSAttributedStringMarkdownLink ()
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, assign) NSRange range;
+@property (nonatomic, copy) NSString *tooltip;
 @end
 
 @implementation NSAttributedStringMarkdownLink
@@ -386,25 +399,21 @@ int markdownConsume(char *text, int token, yyscan_t scanner);
             break;
         }
         case MARKDOWNHREF: { // [Title] (url "tooltip")
-            textAsString = [textAsString stringByReplacingOccurrencesOfString:@"\\[" withString:@"["];
-            textAsString = [textAsString stringByReplacingOccurrencesOfString:@"\\]" withString:@"]"];
+            NSTextCheckingResult *result = [hrefRegex() firstMatchInString:textAsString options:0 range:NSMakeRange(0, textAsString.length)];
 
-            NSRange rangeOfFirstOpenBracket = [textAsString rangeOfString:@"[" options:0];
-            NSRange rangeOfLastCloseBracket = [textAsString rangeOfString:@"]" options:NSBackwardsSearch];
-            NSRange rangeOfLastOpenParenthesis = [textAsString rangeOfString:@"(" options:NSBackwardsSearch];
-            NSRange rangeOfLastCloseParenthesis = [textAsString rangeOfString:@")" options:NSBackwardsSearch];
-
-            NSRange linkTitleRange = NSMakeRange(rangeOfFirstOpenBracket.location+1,
-                                                 rangeOfLastCloseBracket.location-rangeOfFirstOpenBracket.location-1);
-            NSRange linkURLRange = NSMakeRange(rangeOfLastOpenParenthesis.location+1,
-                                               rangeOfLastCloseParenthesis.location-rangeOfLastOpenParenthesis.location-1);
+            NSRange linkTitleRange = [result rangeAtIndex:1];
+            NSRange linkURLRange = [result rangeAtIndex:2];
+            NSRange tooltipRange = [result rangeAtIndex:5];
 
             if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
                 NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
 
-                NSString * title = [textAsString substringWithRange:linkTitleRange];
                 link.url = [textAsString substringWithRange:linkURLRange];
                 link.range = NSMakeRange(_accum.length, linkTitleRange.length);
+
+                if (tooltipRange.location != NSNotFound) {
+                    link.tooltip = [textAsString substringWithRange:tooltipRange];
+                }
 
                 [_links addObject:link];
                 textAsString = [textAsString substringWithRange:linkTitleRange];
