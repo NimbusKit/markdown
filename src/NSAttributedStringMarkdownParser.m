@@ -402,6 +402,7 @@ int markdownConsume(char *text, int token, yyscan_t scanner);
             if (linkTitleRange.location != NSNotFound && linkURLRange.location != NSNotFound) {
                 NSAttributedStringMarkdownLink *link = [[NSAttributedStringMarkdownLink alloc] init];
 
+                NSString * title = [textAsString substringWithRange:linkTitleRange];
                 link.url = [textAsString substringWithRange:linkURLRange];
                 link.range = NSMakeRange(_accum.length, linkTitleRange.length);
 
