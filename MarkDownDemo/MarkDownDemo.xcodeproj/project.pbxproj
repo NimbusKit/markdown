@@ -14,10 +14,10 @@
 		86FC0DD61B9F060500F72513 /* MarkDownDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0DD51B9F060500F72513 /* MarkDownDemoTests.m */; };
 		86FC0DE01B9F06F300F72513 /* MdSource.md in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0DDF1B9F06F300F72513 /* MdSource.md */; };
 		86FC0DF01B9F07AF00F72513 /* MdSource.md in Resources */ = {isa = PBXBuildFile; fileRef = 86FC0DDF1B9F06F300F72513 /* MdSource.md */; };
-		86FC0E0F1B9F08D900F72513 /* fmemopen.c in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E061B9F08D900F72513 /* fmemopen.c */; };
-		86FC0E101B9F08D900F72513 /* MarkdownTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E091B9F08D900F72513 /* MarkdownTokenizer.m */; };
-		86FC0E111B9F08D900F72513 /* MarkdownTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E0B1B9F08D900F72513 /* MarkdownTokens.m */; };
-		86FC0E121B9F08D900F72513 /* NSAttributedStringMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E0E1B9F08D900F72513 /* NSAttributedStringMarkdownParser.m */; };
+		86FC0E1D1B9F0ACF00F72513 /* fmemopen.c in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E141B9F0ACF00F72513 /* fmemopen.c */; };
+		86FC0E1E1B9F0ACF00F72513 /* MarkdownTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E171B9F0ACF00F72513 /* MarkdownTokenizer.m */; };
+		86FC0E1F1B9F0ACF00F72513 /* MarkdownTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E191B9F0ACF00F72513 /* MarkdownTokens.m */; };
+		86FC0E201B9F0ACF00F72513 /* NSAttributedStringMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E1C1B9F0ACF00F72513 /* NSAttributedStringMarkdownParser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,15 +43,15 @@
 		86FC0DD41B9F060500F72513 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86FC0DD51B9F060500F72513 /* MarkDownDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarkDownDemoTests.m; sourceTree = "<group>"; };
 		86FC0DDF1B9F06F300F72513 /* MdSource.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = MdSource.md; sourceTree = "<group>"; };
-		86FC0E061B9F08D900F72513 /* fmemopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fmemopen.c; sourceTree = "<group>"; };
-		86FC0E071B9F08D900F72513 /* fmemopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmemopen.h; sourceTree = "<group>"; };
-		86FC0E081B9F08D900F72513 /* NimbusMemoryMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusMemoryMapping.h; sourceTree = "<group>"; };
-		86FC0E091B9F08D900F72513 /* MarkdownTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkdownTokenizer.m; sourceTree = "<group>"; };
-		86FC0E0A1B9F08D900F72513 /* MarkdownTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkdownTokens.h; sourceTree = "<group>"; };
-		86FC0E0B1B9F08D900F72513 /* MarkdownTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkdownTokens.m; sourceTree = "<group>"; };
-		86FC0E0C1B9F08D900F72513 /* NimbusMarkdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusMarkdown.h; sourceTree = "<group>"; };
-		86FC0E0D1B9F08D900F72513 /* NSAttributedStringMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAttributedStringMarkdownParser.h; sourceTree = "<group>"; };
-		86FC0E0E1B9F08D900F72513 /* NSAttributedStringMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAttributedStringMarkdownParser.m; sourceTree = "<group>"; };
+		86FC0E141B9F0ACF00F72513 /* fmemopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fmemopen.c; sourceTree = "<group>"; };
+		86FC0E151B9F0ACF00F72513 /* fmemopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmemopen.h; sourceTree = "<group>"; };
+		86FC0E161B9F0ACF00F72513 /* NimbusMemoryMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusMemoryMapping.h; sourceTree = "<group>"; };
+		86FC0E171B9F0ACF00F72513 /* MarkdownTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkdownTokenizer.m; sourceTree = "<group>"; };
+		86FC0E181B9F0ACF00F72513 /* MarkdownTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkdownTokens.h; sourceTree = "<group>"; };
+		86FC0E191B9F0ACF00F72513 /* MarkdownTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkdownTokens.m; sourceTree = "<group>"; };
+		86FC0E1A1B9F0ACF00F72513 /* NimbusMarkdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusMarkdown.h; sourceTree = "<group>"; };
+		86FC0E1B1B9F0ACF00F72513 /* NSAttributedStringMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAttributedStringMarkdownParser.h; sourceTree = "<group>"; };
+		86FC0E1C1B9F0ACF00F72513 /* NSAttributedStringMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAttributedStringMarkdownParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,23 +134,23 @@
 		86FC0DE11B9F075700F72513 /* markdown */ = {
 			isa = PBXGroup;
 			children = (
-				86FC0E051B9F08D900F72513 /* fmemopen */,
-				86FC0E091B9F08D900F72513 /* MarkdownTokenizer.m */,
-				86FC0E0A1B9F08D900F72513 /* MarkdownTokens.h */,
-				86FC0E0B1B9F08D900F72513 /* MarkdownTokens.m */,
-				86FC0E0C1B9F08D900F72513 /* NimbusMarkdown.h */,
-				86FC0E0D1B9F08D900F72513 /* NSAttributedStringMarkdownParser.h */,
-				86FC0E0E1B9F08D900F72513 /* NSAttributedStringMarkdownParser.m */,
+				86FC0E131B9F0ACF00F72513 /* fmemopen */,
+				86FC0E171B9F0ACF00F72513 /* MarkdownTokenizer.m */,
+				86FC0E181B9F0ACF00F72513 /* MarkdownTokens.h */,
+				86FC0E191B9F0ACF00F72513 /* MarkdownTokens.m */,
+				86FC0E1A1B9F0ACF00F72513 /* NimbusMarkdown.h */,
+				86FC0E1B1B9F0ACF00F72513 /* NSAttributedStringMarkdownParser.h */,
+				86FC0E1C1B9F0ACF00F72513 /* NSAttributedStringMarkdownParser.m */,
 			);
 			path = markdown;
 			sourceTree = "<group>";
 		};
-		86FC0E051B9F08D900F72513 /* fmemopen */ = {
+		86FC0E131B9F0ACF00F72513 /* fmemopen */ = {
 			isa = PBXGroup;
 			children = (
-				86FC0E061B9F08D900F72513 /* fmemopen.c */,
-				86FC0E071B9F08D900F72513 /* fmemopen.h */,
-				86FC0E081B9F08D900F72513 /* NimbusMemoryMapping.h */,
+				86FC0E141B9F0ACF00F72513 /* fmemopen.c */,
+				86FC0E151B9F0ACF00F72513 /* fmemopen.h */,
+				86FC0E161B9F0ACF00F72513 /* NimbusMemoryMapping.h */,
 			);
 			path = fmemopen;
 			sourceTree = "<group>";
@@ -255,12 +255,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86FC0E111B9F08D900F72513 /* MarkdownTokens.m in Sources */,
-				86FC0E121B9F08D900F72513 /* NSAttributedStringMarkdownParser.m in Sources */,
-				86FC0E101B9F08D900F72513 /* MarkdownTokenizer.m in Sources */,
+				86FC0E1F1B9F0ACF00F72513 /* MarkdownTokens.m in Sources */,
+				86FC0E201B9F0ACF00F72513 /* NSAttributedStringMarkdownParser.m in Sources */,
+				86FC0E1E1B9F0ACF00F72513 /* MarkdownTokenizer.m in Sources */,
 				86FC0DE01B9F06F300F72513 /* MdSource.md in Sources */,
 				86FC0DC21B9F060500F72513 /* ViewController.m in Sources */,
-				86FC0E0F1B9F08D900F72513 /* fmemopen.c in Sources */,
+				86FC0E1D1B9F0ACF00F72513 /* fmemopen.c in Sources */,
 				86FC0DBF1B9F060500F72513 /* AppDelegate.m in Sources */,
 				86FC0DBC1B9F060500F72513 /* main.m in Sources */,
 			);
@@ -442,6 +442,7 @@
 				86FC0DDB1B9F060500F72513 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86FC0DDC1B9F060500F72513 /* Build configuration list for PBXNativeTarget "MarkDownDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -450,6 +451,7 @@
 				86FC0DDE1B9F060500F72513 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
