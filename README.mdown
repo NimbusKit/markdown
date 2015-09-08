@@ -1,53 +1,12 @@
-A Markdown NSAttributedString Parser
-====================================
+## markdown iOS解析器，可实现markdown格式text到textView的显示，支持中文。
 
-This is a Markdown => NSAttributedString parser built on top of a flex parser. It takes an NSString
-and returns an NSAttributedString with markdown tags replaced by CoreText formatting attributes.
+> 原产自：https://github.com/NimbusKit/markdown
 
-Adding it to your Project
--------------------------
+### 之所以要弄成你看到的这个样子，是因为原著对中文不友好（中文不显示），所以我查了资料，实现中文支持。并把原著引用的库直接加到本项目中。因此你可以直接下载来使用。如有错误，欢迎指正！
 
-1. Drag all of the files from the src/ directory into your project.
-2. Import NSAttributedStringMarkdownParser.h in your project.
-3. Create an instance of the parser object and pass it the string you wish to parse.
-4. Plug the resulting NSAttributedString into your favorite NSAttributedString label implementation.
+### *友情提示*：
 
-NSAttributedString Labels
--------------------------
+> 本项目包含例子代码，你可以运行并使用。还有本项目暂不支持自定义markdown格式，如果你需要更灵活的框架，请参考这个：https://github.com/indragiek/CocoaMarkdown
 
-Nimbus: https://github.com/jverkoey/nimbus
-TTTAttributedLabel: https://github.com/mattt/TTTAttributedLabel
 
-Supported Features
-------------------
-
-    *italics*
-    **bold**
-    ***bold italic***
-    ~~strikethrough~~
-    
-    # Header 1
-    ## Header 2
-    ### Header 3
-    #### Header 4
-    ##### Header 5
-    ###### Header 6
-    
-    Header 1
-    ========
-
-    Header 2
-    --------
-    
-    http://google.com urls
-    [Text] (http://google.com "alt text") urls
-
-Example
--------
-
-    NSAttributedStringMarkdownParser* parser = [[NSAttributedStringMarkdownParser alloc] init];
-    NSAttributedString* string = [parser attributedStringFromMarkdownString:
-                                  @"This is __rad__."];
-
-See the Catalog application included with the project for more examples.
 
