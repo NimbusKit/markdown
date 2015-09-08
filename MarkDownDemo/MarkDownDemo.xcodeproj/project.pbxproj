@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		86FC0DBC1B9F060500F72513 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0DBB1B9F060500F72513 /* main.m */; };
+		86FC0DBF1B9F060500F72513 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0DBE1B9F060500F72513 /* AppDelegate.m */; };
+		86FC0DC21B9F060500F72513 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0DC11B9F060500F72513 /* ViewController.m */; };
+		86FC0DC71B9F060500F72513 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86FC0DC61B9F060500F72513 /* Images.xcassets */; };
+		86FC0DD61B9F060500F72513 /* MarkDownDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0DD51B9F060500F72513 /* MarkDownDemoTests.m */; };
+		86FC0DE01B9F06F300F72513 /* MdSource.md in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0DDF1B9F06F300F72513 /* MdSource.md */; };
+		86FC0DF01B9F07AF00F72513 /* MdSource.md in Resources */ = {isa = PBXBuildFile; fileRef = 86FC0DDF1B9F06F300F72513 /* MdSource.md */; };
+		86FC0E0F1B9F08D900F72513 /* fmemopen.c in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E061B9F08D900F72513 /* fmemopen.c */; };
+		86FC0E101B9F08D900F72513 /* MarkdownTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E091B9F08D900F72513 /* MarkdownTokenizer.m */; };
+		86FC0E111B9F08D900F72513 /* MarkdownTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E0B1B9F08D900F72513 /* MarkdownTokens.m */; };
+		86FC0E121B9F08D900F72513 /* NSAttributedStringMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC0E0E1B9F08D900F72513 /* NSAttributedStringMarkdownParser.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		86FC0DD01B9F060500F72513 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86FC0DAE1B9F060500F72513 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 86FC0DB51B9F060500F72513;
+			remoteInfo = MarkDownDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		86FC0DB61B9F060500F72513 /* MarkDownDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarkDownDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		86FC0DBA1B9F060500F72513 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		86FC0DBB1B9F060500F72513 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		86FC0DBD1B9F060500F72513 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		86FC0DBE1B9F060500F72513 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		86FC0DC01B9F060500F72513 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		86FC0DC11B9F060500F72513 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		86FC0DC61B9F060500F72513 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		86FC0DCF1B9F060500F72513 /* MarkDownDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarkDownDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		86FC0DD41B9F060500F72513 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		86FC0DD51B9F060500F72513 /* MarkDownDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarkDownDemoTests.m; sourceTree = "<group>"; };
+		86FC0DDF1B9F06F300F72513 /* MdSource.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = MdSource.md; sourceTree = "<group>"; };
+		86FC0E061B9F08D900F72513 /* fmemopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fmemopen.c; sourceTree = "<group>"; };
+		86FC0E071B9F08D900F72513 /* fmemopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmemopen.h; sourceTree = "<group>"; };
+		86FC0E081B9F08D900F72513 /* NimbusMemoryMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusMemoryMapping.h; sourceTree = "<group>"; };
+		86FC0E091B9F08D900F72513 /* MarkdownTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkdownTokenizer.m; sourceTree = "<group>"; };
+		86FC0E0A1B9F08D900F72513 /* MarkdownTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkdownTokens.h; sourceTree = "<group>"; };
+		86FC0E0B1B9F08D900F72513 /* MarkdownTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkdownTokens.m; sourceTree = "<group>"; };
+		86FC0E0C1B9F08D900F72513 /* NimbusMarkdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbusMarkdown.h; sourceTree = "<group>"; };
+		86FC0E0D1B9F08D900F72513 /* NSAttributedStringMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAttributedStringMarkdownParser.h; sourceTree = "<group>"; };
+		86FC0E0E1B9F08D900F72513 /* NSAttributedStringMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAttributedStringMarkdownParser.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		86FC0DB31B9F060500F72513 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86FC0DCC1B9F060500F72513 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		86FC0DAD1B9F060500F72513 = {
+			isa = PBXGroup;
+			children = (
+				86FC0DB81B9F060500F72513 /* MarkDownDemo */,
+				86FC0DD21B9F060500F72513 /* MarkDownDemoTests */,
+				86FC0DB71B9F060500F72513 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		86FC0DB71B9F060500F72513 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				86FC0DB61B9F060500F72513 /* MarkDownDemo.app */,
+				86FC0DCF1B9F060500F72513 /* MarkDownDemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		86FC0DB81B9F060500F72513 /* MarkDownDemo */ = {
+			isa = PBXGroup;
+			children = (
+				86FC0DE11B9F075700F72513 /* markdown */,
+				86FC0DDF1B9F06F300F72513 /* MdSource.md */,
+				86FC0DBD1B9F060500F72513 /* AppDelegate.h */,
+				86FC0DBE1B9F060500F72513 /* AppDelegate.m */,
+				86FC0DC01B9F060500F72513 /* ViewController.h */,
+				86FC0DC11B9F060500F72513 /* ViewController.m */,
+				86FC0DC61B9F060500F72513 /* Images.xcassets */,
+				86FC0DB91B9F060500F72513 /* Supporting Files */,
+			);
+			path = MarkDownDemo;
+			sourceTree = "<group>";
+		};
+		86FC0DB91B9F060500F72513 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86FC0DBA1B9F060500F72513 /* Info.plist */,
+				86FC0DBB1B9F060500F72513 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		86FC0DD21B9F060500F72513 /* MarkDownDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				86FC0DD51B9F060500F72513 /* MarkDownDemoTests.m */,
+				86FC0DD31B9F060500F72513 /* Supporting Files */,
+			);
+			path = MarkDownDemoTests;
+			sourceTree = "<group>";
+		};
+		86FC0DD31B9F060500F72513 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86FC0DD41B9F060500F72513 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		86FC0DE11B9F075700F72513 /* markdown */ = {
+			isa = PBXGroup;
+			children = (
+				86FC0E051B9F08D900F72513 /* fmemopen */,
+				86FC0E091B9F08D900F72513 /* MarkdownTokenizer.m */,
+				86FC0E0A1B9F08D900F72513 /* MarkdownTokens.h */,
+				86FC0E0B1B9F08D900F72513 /* MarkdownTokens.m */,
+				86FC0E0C1B9F08D900F72513 /* NimbusMarkdown.h */,
+				86FC0E0D1B9F08D900F72513 /* NSAttributedStringMarkdownParser.h */,
+				86FC0E0E1B9F08D900F72513 /* NSAttributedStringMarkdownParser.m */,
+			);
+			path = markdown;
+			sourceTree = "<group>";
+		};
+		86FC0E051B9F08D900F72513 /* fmemopen */ = {
+			isa = PBXGroup;
+			children = (
+				86FC0E061B9F08D900F72513 /* fmemopen.c */,
+				86FC0E071B9F08D900F72513 /* fmemopen.h */,
+				86FC0E081B9F08D900F72513 /* NimbusMemoryMapping.h */,
+			);
+			path = fmemopen;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		86FC0DB51B9F060500F72513 /* MarkDownDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86FC0DD91B9F060500F72513 /* Build configuration list for PBXNativeTarget "MarkDownDemo" */;
+			buildPhases = (
+				86FC0DB21B9F060500F72513 /* Sources */,
+				86FC0DB31B9F060500F72513 /* Frameworks */,
+				86FC0DB41B9F060500F72513 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MarkDownDemo;
+			productName = MarkDownDemo;
+			productReference = 86FC0DB61B9F060500F72513 /* MarkDownDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		86FC0DCE1B9F060500F72513 /* MarkDownDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86FC0DDC1B9F060500F72513 /* Build configuration list for PBXNativeTarget "MarkDownDemoTests" */;
+			buildPhases = (
+				86FC0DCB1B9F060500F72513 /* Sources */,
+				86FC0DCC1B9F060500F72513 /* Frameworks */,
+				86FC0DCD1B9F060500F72513 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				86FC0DD11B9F060500F72513 /* PBXTargetDependency */,
+			);
+			name = MarkDownDemoTests;
+			productName = MarkDownDemoTests;
+			productReference = 86FC0DCF1B9F060500F72513 /* MarkDownDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		86FC0DAE1B9F060500F72513 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = ST;
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = shuoit;
+				TargetAttributes = {
+					86FC0DB51B9F060500F72513 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					86FC0DCE1B9F060500F72513 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 86FC0DB51B9F060500F72513;
+					};
+				};
+			};
+			buildConfigurationList = 86FC0DB11B9F060500F72513 /* Build configuration list for PBXProject "MarkDownDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 86FC0DAD1B9F060500F72513;
+			productRefGroup = 86FC0DB71B9F060500F72513 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				86FC0DB51B9F060500F72513 /* MarkDownDemo */,
+				86FC0DCE1B9F060500F72513 /* MarkDownDemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		86FC0DB41B9F060500F72513 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86FC0DF01B9F07AF00F72513 /* MdSource.md in Resources */,
+				86FC0DC71B9F060500F72513 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86FC0DCD1B9F060500F72513 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		86FC0DB21B9F060500F72513 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86FC0E111B9F08D900F72513 /* MarkdownTokens.m in Sources */,
+				86FC0E121B9F08D900F72513 /* NSAttributedStringMarkdownParser.m in Sources */,
+				86FC0E101B9F08D900F72513 /* MarkdownTokenizer.m in Sources */,
+				86FC0DE01B9F06F300F72513 /* MdSource.md in Sources */,
+				86FC0DC21B9F060500F72513 /* ViewController.m in Sources */,
+				86FC0E0F1B9F08D900F72513 /* fmemopen.c in Sources */,
+				86FC0DBF1B9F060500F72513 /* AppDelegate.m in Sources */,
+				86FC0DBC1B9F060500F72513 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86FC0DCB1B9F060500F72513 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86FC0DD61B9F060500F72513 /* MarkDownDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		86FC0DD11B9F060500F72513 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 86FC0DB51B9F060500F72513 /* MarkDownDemo */;
+			targetProxy = 86FC0DD01B9F060500F72513 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		86FC0DD71B9F060500F72513 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		86FC0DD81B9F060500F72513 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		86FC0DDA1B9F060500F72513 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = MarkDownDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		86FC0DDB1B9F060500F72513 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = MarkDownDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		86FC0DDD1B9F060500F72513 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MarkDownDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MarkDownDemo.app/MarkDownDemo";
+			};
+			name = Debug;
+		};
+		86FC0DDE1B9F060500F72513 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MarkDownDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MarkDownDemo.app/MarkDownDemo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		86FC0DB11B9F060500F72513 /* Build configuration list for PBXProject "MarkDownDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86FC0DD71B9F060500F72513 /* Debug */,
+				86FC0DD81B9F060500F72513 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		86FC0DD91B9F060500F72513 /* Build configuration list for PBXNativeTarget "MarkDownDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86FC0DDA1B9F060500F72513 /* Debug */,
+				86FC0DDB1B9F060500F72513 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		86FC0DDC1B9F060500F72513 /* Build configuration list for PBXNativeTarget "MarkDownDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86FC0DDD1B9F060500F72513 /* Debug */,
+				86FC0DDE1B9F060500F72513 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 86FC0DAE1B9F060500F72513 /* Project object */;
+}
