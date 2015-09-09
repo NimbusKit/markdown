@@ -14,19 +14,15 @@
 // limitations under the License.
 //
 
-const char* markdownnames[] = {
-  "EM",
-  "STRONG",
-  "STRONGEM",
-  "STRIKETHROUGH",
-  "HEADER",
-  "MULTILINEHEADER",
-  "URL",
-  "HREF",
-  "PARAGRAPH",
-  "NEWLINE",
-  "BULLETSTART",
-  "BLOCKQUOTE",
-  "MARKDOWNCODESPAN",
-  "UNKNOWN"
-};
+#ifdef NIMBUSKIT_FRAMEWORK
+  #import <NimbusKit/NSAttributedStringMarkdownParser.h>
+#else
+  #import "NSAttributedStringMarkdownParser.h"
+#endif
+
+/**
+ * @defgroup NimbusMarkdown Nimbus Markdown
+ *
+ * <div id="github" feature="markdown"></div>
+ *
+ */

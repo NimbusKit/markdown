@@ -14,19 +14,15 @@
 // limitations under the License.
 //
 
-const char* markdownnames[] = {
-  "EM",
-  "STRONG",
-  "STRONGEM",
-  "STRIKETHROUGH",
-  "HEADER",
-  "MULTILINEHEADER",
-  "URL",
-  "HREF",
-  "PARAGRAPH",
-  "NEWLINE",
-  "BULLETSTART",
-  "BLOCKQUOTE",
-  "MARKDOWNCODESPAN",
-  "UNKNOWN"
-};
+#ifdef NIMBUSKIT_FRAMEWORK
+  #import <NimbusKit/fmemopen.h>
+#else
+  #import "fmemopen.h"
+#endif
+
+/**
+ * @defgroup NimbusMemoryMappping Nimbus Memory Mapping
+ *
+ * <div id="github" feature="memorymapping"></div>
+ *
+ */
