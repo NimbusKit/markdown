@@ -1,0 +1,23 @@
+PODS:
+  - Expecta (0.3.1)
+  - FBSnapshotTestCase (1.2)
+  - fmemopen (0.0.1)
+  - XNGMarkdownParser (0.1):
+    - fmemopen
+
+DEPENDENCIES:
+  - Expecta (~> 0.3.1)
+  - FBSnapshotTestCase
+  - XNGMarkdownParser (from `../XNGMarkdownParser.podspec`)
+
+EXTERNAL SOURCES:
+  XNGMarkdownParser:
+    :path: ../XNGMarkdownParser.podspec
+
+SPEC CHECKSUMS:
+  Expecta: e9dfd3ebf3a05e54016dc5b9f20a1c088a3e32fb
+  FBSnapshotTestCase: 29b9bf99422278cf40ea3beb7d8649466f38cf2c
+  fmemopen: ccbcc664b54a0fdbffc3b2727decb0525f9ebda9
+  XNGMarkdownParser: 6967f9f80a8d1fd1fda2698d4ad7cd772b0ef5d7
+
+COCOAPODS: 0.33.1
